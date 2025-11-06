@@ -10,8 +10,10 @@ public class Enemy : MonoBehaviour
 {
     [Header("기본 능력치")]
     /// <summary>적의 이동 속도</summary>
-    public float speed = 2.5f; // 적의 이동 속도 (골드메탈 튜토리얼 변수)
-
+    public float speed = 2.5f; // 적의 이동 속도 (골드메탈 튜토리얼 변수
+    public float health;
+    public float maxHealth;
+    public RuntimeAnimatorController[] animCon;
     [Header("AI 설정")]
     /// <summary>공격할 대상의 레이어 (인스펙터에서 'Ally'로 설정해야 함)</summary>
     public LayerMask targetLayer;
@@ -41,7 +43,7 @@ public class Enemy : MonoBehaviour
     // ★★★ [신규] 넉백 상태 변수 ★★★
     /// <summary>현재 넉백 상태인지 여부. true이면 AI 이동/공격/타겟팅이 모두 중지됩니다.</summary>
     private bool isKnockedBack = false;
-
+    Animator anim;
     /// <summary>
     /// [Unity 이벤트] Awake() - 스크립트가 처음 로드될 때 1회 호출
     /// </summary>
@@ -50,6 +52,7 @@ public class Enemy : MonoBehaviour
         // 컴포넌트 캐싱(Caching)
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     /// <summary>
@@ -244,15 +247,24 @@ public class Enemy : MonoBehaviour
         isKnockedBack = true;
 
         // 2. Rigidbody의 속도(velocity)에 넉백 방향*힘을 순간적으로 적용합니다.
-        rigid.velocity = knockbackDir * power;
+        rigid.linearVelocity = knockbackDir * power;
 
         // 3. 지정된 넉백 시간(duration)만큼 '여기서 대기'합니다.
         yield return new WaitForSeconds(duration);
 
         // 4. 넉백 시간이 끝나면 속도를 0으로 초기화합니다.
-        rigid.velocity = Vector2.zero;
+        rigid.linearVelocity = Vector2.zero;
 
         // 5. 넉백 상태를 해제합니다. (-> AI 로직이 다시 정상 작동 시작)
         isKnockedBack = false;
+    }
+    public void init(SpawnData data)
+    {
+        anim.runtimeAnimatorController = animCon[data.spriteType];
+        speed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
+
+        // 
     }
 }

@@ -1,64 +1,89 @@
+// Spawner.cs 교체/추가 부분만 발췌
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// [적 스포너]
-/// 'spawnPoint'들의 위치를 기준으로, 주기적으로 적 유닛을 스폰(Spawn)합니다.
-/// GameManager(PoolManager)에 의존합니다.
-/// </summary>
 public class Spawner : MonoBehaviour
 {
-    /// <summary>
-    /// 적이 스폰될 위치(Transform)들의 배열.
-    /// (Awake에서 이 오브젝트의 모든 자식(Children) 오브젝트들로 자동 설정됩니다.)
-    /// </summary>
-    public Transform[] spawnPoint;
+    public static Spawner Instance { get; private set; }
 
-    /// <summary>스폰 주기를 계산하기 위한 내부 타이머</summary>
-    float timer;
+    [Header("난이도 / 스폰 데이터 (스폰 간격용)")]
+    public SpawnData[] spawnData;   // 비어 있어도 동작하도록 방어코드 처리
+    public float Lv_Time = 10f;     // (원한다면 유지)
 
-    /// <summary>
-    /// [Unity 이벤트] Awake() - 스크립트가 로드될 때 1회 호출
-    /// </summary>
-    void Awake()
+    [Header("타워 활성화 타이머")]
+    public float activateInterval = 10f;  // ★ 10초마다 다음 성 활성화
+    float activateTimer = 0f;
+
+    readonly List<SpawnPoint> points = new List<SpawnPoint>();
+    int prevLevel = -1;
+    public int Level { get; private set; } = 0;
+
+    public SpawnData CurrentSpawnData
     {
-        // GetComponentsInChildren<Transform>()은
-        // '나 자신'과 '나의 모든 자식'들의 Transform 컴포넌트를 배열로 가져옵니다.
-        // (Hierarchy 뷰에서 이 Spawner 오브젝트 밑에 빈 오브젝트들을 넣어두면,
-        //  그 위치들이 자동으로 spawnPoint 배열에 등록됩니다.)
-        spawnPoint = GetComponentsInChildren<Transform>();
-    }
-
-    /// <summary>
-    /// [Unity 이벤트] Update() - 매 프레임마다 호출
-    /// </summary>
-    void Update()
-    {
-        // 1. 타이머 시간에 프레임 시간을 더합니다.
-        timer += Time.deltaTime;
-
-        // 2. 타이머가 4초(4.0f)를 넘어가면 (스폰 주기)
-        if (timer > 4.0f)
+        get
         {
-            Spawn();   // 3. 적을 스폰합니다.
-            timer = 0; // 4. 타이머를 0으로 초기화합니다.
+            if (spawnData == null || spawnData.Length == 0) return null;
+            return spawnData[Mathf.Clamp(Level, 0, spawnData.Length - 1)];
         }
     }
 
-    /// <summary>
-    /// PoolManager에서 적 유닛을 가져와 스폰합니다.
-    /// </summary>
-    void Spawn()
+    void Awake()
     {
-        // 1. [핵심] GameManager의 인스턴스(instance)를 통해 PoolManager(Pool)에 접근,
-        //    Get() 함수를 호출하여 오브젝트를 가져옵니다.
-        //    (Random.Range(0, 2) = PoolManager의 prefabs 배열 0번 또는 1번을 랜덤으로 가져옴)
-        GameObject enemy = GameManager.instance.Pool.Get(Random.Range(0, 2));
-        //instance하는김에 데이터도 받아오기 
+        Instance = this;
+        points.Clear();
+        GetComponentsInChildren(true, points); // 또는 씬 전역 수집 버전이면 FindObjectsOfType 사용
 
-        // 2. 스폰 위치를 랜덤으로 설정합니다.
-        //    (spawnPoint[0]은 '나 자신'의 Transform이므로, 
-        //     '1'부터 'spawnPoint.Length' 전까지의 자식들 중에서 랜덤으로 고릅니다.)
-        enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-        //자기자신도 컴포넌트에 포함되서 1부터
+        foreach (var p in points) p?.ResetRuntimeFlags();
     }
+
+    void Start()
+    {
+        ActivateOneVirginPoint();          // 시작: 왼쪽 성 1개 켜기
+        prevLevel = ComputeLevel();        // (spawnData 없어도 무관)
+        Level = prevLevel;
+    }
+
+    void Update()
+    {
+        // ① 스폰 난이도(Level)는 기존대로(선택)
+        Level = ComputeLevel();
+
+        // ② ★ 타워 활성화는 별도 타이머로 진행 (spawnData 개수와 무관)
+        activateTimer += Time.deltaTime;
+        if (activateTimer >= activateInterval)
+        {
+            activateTimer = 0f;
+            ActivateOneVirginPoint();      // 다음 성 하나 더 켬
+        }
+    }
+
+    int ComputeLevel()
+    {
+        // spawnData 없어도 0 반환 (스폰 포인트 활성화에는 영향 X)
+        if (spawnData == null || spawnData.Length == 0) return 0;
+        float t = GameManager.instance.gameTime;
+        return Mathf.Min(Mathf.FloorToInt(t / Lv_Time), spawnData.Length - 1);
+    }
+
+    void ActivateOneVirginPoint()
+    {
+        foreach (var p in points)
+        {
+            if (p == null) continue;
+            if (!p.PermanentlyOff && !p.EverActivated)
+            {
+                if (p.ActivateOnce())
+                    return; // 한 번에 1개만
+            }
+        }
+    }
+
+}
+[System.Serializable]
+public class SpawnData
+{
+    public float spawnTime; // SpawnPoint가 useSpawnerSpawnTime = true일 때 쓰는 간격(초)
+    public int spriteType;
+    public int health;
+    public float speed;
 }

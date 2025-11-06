@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     /// 모든 스크립트가 공유하는 단 하나의 'GameManager' 참조입니다.
     /// </summary>
     public static GameManager instance;
-
+    public float gameTime;
+    public float maxGameTime = 30 * 6 * 10f;
     [Header("핵심 오브젝트 참조")]
     /// <summary>플레이어(Player) 오브젝트 참조 (인스펙터에서 할당)</summary>
     public Player player;
@@ -51,5 +52,15 @@ public class GameManager : MonoBehaviour
             // 새로 생긴 '나 자신(gameObject)'을 파괴합니다.
             Destroy(gameObject);
         }
+    }
+
+    void Update()
+    {
+        gameTime += Time.deltaTime;
+        if (gameTime > maxGameTime)
+        {
+            gameTime = maxGameTime;
+        }
+
     }
 }
