@@ -8,6 +8,17 @@ using UnityEngine;
 /// </summary>
 public class Enemy : MonoBehaviour
 {
+    // Enemy.cs 상단 필드 영역 어딘가에 추가
+    [Header("Boss HP Bar")]
+    public Transform hpBarRoot;        // HPBarRoot
+    public Transform hpFill;           // HPFill (SpriteRenderer 달린 오브젝트)
+    public float barWidth = 2.0f;      // 바 전체 가로 길이
+    public float barHeight = 0.25f;    // 바 높이
+    public Vector3 barOffset = new Vector3(0f, 1.5f, 0f); // 머리 위 오프셋
+
+    [Header("범위공격 옵션 (Boss용)")]
+    public bool isAreaAttack = false;
+    public float areaAttackRadius = 3.0f;
     [Header("기본 능력치")]
     /// <summary>적의 이동 속도</summary>
     public float speed = 2.5f; // 적의 이동 속도 (골드메탈 튜토리얼 변수
@@ -68,7 +79,7 @@ public class Enemy : MonoBehaviour
         {
             aiCoroutine = StartCoroutine(UpdateTargetCoroutine());
         }
-
+        UpdateHPBar();
         // (골드메탈 튜토리얼 #90과 동일)
         // target = GameManager.instance.player.GetComponent<Rigidbody2D>(); // 이 코드는 더 이상 사용하지 않음
     }
@@ -144,6 +155,38 @@ public class Enemy : MonoBehaviour
         // 6. 찾은 'bestTarget' (가장 가까운 대상)을 반환합니다. (못 찾았다면 null이 반환됨)
         return bestTarget;
     }
+    // Enemy.cs 내부 메서드로 추가
+    void UpdateHPBar()
+    {
+        if (!hpBarRoot || !hpFill) return;
+
+        // Targetable을 체력 소스(진실)로 쓰고, 없으면 Enemy의 health/maxHealth 사용
+        float cur = health;
+        float max = maxHealth;
+        var tar = GetComponent<Targetable>();
+        if (tar != null)
+        {
+            // Targetable.cs에 필드명이 다르면 여기를 맞춰줘 (예: tar.hp, tar.maxHP 등)
+            cur = tar.currentHealth;     // ← 너의 Targetable 필드명에 맞춰 수정
+            max = tar.maxHealth;  // ← 너의 Targetable 필드명에 맞춰 수정
+        }
+
+        float ratio = (max > 0f) ? Mathf.Clamp01(cur / max) : 0f;
+
+        // 루트 위치/초기 스케일
+        hpBarRoot.localPosition = barOffset;
+
+        // 왼쪽 기준으로 줄어들게 스케일/위치 보정
+        float w = barWidth * ratio;
+        hpFill.localScale = new Vector3(w, barHeight, 1f);
+        hpFill.localPosition = new Vector3(-(barWidth - w) * 0.5f, 0f, 0f);
+
+        var sr = hpFill.GetComponent<SpriteRenderer>();
+        if (sr) sr.color = Color.Lerp(Color.red, Color.green, ratio);
+
+        // 죽으면 HP바 숨김 (Targetable이 isDead 제공 시)
+        if (tar != null) hpBarRoot.gameObject.SetActive(!tar.isDead);
+    }
 
     /// <summary>
     /// [Unity 이벤트] FixedUpdate() - 고정된 물리 프레임마다 호출 (기본 0.02초)
@@ -190,6 +233,7 @@ public class Enemy : MonoBehaviour
         // 2. (골드메탈 튜토리얼 #90과 동일한 로직)
         // 타겟이 왼쪽에 있으면(x좌표가 작으면) 스프라이트를 반전(flipX = true)시킵니다.
         spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
+        UpdateHPBar();
     }
 
     // -----------------------------------------------------------------
@@ -266,5 +310,30 @@ public class Enemy : MonoBehaviour
         health = data.health;
 
         // 
+    }
+    public void ApplyBossSpec(BossSpec spec)
+    {
+        if (spec == null) return;
+
+        // 공격/쿨다운
+        attackDamage = spec.attackDamage;
+        attackCooldown = spec.attackCooldown;
+
+        // 탐지/이동
+        detectionRadius = spec.detectionRadius;
+        speed = spec.moveSpeed;
+
+        // 체력
+        maxHealth = spec.maxHP;
+        health = spec.maxHP;   // 런타임 체력 초기화
+
+        // 범위공격 옵션
+        isAreaAttack = spec.isAreaAttack;
+        areaAttackRadius = spec.areaRadius;
+
+        // 시각 효과(선택)
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr) sr.color = spec.tint;
+        UpdateHPBar();
     }
 }
