@@ -317,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed47fe805a97d944aaea684028409c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombardWeapon
-  damage: 10
+  damage: 5
   count: 1
   cooldown: 4
   weaponPrefabIndex: 5
