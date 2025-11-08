@@ -273,55 +273,6 @@ Transform:
   - {fileID: 1341388964}
   m_Father: {fileID: 1279112653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &200001618
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 200001619}
-  - component: {fileID: 200001620}
-  m_Layer: 8
-  m_Name: Bombard Wpn
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &200001619
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200001618}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1569412824}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &200001620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200001618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed47fe805a97d944aaea684028409c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BombardWeapon
-  damage: 10
-  count: 1
-  cooldown: 4
-  weaponPrefabIndex: 5
-  scanBRange: 7
 --- !u!1 &383857979
 GameObject:
   m_ObjectHideFlags: 3
@@ -531,7 +482,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 6.5104165
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -747,8 +698,6 @@ MonoBehaviour:
   - {fileID: 7743973790584016687, guid: 9ab77f36ea489487fa5a588dbbc1511c, type: 3}
   - {fileID: 6985035448681610938, guid: 75a5d6d41bd2d45388a49a40207815c4, type: 3}
   - {fileID: 7632359772536797755, guid: fe26d4437f05842488bcb0a9ec801b4a, type: 3}
-  - {fileID: 3203970407810320476, guid: 5530ac1c1f1f4f34c9295cd05e78d5f7, type: 3}
-  - {fileID: 4204018482358998013, guid: 987ce1c94a0caf5438e28da8204886ec, type: 3}
 --- !u!4 &769905356
 Transform:
   m_ObjectHideFlags: 0
@@ -764,54 +713,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &809544967
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 809544968}
-  - component: {fileID: 809544969}
-  m_Layer: 8
-  m_Name: Range Wpn
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &809544968
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809544967}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1569412824}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &809544969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809544967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0498f4389abfa114ab519b44db8decc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangeWeapon
-  damage: 1
-  per: 1
-  weaponPrefabIndex: 6
-  scanRange: 8
 --- !u!1 &893045083
 GameObject:
   m_ObjectHideFlags: 0
@@ -10620,8 +10521,6 @@ Transform:
   - {fileID: 1437193299}
   - {fileID: 1007823493}
   - {fileID: 756154788}
-  - {fileID: 200001619}
-  - {fileID: 809544968}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1569412825

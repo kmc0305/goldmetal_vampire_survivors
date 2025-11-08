@@ -321,7 +321,7 @@ MonoBehaviour:
   count: 1
   cooldown: 4
   weaponPrefabIndex: 5
-  scanBRange: 7
+  scanBRange: 6
 --- !u!1 &383857979
 GameObject:
   m_ObjectHideFlags: 3
@@ -811,7 +811,7 @@ MonoBehaviour:
   damage: 1
   per: 1
   weaponPrefabIndex: 6
-  scanRange: 8
+  scanRange: 5
 --- !u!1 &893045083
 GameObject:
   m_ObjectHideFlags: 0
