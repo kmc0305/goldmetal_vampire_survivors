@@ -1,38 +1,38 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BombardBullet : MonoBehaviour      //BombardWeaponÀ¸·Î ¹ß»çÇÑ Bombard Bullet
+public class BombardBullet : MonoBehaviour      ///BombardWeaponìœ¼ë¡œ ë°œì‚¬í•œ Bombard Bullet
 {
-    private float currentDamage = 10f;  //±âº» µ¥¹ÌÁö
+    private float currentDamage = 10f;  ///ê¸°ë³¸ ë°ë¯¸ì§€
     private float timer = 0f;
-    private float duration = 2f;
+    private float duration = 2f;        ///í•„ë“œì˜ ì¥íŒì´ ì”ë¥˜í•˜ëŠ” ì‹œê°„
     private Collider2D coll;
     
-    //ÀÜ·ùÇÏ´Â Bullet¿¡ ÀÇÇØ ÇÑ ¹ø µ¥¹ÌÁö¸¦ ÀÔÀº ÀûÀÌ ´Ù½Ã µ¥¹ÌÁö¸¦ ÀÔ´Â °ÍÀ» ¹æÁöÇÔ
+    ///ì”ë¥˜í•˜ëŠ” Bulletì— ì˜í•´ í•œ ë²ˆ ë°ë¯¸ì§€ë¥¼ ì…ì€ ì ì´ ë‹¤ì‹œ ë°ë¯¸ì§€ë¥¼ ì…ëŠ” ê²ƒì„ ë°©ì§€í•¨
     private HashSet<GameObject> damagedEnemies= new();
 
-    //ÀÌ ¹«±âÀÇ ¼ö¸í, ºñÈ°¼ºÈ­ ·ÎÁ÷Àº Bullet º»ÀÎÀÌ ´ã´ç(Melee¿ÍÀÇ Â÷ÀÌ)
+    ///ì´ ë¬´ê¸°ì˜ ìˆ˜ëª…, ë¹„í™œì„±í™” ë¡œì§ì€ Bullet ë³¸ì¸ì´ ë‹´ë‹¹(Meleeì™€ì˜ ì°¨ì´)
     private void Awake()
     {
     }
-    public void Init(float dmg, Vector3 Coord) //ºÎ¸ğÀÎ BombardWeapon¿¡¼­ µ¥¹ÌÁö, ¼ÒÈ¯ ÁÂÇ¥¸¦ ¹Ş½À´Ï´Ù.
+    public void Init(float dmg, Vector3 Coord) //ë¶€ëª¨ì¸ BombardWeaponì—ì„œ ë°ë¯¸ì§€, ì†Œí™˜ ì¢Œí‘œë¥¼ ë°›ìŠµë‹ˆë‹¤.
     {
-        //BulletÀÌ È°¼ºÈ­(¹ß»ç) µÉ¶§¸¶´Ù InitÀ» È£ÃâÇÏ´Ï, OnEnable ¿ªÇÒµµ °âÀÓÇÏ´Â °ÍÀÔ´Ï´Ù.
+        //Bulletì´ í™œì„±í™”(ë°œì‚¬) ë ë•Œë§ˆë‹¤ Initì„ í˜¸ì¶œí•˜ë‹ˆ, OnEnable ì—­í• ë„ ê²¸ì„í•˜ëŠ” ê²ƒì…ë‹ˆë‹¤.
         damagedEnemies.Clear();
         this.timer = 0f;
         coll = GetComponent<Collider2D>();
         if (coll != null) coll.enabled = true;
         currentDamage = dmg;
         this.transform.position = Coord;
-        //ºÎ¸ğÀÎ BombardWeaponÀº Bullet È°¼ºÈ­¿Í µ¿½Ã¿¡ InitÀ¸·Î ÁÂÇ¥¸¦ ÁÖ°í,
-        //BulletÀº ±× ÁÂÇ¥·Î ¼ø°£ÀÌµ¿ÇÕ´Ï´Ù(ÀåÆÇÀÌ ¼ÒÈ¯µË´Ï´Ù)
+        //ë¶€ëª¨ì¸ BombardWeaponì€ Bullet í™œì„±í™”ì™€ ë™ì‹œì— Initìœ¼ë¡œ ì¢Œí‘œë¥¼ ì£¼ê³ ,
+        //Bulletì€ ê·¸ ì¢Œí‘œë¡œ ìˆœê°„ì´ë™í•©ë‹ˆë‹¤(ì¥íŒì´ ì†Œí™˜ë©ë‹ˆë‹¤)
     }
 
-    private void Update()   //duration¸¸Å­ ½Ã°£ÀÌ Áö³ª¸é ºñÈ°¼ºÈ­
+    private void Update()   //durationë§Œí¼ ì‹œê°„ì´ ì§€ë‚˜ë©´ ë¹„í™œì„±í™”
     {
         timer += Time.deltaTime;
-        if(timer>0.1f && coll != null) coll.enabled=false;  //Bullet(ÀåÆÇ)»ı¼º Á÷ÈÄ ºñÈ°¼ºÈ­ÇÏ¿© ´õÀÌ»ó Ãæµ¹ ¹æÁö
+        if(timer>0.1f && coll != null) coll.enabled=false;  //Bullet(ì¥íŒ)ìƒì„± ì§í›„ ë¹„í™œì„±í™”í•˜ì—¬ ë”ì´ìƒ ì¶©ëŒ ë°©ì§€
         if(timer>duration) gameObject.SetActive(false);
     }
 
@@ -40,13 +40,13 @@ public class BombardBullet : MonoBehaviour      //BombardWeaponÀ¸·Î ¹ß»çÇÑ Bomba
     {
         Targetable target = other.GetComponent<Targetable>();
         if (target == null) return;
-        if (damagedEnemies.Contains(other.gameObject)) return;  //µ¥¹ÌÁö Áßº¹ ¹æÁö
+        if (damagedEnemies.Contains(other.gameObject)) return;  //ë°ë¯¸ì§€ ì¤‘ë³µ ë°©ì§€
 
-        // 3. ºÎµúÈù ´ë»óÀÌ 'Enemy' Áø¿µÀÌ¸é ½ÇÇà
+        /// ë¶€ë”ªíŒ ëŒ€ìƒì´ 'Enemy' ì§„ì˜ì´ë©´ ì‹¤í–‰
         if (target.faction == Targetable.Faction.Enemy)
         {
-            // 4. [ÇÙ½É] Àû('Enemy')ÀÇ Targetable ½ºÅ©¸³Æ®¿¡ TakeDamage() ÇÔ¼ö¸¦ È£ÃâÇÕ´Ï´Ù.
-            //    ³Ë¹é ¹æÇâ °è»êÀ» À§ÇØ '³ª(¹«±â)'ÀÇ À§Ä¡(transform)¸¦ ³Ñ°ÜÁİ´Ï´Ù.
+            /// [í•µì‹¬] ì ('Enemy')ì˜ Targetable ìŠ¤í¬ë¦½íŠ¸ì— TakeDamage() í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
+            ///    ë„‰ë°± ë°©í–¥ ê³„ì‚°ì„ ìœ„í•´ 'ë‚˜(ë¬´ê¸°)'ì˜ ìœ„ì¹˜(transform)ë¥¼ ë„˜ê²¨ì¤ë‹ˆë‹¤.
             target.TakeDamage(currentDamage, transform);
 
             GameObject damagedEnemy = other.gameObject;
