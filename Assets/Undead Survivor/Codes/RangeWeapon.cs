@@ -1,23 +1,31 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 public class RangeWeapon : MonoBehaviour
 {
-    [Header("���� �ɷ�ġ")]
+    [Header("무기 능력치")]
+    /// <summary>이 무기가 Range Bullet에게 전달할 기본 공격력</summary>
     public float damage;
+    /// <summary>하나의 Bullet이 몇 명의 적을 관통할 수 있는지(예시: 1은 적 하나 관통가능)</summary>
     public int per;
-
     private float timer = 0f;
+    /// <summary>쿨타임 시간마다 발사</summary>
     private float cooldown = 0.4f;
 
-    [Header("PoolManager ����")]
-    public int weaponPrefabIndex;   //Range: 6
+    [Header("PoolManager 설정")]
+    /// <summary>
+    /// [중요] PoolManager의 'prefabs' 배열에 등록된
+    /// '실제 무기 프리팹(BombardBullet.cs가 붙어있는)'의 인덱스 번호: 여기서는 6
+    /// </summary>
+    public int weaponPrefabIndex;
 
+    /// <summary>PoolManager 참조</summary>
     private PoolManager poolManager;
     void Start()
     {
+        /// GameManager 인스턴스를 통해 PoolManager 참조를 가져옵니다.
         poolManager = GameManager.instance.Pool;
     }
     void Update()
@@ -26,27 +34,30 @@ public class RangeWeapon : MonoBehaviour
         if (timer >= cooldown)
         {
             timer = 0f;
-            doFire();
+            doFire();   ///쿨타임 찰 때마다 발사 실행
         }
     }
 
-    void doFire()
+    void doFire()   ///발사를 실행하는 함수
     {
-        if (!nearestTarget) return;
+        if (!nearestTarget) return; ///적 미탐지시 발사 안함
 
         Vector3 targetPos=nearestTarget.position;
         Vector3 dir=(targetPos - this.transform.position).normalized;
-        //���� ��ġ(=�÷��̾� ��ġ)���� Ÿ������ ���ϴ� ������ ��������
+        ///무기 위치(=플레이어 위치)에서 타겟으로 향하는 방향의 단위벡터
 
         Transform bullet = poolManager.Get(weaponPrefabIndex).transform;
+
+        ///Bullet의 시작 위치, 회전한 각도를 정한다.
         bullet.position = this.transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        ///Bullet이 활성화 된 직후 데미지, 관통수, 방향의 정보를 Bullet에 Init()으로 제공
         bullet.GetComponent<RangeBullet>().Init(damage, per, dir);
     }
 
 
 
-    //���� ��ĳ�� �κ�
+    ///전용 스캐너 부분
     public float scanRange;
     private RaycastHit2D[] targets;
     private Transform nearestTarget;

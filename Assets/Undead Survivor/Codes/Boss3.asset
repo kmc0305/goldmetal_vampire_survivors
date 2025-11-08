@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea78405e14a0bb45a350c3d6e6ea8d5, type: 3}
+  m_Name: Boss3
+  m_EditorClassIdentifier: Assembly-CSharp::BossSpec
+  attackRange: 2.5
+  damage: 12
+  attackCooldown: 1
+  maxHP: 300
+  moveSpeed: 2
+  tint: {r: 1, g: 1, b: 1, a: 1}

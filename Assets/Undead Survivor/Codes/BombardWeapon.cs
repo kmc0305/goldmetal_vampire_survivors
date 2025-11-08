@@ -1,35 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 public class BombardWeapon : MonoBehaviour
 {
-    [Header("¹«±â ´É·ÂÄ¡")]
-    /// <summary>ÀÌ ¹«±â°¡ Bombard Bullet¿¡°Ô Àü´ŞÇÒ ±âº» °ø°İ·Â</summary>
+    [Header("ë¬´ê¸° ëŠ¥ë ¥ì¹˜")]
+    /// <summary>ì´ ë¬´ê¸°ê°€ Bombard Bulletì—ê²Œ ì „ë‹¬í•  ê¸°ë³¸ ê³µê²©ë ¥</summary>
     public float damage = 1f;
-    /// <summary>ÇÑ ¹øÀÇ °ø°İ¿¡ BulletÀ» ¸î°³ ¹ß»çÇÒÁö(·¹º§¾÷ ½Ã Áõ°¡!)</summary>
+    /// <summary>í•œ ë²ˆì˜ ê³µê²©ì— Bulletì„ ëª‡ê°œ ë°œì‚¬í• ì§€(ë ˆë²¨ì—… ì‹œ ì¦ê°€!)</summary>
     public int count = 1;
-    /// <summary>ÄğÅ¸ÀÓ ÀÌÈÄ·Î °æ°úÇÑ ½Ã°£</summary>
+    /// <summary>ì¿¨íƒ€ì„ ì´í›„ë¡œ ê²½ê³¼í•œ ì‹œê°„</summary>
     private float timer = 0f;
+    /// <summary>ì¿¨íƒ€ì„ ì‹œê°„ë§ˆë‹¤ countë°œ ë°œì‚¬</summary>
     public float cooldown = 4f;
 
-    [Header("PoolManager ¼³Á¤")]
+    [Header("PoolManager ì„¤ì •")]
     /// <summary>
-    /// [Áß¿ä] PoolManagerÀÇ 'prefabs' ¹è¿­¿¡ µî·ÏµÈ
-    /// '½ÇÁ¦ ¹«±â ÇÁ¸®ÆÕ(MeleeWeapon.cs°¡ ºÙ¾îÀÖ´Â)'ÀÇ ÀÎµ¦½º ¹øÈ£
+    /// [ì¤‘ìš”] PoolManagerì˜ 'prefabs' ë°°ì—´ì— ë“±ë¡ëœ
+    /// 'ì‹¤ì œ ë¬´ê¸° í”„ë¦¬íŒ¹(BombardBullet.csê°€ ë¶™ì–´ìˆëŠ”)'ì˜ ì¸ë±ìŠ¤ ë²ˆí˜¸: ì—¬ê¸°ì„œëŠ” 5
     /// </summary>
     public int weaponPrefabIndex;
 
-    /// <summary>PoolManager ÂüÁ¶</summary>
+    /// <summary>PoolManager ì°¸ì¡°</summary>
     private PoolManager poolManager;
 
     /// <summary>
-    /// [Unity ÀÌº¥Æ®] Start() - °ÔÀÓ ½ÃÀÛ ½Ã 1È¸ È£Ãâ
+    /// [Unity ì´ë²¤íŠ¸] Start() - ê²Œì„ ì‹œì‘ ì‹œ 1íšŒ í˜¸ì¶œ
     /// </summary>
     void Start()
     {
-        // GameManager ÀÎ½ºÅÏ½º¸¦ ÅëÇØ PoolManager ÂüÁ¶¸¦ °¡Á®¿É´Ï´Ù.
+        /// GameManager ì¸ìŠ¤í„´ìŠ¤ë¥¼ í†µí•´ PoolManager ì°¸ì¡°ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
         poolManager = GameManager.instance.Pool;
     }
 
@@ -39,13 +40,13 @@ public class BombardWeapon : MonoBehaviour
         if (timer >= cooldown)
         {
             timer = 0f;
-            doBombard();
+            doBombard();    ///ì¿¨íƒ€ì„ ì°° ë•Œë§ˆë‹¤ í¬ê²©ì„ ì‹¤í–‰í•œë‹¤.
         }
     }
 
-    void doBombard()    //½ÇÁ¦ Bullet ¹ß»ç
+    void doBombard()    ///ì‹¤ì œ Bullet í¬ê²©í•˜ëŠ” ë¶€ë¶„
     {
-        if (highHPTarget.Length == 0) return;      //½ºÄ³³Ê Àû ¹ÌÅ½Áö½Ã ¹ß»ç ¾ÈÇÔ
+        if (highHPTarget.Length == 0) return;      ///ìŠ¤ìºë„ˆì—ì„œ ì  ë¯¸íƒì§€ì‹œ ë°œì‚¬ ì•ˆí•¨
         Vector3 targetPos = highHPTarget[0].position;
         GameObject bullet=poolManager.Get(weaponPrefabIndex);
         bullet.GetComponent<BombardBullet>().Init(damage,targetPos);
@@ -53,8 +54,8 @@ public class BombardWeapon : MonoBehaviour
     }
 
 
-    //¹«±â Àü¿ë ½ºÄ³³Ê ºÎºĞ
-    public float scanBRange;    //ÀÎ½ºÆåÅÍ¿¡¼­ Á¤ÇßÀ½
+    ///ë¬´ê¸° ì „ìš© ìŠ¤ìºë„ˆ ë¶€ë¶„
+    public float scanBRange;    ///ì¸ìŠ¤í™í„°ì—ì„œ ì •í–ˆìŒ
     private RaycastHit2D[] targets;
     private Transform[] highHPTarget;
 
@@ -75,7 +76,7 @@ public class BombardWeapon : MonoBehaviour
         {
             Targetable enemy = target.collider.GetComponent<Targetable>();
             if (enemy == null) continue;
-            if (enemy.faction != Targetable.Faction.Enemy) continue;    //¾Æ±º ÆÑ¼ÇÀÌ¸é ½ºÄµ ´ë»ó¿¡¼­ Á¦¿Ü
+            if (enemy.faction != Targetable.Faction.Enemy) continue;    ///ì•„êµ° íŒ©ì…˜ì´ë©´ ìŠ¤ìº” ëŒ€ìƒì—ì„œ ì œì™¸
             if (enemy.maxHealth < 0 || enemy.currentHealth < 0) continue;
 
             enemies.Add(enemy);
@@ -88,7 +89,7 @@ public class BombardWeapon : MonoBehaviour
                 else return b.currentHealth.CompareTo(a.currentHealth);
             });
 
-        int cnt = Mathf.Min(6, enemies.Count);    //MAX 6 TIMES
+        int cnt = Mathf.Min(6, enemies.Count);    ///MAX 6 TIMES
         Transform[] result = new Transform[cnt];
         for (int i = 0; i < cnt; i++) result[i] = enemies[i].transform;
 

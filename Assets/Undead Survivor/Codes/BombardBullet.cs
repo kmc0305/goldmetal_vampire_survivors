@@ -2,18 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BombardBullet : MonoBehaviour      //BombardWeapon으로 발사한 Bombard Bullet
+public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한 Bombard Bullet
 {
-    private float currentDamage = 10f;  //기본 데미지
+    private float currentDamage = 10f;  ///기본 데미지
     private float timer = 0f;
-    private float duration = 2f;
+    private float duration = 2f;        ///필드의 장판이 잔류하는 시간
     private Collider2D coll;
     Rigidbody2D rigid;
     
-    //잔류하는 Bullet에 의해 한 번 데미지를 입은 적이 다시 데미지를 입는 것을 방지함
+    ///잔류하는 Bullet에 의해 한 번 데미지를 입은 적이 다시 데미지를 입는 것을 방지함
     private HashSet<GameObject> damagedEnemies= new();
 
-    //이 무기의 수명, 비활성화 로직은 Bullet 본인이 담당(Melee와의 차이)
+    ///이 무기의 수명, 비활성화 로직은 Bullet 본인이 담당(Melee와의 차이)
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -45,11 +45,19 @@ public class BombardBullet : MonoBehaviour      //BombardWeapon으로 발사한 
         if (target == null) return;
         if (damagedEnemies.Contains(other.gameObject)) return;  //데미지 중복 방지
 
+<<<<<<< HEAD
         // 3. 부딪힌 대상이 'Enemy' 진영이면 실행
         if (target.faction == Targetable.Faction.Enemy)
         {
             // 4. [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
             //    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
+=======
+        /// 부딪힌 대상이 'Enemy' 진영이면 실행
+        if (target.faction == Targetable.Faction.Enemy)
+        {
+            /// [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
+            ///    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
+>>>>>>> origin/SY1
             target.TakeDamage(currentDamage, transform);
 
             GameObject damagedEnemy = other.gameObject;
