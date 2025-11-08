@@ -45,19 +45,11 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한
         if (target == null) return;
         if (damagedEnemies.Contains(other.gameObject)) return;  //데미지 중복 방지
 
-<<<<<<< HEAD
-        // 3. 부딪힌 대상이 'Enemy' 진영이면 실행
-        if (target.faction == Targetable.Faction.Enemy)
-        {
-            // 4. [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
-            //    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
-=======
         /// 부딪힌 대상이 'Enemy' 진영이면 실행
         if (target.faction == Targetable.Faction.Enemy)
         {
             /// [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
             ///    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
->>>>>>> origin/SY1
             target.TakeDamage(currentDamage, transform);
 
             GameObject damagedEnemy = other.gameObject;
