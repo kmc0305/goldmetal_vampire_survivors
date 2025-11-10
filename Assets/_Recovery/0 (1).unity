@@ -317,11 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed47fe805a97d944aaea684028409c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombardWeapon
-  damage: 5
+  damage: 10
   count: 1
   cooldown: 4
   weaponPrefabIndex: 5
-  scanBRange: 7
+  scanBRange: 6
 --- !u!1 &383857979
 GameObject:
   m_ObjectHideFlags: 3
@@ -531,7 +531,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 6.6666665
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -748,7 +748,6 @@ MonoBehaviour:
   - {fileID: 6985035448681610938, guid: 75a5d6d41bd2d45388a49a40207815c4, type: 3}
   - {fileID: 7632359772536797755, guid: fe26d4437f05842488bcb0a9ec801b4a, type: 3}
   - {fileID: 3203970407810320476, guid: 5530ac1c1f1f4f34c9295cd05e78d5f7, type: 3}
-  - {fileID: 4204018482358998013, guid: 987ce1c94a0caf5438e28da8204886ec, type: 3}
 --- !u!4 &769905356
 Transform:
   m_ObjectHideFlags: 0
@@ -764,54 +763,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &809544967
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 809544968}
-  - component: {fileID: 809544969}
-  m_Layer: 8
-  m_Name: Range Wpn
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &809544968
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809544967}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1569412824}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &809544969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 809544967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0498f4389abfa114ab519b44db8decc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangeWeapon
-  damage: 1
-  per: 1
-  weaponPrefabIndex: 6
-  scanRange: 8
 --- !u!1 &893045083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,8 +1032,8 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 0
-  knockbackDuration: 0
+  knockbackPower: 4
+  knockbackDuration: 0.2
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -1145,7 +1096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllySpawner
   allyPrefabIndex: 2
-  spawnInterval: 2
+  spawnInterval: 5
   spawnRadius: 2
 --- !u!1 &1213042079
 GameObject:
@@ -5693,11 +5644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 7428772624619433262, guid: a1cac5edbb33e9242b855a13088924e1, type: 3}
-  bossSpawnPoint: {fileID: 0}
-  spawnBossOnlyOnce: 1
-  bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
   poolId: 0
   useSpawnerSpawnTime: 1
   fixedInterval: 2
@@ -5708,9 +5654,12 @@ MonoBehaviour:
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 166792680}
   hpFill: {fileID: 1341388964}
-  barWidth: 4
-  barHeight: 0.3
-  barOffset: {x: 0, y: 5, z: 0}
+  barWidth: 1.2
+  barHeight: 0.18
+  barOffset: {x: 0, y: 0.9, z: 0}
+  bossPrefab: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  spawnBossOnlyOnce: 1
 --- !u!1 &1324853766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5885,11 +5834,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 8939783281129688810, guid: 237a49de3acce7340a0353623a54e598, type: 3}
-  bossSpawnPoint: {fileID: 0}
-  spawnBossOnlyOnce: 1
-  bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
   poolId: 0
   useSpawnerSpawnTime: 1
   fixedInterval: 2
@@ -5900,9 +5844,12 @@ MonoBehaviour:
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 116336345}
   hpFill: {fileID: 124820965}
-  barWidth: 4
-  barHeight: 0.3
-  barOffset: {x: 0, y: 5, z: 0}
+  barWidth: 1.2
+  barHeight: 0.18
+  barOffset: {x: 0, y: 0.9, z: 0}
+  bossPrefab: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  spawnBossOnlyOnce: 1
 --- !u!1 &1341388963
 GameObject:
   m_ObjectHideFlags: 0
@@ -10625,7 +10572,6 @@ Transform:
   - {fileID: 1007823493}
   - {fileID: 756154788}
   - {fileID: 200001619}
-  - {fileID: 809544968}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1569412825
@@ -10890,11 +10836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 3034365821161676388, guid: ab7952fc53fe6e1448b470dcc374b677, type: 3}
-  bossSpawnPoint: {fileID: 0}
-  spawnBossOnlyOnce: 1
-  bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
   useSpawnerSpawnTime: 1
   fixedInterval: 2
@@ -10905,9 +10846,12 @@ MonoBehaviour:
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 1461080390}
   hpFill: {fileID: 2124915932}
-  barWidth: 4
-  barHeight: 0.3
-  barOffset: {x: 0, y: 5, z: 0}
+  barWidth: 1.2
+  barHeight: 0.18
+  barOffset: {x: 0, y: 0.9, z: 0}
+  bossPrefab: {fileID: 0}
+  bossSpawnPoint: {fileID: 0}
+  spawnBossOnlyOnce: 1
 --- !u!1 &1939727175
 GameObject:
   m_ObjectHideFlags: 0
