@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2233820269402906285}
   - component: {fileID: 4282877761274171064}
   - component: {fileID: 5600328818839118352}
+  - component: {fileID: 6814608998582398904}
   - component: {fileID: 782086020060134475}
   m_Layer: 0
   m_Name: Bombard
@@ -104,6 +105,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7d33964b15d3b4c89fa0bffef82245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombardBullet
+--- !u!50 &6814608998582398904
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3203970407810320476}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!58 &782086020060134475
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한
     private float timer = 0f;
     private float duration = 2f;        ///필드의 장판이 잔류하는 시간
     private Collider2D coll;
+    Rigidbody2D rigid;
     
     ///잔류하는 Bullet에 의해 한 번 데미지를 입은 적이 다시 데미지를 입는 것을 방지함
     private HashSet<GameObject> damagedEnemies= new();
@@ -15,6 +16,8 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한
     ///이 무기의 수명, 비활성화 로직은 Bullet 본인이 담당(Melee와의 차이)
     private void Awake()
     {
+        rigid = GetComponent<Rigidbody2D>();
+        ///rigidbody2d 써야 성 공격 가능
     }
     public void Init(float dmg, Vector3 Coord) //부모인 BombardWeapon에서 데미지, 소환 좌표를 받습니다.
     {
