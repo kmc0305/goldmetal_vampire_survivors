@@ -130,6 +130,10 @@ public class SpawnPoint : MonoBehaviour
             if (!boss.activeSelf) boss.SetActive(true);
 
             Debug.Log($"[SpawnPoint] Boss spawned at {spawnPos}, active={boss.activeSelf}");
+
+            // ✅ 추가: 보스 등장 텍스트 표시
+            if (BossAppearUI.instance != null)
+                BossAppearUI.instance.ShowBossText();
         }
         else
         {
