@@ -123,7 +123,7 @@ public class SpawnPoint : MonoBehaviour
             Vector3 spawnPos = bossSpawnPoint ? bossSpawnPoint.position
                                               : transform.position + Vector3.up * 1.5f;
             spawnPos.z = 0f;
-
+         
             var boss = Object.Instantiate(bossPrefab, spawnPos, Quaternion.identity);
             boss.transform.localScale *= bossScaleMultiplier;
 
