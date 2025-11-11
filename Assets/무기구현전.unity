@@ -5993,6 +5993,57 @@ MonoBehaviour:
   barWidth: 4
   barHeight: 0.3
   barOffset: {x: 0, y: 5, z: 0}
+--- !u!1 &1333430424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1333430426}
+  - component: {fileID: 1333430425}
+  m_Layer: 0
+  m_Name: Selection of Drag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1333430425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333430424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d3e9327a4b61143822b12caa343df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RTSSelection
+  selectableLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  addMultiKey: 304
+  boxColor: {r: 0, g: 0.7, b: 1, a: 0.2}
+  boxBorder: {r: 0, g: 0.7, b: 1, a: 0.9}
+  clearAfterRightClick: 1
+--- !u!4 &1333430426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333430424}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -29.24047, y: -8.63292, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1341388963
 GameObject:
   m_ObjectHideFlags: 0
@@ -19891,3 +19942,4 @@ SceneRoots:
   - {fileID: 769905356}
   - {fileID: 1158587732}
   - {fileID: 427115110}
+  - {fileID: 1333430426}
