@@ -312,7 +312,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 512
-  detectionRadius: 10
+  detectionRadius: 25
   aiUpdateFrequency: 0.5
   attackDamage: 1
   attackCooldown: 1
