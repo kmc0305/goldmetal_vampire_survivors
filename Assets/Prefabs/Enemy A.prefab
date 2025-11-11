@@ -284,7 +284,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  hpBarRoot: {fileID: 0}
+  hpFill: {fileID: 0}
+  barWidth: 2
+  barHeight: 0.25
+  barOffset: {x: 0, y: 1.5, z: 0}
+  isAreaAttack: 0
+  areaAttackRadius: 3
   speed: 2.5
+  health: 0
+  maxHealth: 0
+  animCon: []
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -308,6 +318,8 @@ MonoBehaviour:
   currentHealth: 10
   isDead: 0
   dropItemIndex: 3
+  knockbackPower: 4
+  knockbackDuration: 0.2
   onDie:
     m_PersistentCalls:
       m_Calls: []

@@ -8,7 +8,21 @@ using UnityEngine;
 /// </summary>
 public class Enemy : MonoBehaviour
 {
-    // Enemy.cs 상단 필드 영역 어딘가에 추가
+    // === [회피 설정] 같은 진영 '성'에 부딪히면 잠시 접선 방향으로 회피 ===
+    [Header("Friendly Tower Avoidance")]
+    public float avoidDuration = 0.6f;      // 회피 지속 시간(초)
+    public float avoidSpeedMul = 1.2f;      // 회피 중 속도 배수
+
+    // === [회피 필터/그레이스] 스폰 직후 우회 금지 + '막힘' 상황에서만 우회 ===
+    [Header("Avoidance Filters")]
+    public float avoidanceGrace = 0.35f;    // 스폰 직후 우회 비활성 시간(초)
+    public float minSpeedToAvoid = 0.1f;    // 너무 느리면 우회 X
+    public float minDotBlock = 0.25f;     // '정말 막혔는지' 판정 임계값(0~1)
+
+    private float avoidUntil = 0f;          // 회피 종료 시각
+    private Vector2 avoidDir = Vector2.zero;// 회피 이동 방향(접선)
+    private float spawnGraceUntil = 0f;     // 스폰 그레이스 만료 시각
+
     [Header("Boss HP Bar")]
     public Transform hpBarRoot;        // HPBarRoot
     public Transform hpFill;           // HPFill (SpriteRenderer 달린 오브젝트)
@@ -16,167 +30,124 @@ public class Enemy : MonoBehaviour
     public float barHeight = 0.25f;    // 바 높이
     public Vector3 barOffset = new Vector3(0f, 1.5f, 0f); // 머리 위 오프셋
 
-    [Header("범위공격 옵션 (Boss용)")]
-    public bool isAreaAttack = false;
-    public float areaAttackRadius = 3.0f;
+    [Header("범위공격 옵션 (Boss/일반 공용)")]
+    public bool isAreaAttack = false;      // ★ 인스펙터 또는 BossSpec로 제어
+    public float areaAttackRadius = 3.0f;  // ★ 반경 (BossSpec.areaRadius로도 세팅됨)
+
     [Header("기본 능력치")]
-    /// <summary>적의 이동 속도</summary>
-    public float speed = 2.5f; // 적의 이동 속도 (골드메탈 튜토리얼 변수
+    public float speed = 2.5f;
     public float health;
     public float maxHealth;
     public RuntimeAnimatorController[] animCon;
+
     [Header("AI 설정")]
-    /// <summary>공격할 대상의 레이어 (인스펙터에서 'Ally'로 설정해야 함)</summary>
-    public LayerMask targetLayer;
-    /// <summary>아군을 감지할 수 있는 최대 반경</summary>
+    public LayerMask targetLayer;          // 인스펙터에서 'Ally' 선택
     public float detectionRadius = 15f;
-    /// <summary>AI가 새로운 타겟을 탐색하는 주기 (초). 너무 낮으면 성능 저하, 높으면 반응이 느려짐.</summary>
     private float aiUpdateFrequency = 0.5f;
 
     [Header("공격 설정")]
-    /// <summary>'몸통 박치기' 공격의 데미지</summary>
-    public float attackDamage = 1f;
-    /// <summary>공격 주기 (초). 1f = 1초에 한 번 공격</summary>
+    public float attackDamage = 5f;
     public float attackCooldown = 1f;
-    /// <summary>마지막으로 공격한 시간을 저장 (쿨다운 계산용)</summary>
     private float lastAttackTime;
 
-    // 컴포넌트 참조 (성능을 위해 Awake에서 미리 캐싱)
+    // 컴포넌트
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
-    /// <summary>AI 타겟 탐색 코루틴(Coroutine)을 제어하기 위한 변수</summary>
     private Coroutine aiCoroutine;
+    private Animator anim;
 
     // 타겟 관련
-    /// <summary>현재 추적 중인 대상 (Targetable 컴포넌트)</summary>
     private Targetable currentTarget;
 
-    // ★★★ [신규] 넉백 상태 변수 ★★★
-    /// <summary>현재 넉백 상태인지 여부. true이면 AI 이동/공격/타겟팅이 모두 중지됩니다.</summary>
+    // 넉백
     private bool isKnockedBack = false;
-    Animator anim;
-    /// <summary>
-    /// [Unity 이벤트] Awake() - 스크립트가 처음 로드될 때 1회 호출
-    /// </summary>
+
     void Awake()
     {
-        // 컴포넌트 캐싱(Caching)
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
 
-    /// <summary>
-    /// [Unity 이벤트] OnEnable() - 오브젝트가 활성화될 때 (풀에서 재사용될 때) 호출
-    /// </summary>
     void OnEnable()
     {
-        // 재사용될 때 넉백 상태를 항상 false로 초기화합니다.
-        isKnockedBack = false; // ★★★ [신규] 활성화 시 넉백 상태 초기화
+        isKnockedBack = false;
+        spawnGraceUntil = Time.time + avoidanceGrace;  // 스폰 그레이스 시작
+        avoidDir = Vector2.zero;
+        avoidUntil = 0f;
 
-        // AI 타겟 탐색 코루틴을 시작합니다. (코루틴이 중복 실행되지 않도록 체크)
         if (aiCoroutine == null)
-        {
             aiCoroutine = StartCoroutine(UpdateTargetCoroutine());
-        }
+
         UpdateHPBar();
-        // (골드메탈 튜토리얼 #90과 동일)
-        // target = GameManager.instance.player.GetComponent<Rigidbody2D>(); // 이 코드는 더 이상 사용하지 않음
     }
 
-    /// <summary>
-    /// [Unity 이벤트] OnDisable() - 오브젝트가 비활성화될 때 (죽거나 풀로 반납될 때) 호출
-    /// </summary>
     void OnDisable()
     {
-        // 오브젝트가 비활성화되면 코루틴도 멈춰야 합니다. (불필요한 연산 방지)
         if (aiCoroutine != null)
         {
             StopCoroutine(aiCoroutine);
             aiCoroutine = null;
         }
-        currentTarget = null; // 타겟 정보 초기화
-        rigid.linearVelocity = Vector2.zero; // 혹시 모를 잔여 속도 제거
+        currentTarget = null;
+        rigid.linearVelocity = Vector2.zero;
+        avoidDir = Vector2.zero;
+        avoidUntil = 0f;
     }
 
-    /// <summary>
-    /// [AI] 타겟 탐색 코루틴 (Coroutine)
-    /// 'aiUpdateFrequency' 주기마다 가장 가까운 적을 탐색합니다. (Update()와 별도로 동작)
-    /// </summary>
     IEnumerator UpdateTargetCoroutine()
     {
-        // 이 오브젝트가 활성화되어 있는 동안 무한 반복
         while (gameObject.activeSelf)
         {
-            // ★★★ [수정] 넉백 중이 아닐 때만 타겟을 새로 고칩니다.
             if (!isKnockedBack)
             {
                 currentTarget = FindClosestTarget();
             }
-            // 'aiUpdateFrequency' (예: 0.5초) 만큼 기다렸다가
-            // while 루프의 처음(if (!isKnockedBack)...)으로 돌아갑니다.
             yield return new WaitForSeconds(aiUpdateFrequency);
         }
     }
 
-    /// <summary>
-    /// [AI] 'detectionRadius' 반경 내의 'targetLayer'에서 가장 가까운 타겟을 찾아 반환합니다.
-    /// </summary>
-    /// <returns>가장 가까운 Targetable. 못 찾으면 null 반환.</returns>
     Targetable FindClosestTarget()
     {
         float closestDistance = float.MaxValue;
         Targetable bestTarget = null;
 
-        // 1. 유니티 물리 엔진을 사용해, 내 위치(transform.position)를 중심으로
-        //    'detectionRadius' 반경 안에 있는 모든 'targetLayer'('Ally') 콜라이더(Collider)를 검색합니다.
-        Collider2D[] targetsInView = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
+        Collider2D[] targetsInView =
+            Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
 
-        foreach (Collider2D collider in targetsInView)
+        foreach (Collider2D col in targetsInView)
         {
-            // 2. 콜라이더에서 Targetable 컴포넌트를 가져옵니다. (죽었는지 확인해야 하므로)
-            Targetable potentialTarget = collider.GetComponent<Targetable>();
-
-            // 3. 대상이 존재하고, 아직 죽지 않았다면
-            if (potentialTarget != null && !potentialTarget.isDead)
+            var t = col.GetComponent<Targetable>();
+            if (t != null && !t.isDead)
             {
-                // 4. 대상과의 거리를 계산합니다.
-                float distance = Vector3.Distance(transform.position, potentialTarget.transform.position);
-
-                // 5. '가장 가까운 거리(closestDistance)' 기록을 갱신할 수 있다면
-                if (distance < closestDistance)
+                float d = Vector3.Distance(transform.position, t.transform.position);
+                if (d < closestDistance)
                 {
-                    closestDistance = distance; // 거리 갱신
-                    bestTarget = potentialTarget; // 타겟 갱신
+                    closestDistance = d;
+                    bestTarget = t;
                 }
             }
         }
-
-        // 6. 찾은 'bestTarget' (가장 가까운 대상)을 반환합니다. (못 찾았다면 null이 반환됨)
         return bestTarget;
     }
-    // Enemy.cs 내부 메서드로 추가
+
     void UpdateHPBar()
     {
         if (!hpBarRoot || !hpFill) return;
 
-        // Targetable을 체력 소스(진실)로 쓰고, 없으면 Enemy의 health/maxHealth 사용
         float cur = health;
         float max = maxHealth;
         var tar = GetComponent<Targetable>();
         if (tar != null)
         {
-            // Targetable.cs에 필드명이 다르면 여기를 맞춰줘 (예: tar.hp, tar.maxHP 등)
-            cur = tar.currentHealth;     // ← 너의 Targetable 필드명에 맞춰 수정
-            max = tar.maxHealth;  // ← 너의 Targetable 필드명에 맞춰 수정
+            cur = tar.currentHealth;
+            max = tar.maxHealth;
         }
 
         float ratio = (max > 0f) ? Mathf.Clamp01(cur / max) : 0f;
 
-        // 루트 위치/초기 스케일
         hpBarRoot.localPosition = barOffset;
 
-        // 왼쪽 기준으로 줄어들게 스케일/위치 보정
         float w = barWidth * ratio;
         hpFill.localScale = new Vector3(w, barHeight, 1f);
         hpFill.localPosition = new Vector3(-(barWidth - w) * 0.5f, 0f, 0f);
@@ -184,156 +155,210 @@ public class Enemy : MonoBehaviour
         var sr = hpFill.GetComponent<SpriteRenderer>();
         if (sr) sr.color = Color.Lerp(Color.red, Color.green, ratio);
 
-        // 죽으면 HP바 숨김 (Targetable이 isDead 제공 시)
         if (tar != null) hpBarRoot.gameObject.SetActive(!tar.isDead);
     }
 
-    /// <summary>
-    /// [Unity 이벤트] FixedUpdate() - 고정된 물리 프레임마다 호출 (기본 0.02초)
-    /// Rigidbody(rigid)를 이용한 이동은 FixedUpdate에서 처리해야 안정적입니다.
-    /// </summary>
+    bool IsFriendlyTower(GameObject other)
+    {
+        if (other.layer != gameObject.layer) return false;
+
+        // 자식/부모 모두 커버하여 '성' 판별
+        return other.GetComponent<SpawnPoint>() != null
+            || other.GetComponentInParent<SpawnPoint>() != null
+            || other.GetComponent<AllySpawner>() != null
+            || other.GetComponentInParent<AllySpawner>() != null;
+    }
+
     void FixedUpdate()
     {
-        // ★★★ [신규] 넉백 상태일 때는 AI 이동 로직을 실행하지 않습니다.
-        if (isKnockedBack)
+        // 회피 중이면 접선 방향 우선 이동
+        if (Time.time < avoidUntil && avoidDir.sqrMagnitude > 0.0001f)
         {
-            return; // 넉백 코루틴이 속도(velocity)를 제어하므로, AI는 여기서 멈춰야 함.
-        }
-
-        // 1. 타겟이 없으면(null) 그 자리에 멈춥니다.
-        if (currentTarget == null)
-        {
-            rigid.linearVelocity = Vector2.zero; // 이동 속도를 0으로
+            Vector2 step = avoidDir.normalized * speed * avoidSpeedMul * Time.fixedDeltaTime;
+            rigid.MovePosition(rigid.position + step);
+            rigid.linearVelocity = Vector2.zero;
             return;
         }
 
-        // 2. (골드메탈 튜토리얼 #90과 동일한 로직)
-        // 타겟을 향하는 방향 벡터를 계산합니다. (목표 위치 - 현재 위치)
-        Vector2 dirVec = currentTarget.transform.position - transform.position;
-        // 3. 이번 물리 프레임에 이동할 '속도 벡터(nextVec)'를 계산합니다.
-        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-
-        // 4. Rigidbody의 위치를 이동시킵니다.
-        rigid.MovePosition(rigid.position + nextVec);
-        rigid.linearVelocity = Vector2.zero; // 물리적 충돌로 밀려나지 않도록 속도 고정
-    }
-
-    /// <summary>
-    /// [Unity 이벤트] LateUpdate() - 모든 Update()가 끝난 후 호출
-    /// (이동이 확정된 후 시각적(Visual) 처리를 하기에 적합합니다.)
-    /// </summary>
-    void LateUpdate()
-    {
-        // ★★★ [신규] 넉백 중이 아닐 때만 스프라이트 반전을 실행합니다.
+        // 넉백 중이면 이동 로직 정지
         if (isKnockedBack) return;
 
-        // 1. 타겟이 없으면 방향 전환을 할 필요가 없습니다.
+        // 타겟 없으면 정지
+        if (currentTarget == null)
+        {
+            rigid.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        // 일반 추적 이동
+        Vector2 dirVec = currentTarget.transform.position - transform.position;
+        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
+
+        rigid.MovePosition(rigid.position + nextVec);
+        rigid.linearVelocity = Vector2.zero;
+    }
+
+    void LateUpdate()
+    {
+        if (isKnockedBack) return;
         if (currentTarget == null) return;
 
-        // 2. (골드메탈 튜토리얼 #90과 동일한 로직)
-        // 타겟이 왼쪽에 있으면(x좌표가 작으면) 스프라이트를 반전(flipX = true)시킵니다.
         spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
         UpdateHPBar();
     }
 
-    // -----------------------------------------------------------------
-    // [수정] 4단계: 공격 로직 (충돌)
-    // -----------------------------------------------------------------
-
-    /// <summary>
-    /// [공격] 다른 Collider2D와 계속 부딪히고 있는 동안 매 프레임 호출됩니다.
-    /// (주의: 'Is Trigger'가 체크 해제된 Collider끼리 부딪혀야 호출됩니다.)
-    /// </summary>
-    /// <param name="collision">나와 부딪힌 대상의 물리 정보</param>
-    void OnCollisionStay2D(Collision2D collision)
+    // === 충돌 기반 로직 ===
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        // 1. 타겟이 없거나, 쿨다운 중이거나, 넉백 중이면 공격하지 않습니다.
-        if (currentTarget == null || Time.time < lastAttackTime + attackCooldown || isKnockedBack)
-            return;
-
-        // 2. 부딪힌 대상이 내 '현재 타겟(currentTarget)'이 맞는지 확인합니다.
-        //    (실수로 다른 적 유닛과 부딪혔을 때 공격하는 것을 방지)
-        if (collision.gameObject == currentTarget.gameObject)
-        {
-            // 3. ★★★ [수정] 부딪힌 대상(currentTarget)의 Targetable 스크립트에 있는
-            //    TakeDamage() 함수를 호출하여 데미지를 줍니다.
-            //    이때 '나 자신(transform)'을 넘겨주어, 상대방이 넉백 방향을 계산할 수 있게 합니다.
-            currentTarget.TakeDamage(attackDamage, transform);
-
-            // 4. 마지막 공격 시간을 현재 시간으로 갱신 (쿨다운 시작)
-            lastAttackTime = Time.time;
-        }
+        TryStartAvoidance(collision);
     }
 
-    // -----------------------------------------------------------------
-    // ★★★ [신규] 넉백 수신 함수 ★★★
-    // -----------------------------------------------------------------
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        // 회피 유지/재개 시도 (덜덜이 방지)
+        TryStartAvoidance(collision);
 
-    /// <summary>
-    /// [넉백] Targetable.cs로부터 넉백 명령을 받아 코루틴을 실행합니다.
-    /// (이 함수는 public이므로 Targetable.cs에서 호출할 수 있습니다.)
-    /// </summary>
+        // 공격 처리 (단일/범위 공용 쿨다운)
+        if (Time.time < lastAttackTime + attackCooldown || isKnockedBack) return;
+
+        // 현재타겟이 없으면 굳이 공격 X (원하면 삭제 가능)
+        if (currentTarget == null) return;
+
+        // 충돌한 대상이 '현재 타겟'일 때만 트리거(원하면 제거해서 '아무 대상 충돌 시'로 바꿔도 됨)
+        if (collision.gameObject != currentTarget.gameObject) return;
+
+        if (isAreaAttack)
+        {
+            DoAreaAttack();  // ★ 범위 공격
+        }
+        else
+        {
+            // 단일 대상 공격
+            currentTarget.TakeDamage(attackDamage, transform);
+        }
+
+        lastAttackTime = Time.time;
+    }
+
+    // === '막힌 상황'일 때만 접선 우회 시작 ===
+    void TryStartAvoidance(Collision2D collision)
+    {
+        // (a) 스폰 직후는 우회 금지
+        if (Time.time < spawnGraceUntil) return;
+
+        // (b) 같은 진영 성이 아니면 패스
+        if (!IsFriendlyTower(collision.gameObject) || collision.contactCount == 0) return;
+
+        // (c) 충분히 움직이고 있을 때만
+        if (rigid.linearVelocity.sqrMagnitude < minSpeedToAvoid * minSpeedToAvoid && currentTarget == null)
+            return;
+
+        // (d) 정말로 ‘막혔는지’ 판별
+        Vector2 n = collision.GetContact(0).normal; // 성 표면에서 '밖'으로 (→ 우리쪽)
+        Vector2 desired;
+
+        if (currentTarget != null)
+        {
+            Vector2 toTarget = (Vector2)(currentTarget.transform.position - transform.position);
+            desired = toTarget.sqrMagnitude > 0.0001f ? toTarget.normalized : rigid.linearVelocity.normalized;
+        }
+        else
+        {
+            desired = rigid.linearVelocity.sqrMagnitude > 0.0001f ? rigid.linearVelocity.normalized : Vector2.zero;
+        }
+        if (desired == Vector2.zero) return;
+
+        // desired가 타워 안쪽(-n)으로 얼마나 향하는지 (값↑ = 진짜 막힘)
+        float intoWall = Vector2.Dot(desired, -n);
+        if (intoWall < minDotBlock) return; // 충분히 막힌 상황 아니면 우회 X
+
+        // (e) 두 접선 중, 목표 방향과 더 잘 맞는 쪽 선택
+        Vector2 t1 = new Vector2(-n.y, n.x);
+        Vector2 t2 = new Vector2(n.y, -n.x);
+        Vector2 chosen = (Vector2.Dot(t1, desired) >= Vector2.Dot(t2, desired)) ? t1 : t2;
+
+        avoidDir = chosen.normalized;
+        avoidUntil = Time.time + avoidDuration;
+    }
+
+    // === 범위 공격 구현 ===
+    void DoAreaAttack()
+    {
+        // 반경 내 '타겟 레이어'에 해당하는 모든 대상 탐색
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, areaAttackRadius, targetLayer);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            var t = hits[i].GetComponent<Targetable>();
+            if (t == null || t.isDead) continue;
+
+            // (선택) 아군/적군 층 추가 필터가 필요하면 여기서 체크
+            // if (hits[i].gameObject.layer == gameObject.layer) continue; // 자기 진영 제외 등
+
+            t.TakeDamage(attackDamage, transform);
+        }
+
+        // (선택) 이펙트/사운드 트리거 가능
+        // e.g., PoolManager로 폭발 이펙트 소환 등
+    }
+
+    // === 넉백 ===
     public void ApplyKnockback(Vector2 knockbackDir, float power, float duration)
     {
-        // 이미 넉백 중이라면 중복 실행을 방지합니다.
         if (isKnockedBack) return;
-
-        // 실제 넉백 처리를 하는 코루틴을 시작시킵니다.
         StartCoroutine(KnockbackRoutine(knockbackDir, power, duration));
     }
 
-    /// <summary>
-    /// [넉백] 실제 넉백을 처리하는 코루틴 (Coroutine)
-    /// </summary>
     private IEnumerator KnockbackRoutine(Vector2 knockbackDir, float power, float duration)
     {
-        // 1. 넉백 상태로 변경 (-> AI 로직 멈춤)
         isKnockedBack = true;
-
-        // 2. Rigidbody의 속도(velocity)에 넉백 방향*힘을 순간적으로 적용합니다.
         rigid.linearVelocity = knockbackDir * power;
-
-        // 3. 지정된 넉백 시간(duration)만큼 '여기서 대기'합니다.
         yield return new WaitForSeconds(duration);
-
-        // 4. 넉백 시간이 끝나면 속도를 0으로 초기화합니다.
         rigid.linearVelocity = Vector2.zero;
-
-        // 5. 넉백 상태를 해제합니다. (-> AI 로직이 다시 정상 작동 시작)
         isKnockedBack = false;
     }
+
+    // === 스폰 데이터/보스 스펙 ===
     public void init(SpawnData data)
     {
-        anim.runtimeAnimatorController = animCon[data.spriteType];
+        if (data == null) return;
+
+        if (animCon != null && data.spriteType >= 0 && data.spriteType < animCon.Length)
+            anim.runtimeAnimatorController = animCon[data.spriteType];
+
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
-
-        // 
     }
+
     public void ApplyBossSpec(BossSpec spec)
     {
         if (spec == null) return;
 
-        // 공격/쿨다운
         attackDamage = spec.attackDamage;
         attackCooldown = spec.attackCooldown;
 
-        // 탐지/이동
         detectionRadius = spec.detectionRadius;
         speed = spec.moveSpeed;
 
-        // 체력
         maxHealth = spec.maxHP;
-        health = spec.maxHP;   // 런타임 체력 초기화
+        health = spec.maxHP;
 
-        // 범위공격 옵션
-        isAreaAttack = spec.isAreaAttack;
-        areaAttackRadius = spec.areaRadius;
+        isAreaAttack = spec.isAreaAttack;  // ★ BossSpec로도 제어됨
+        areaAttackRadius = spec.areaRadius;    // ★ 반경 반영
 
-        // 시각 효과(선택)
         var sr = GetComponentInChildren<SpriteRenderer>();
         if (sr) sr.color = spec.tint;
         UpdateHPBar();
+    }
+
+    // 에디터에서 범위 확인
+    void OnDrawGizmosSelected()
+    {
+        if (isAreaAttack)
+        {
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
+            Gizmos.DrawWireSphere(transform.position, areaAttackRadius);
+        }
     }
 }
