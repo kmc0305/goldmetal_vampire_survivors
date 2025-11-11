@@ -289,6 +289,8 @@ MonoBehaviour:
   currentHealth: 10
   isDead: 0
   dropItemIndex: -1
+  knockbackPower: 4
+  knockbackDuration: 0.2
   onDie:
     m_PersistentCalls:
       m_Calls: []

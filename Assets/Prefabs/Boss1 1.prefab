@@ -437,8 +437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 1
-  maxHealth: 10
-  currentHealth: 10
+  maxHealth: 50
+  currentHealth: 50
   isDead: 0
   dropItemIndex: 3
   knockbackPower: 4
