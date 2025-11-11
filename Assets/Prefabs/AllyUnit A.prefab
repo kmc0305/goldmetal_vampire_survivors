@@ -313,11 +313,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   detectionRadius: 10
+  aiUpdateFrequency: 0.5
   attackDamage: 1
   attackCooldown: 1
-  avoidDuration: 0.6
-  avoidSpeedMul: 1.2
-  randomizeTangent: 0
 --- !u!114 &7317495491686954744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9640a86bab81374da04d8872c62fae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Selectable
-  outlineOrGlow: {fileID: 2274197645462154524}
+  outline: {fileID: 2274197645462154524}
   selectedColor: {r: 0.032850645, g: 0.9496855, b: 0.18531138, a: 1}
 --- !u!114 &5243056413355440059
 MonoBehaviour:
@@ -347,3 +345,5 @@ MonoBehaviour:
   moveSpeed: 3.5
   stopDistance: 0.1
   faceMoveDirection: 1
+  ignoreRadius: 1
+  refreshInterval: 0.15
