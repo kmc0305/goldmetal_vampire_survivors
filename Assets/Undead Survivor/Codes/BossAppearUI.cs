@@ -1,47 +1,32 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class BossAppearUI : MonoBehaviour
 {
-    public static BossAppearUI instance;          // 어디서든 접근 가능
-    public TextMeshProUGUI bossText;              // 캔버스에 있는 Text(TMP) 참조
+    public TextMeshProUGUI bossText;
+    public float showDuration = 2.5f;
 
-    public float showDuration = 2f;               // 표시 시간(초)
-    public float fadeDuration = 1f;               // 페이드 아웃 시간(초)
-
-    void Awake()
+    void Start()
     {
-        instance = this;
-
+        // 시작 시 텍스트는 꺼둠
         if (bossText != null)
-        {
-            bossText.gameObject.SetActive(false); // 처음엔 숨김
-            bossText.alpha = 0f;                  // 완전 투명
-        }
+            bossText.gameObject.SetActive(false);
     }
 
     public void ShowBossText()
     {
-        if (bossText != null)
-            StartCoroutine(ShowAndHide());
+        // 코루틴 실행은 "이 스크립트가 붙은 오브젝트(Canvas)"에서
+        if (bossText != null && gameObject.activeInHierarchy)
+            StartCoroutine(ShowTextRoutine());
+        else
+            Debug.LogWarning("BossAppearUI: bossText not assigned or object inactive.");
     }
 
-    private System.Collections.IEnumerator ShowAndHide()
+    IEnumerator ShowTextRoutine()
     {
-        // 텍스트 내용은 에디터에서 입력한 걸 그대로 사용합니다.
         bossText.gameObject.SetActive(true);
-        bossText.alpha = 1f;                      // 즉시 보이게
-
         yield return new WaitForSeconds(showDuration);
-
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            bossText.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
-            yield return null;
-        }
-
-        bossText.gameObject.SetActive(false);     // 다 사라지면 비활성화
+        bossText.gameObject.SetActive(false);
     }
 }
