@@ -345,5 +345,11 @@ MonoBehaviour:
   moveSpeed: 3.5
   stopDistance: 0.1
   faceMoveDirection: 1
+  agentRadius: 0.35
+  clearance: 0.5
   ignoreRadius: 1
   refreshInterval: 0.15
+  stuckTime: 0.6
+  minProgress: 0.05
+  maxQueuedWaypoints: 4
+  includeStaticTargetableAsTower: 1
