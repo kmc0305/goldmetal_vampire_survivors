@@ -345,5 +345,10 @@ MonoBehaviour:
   moveSpeed: 3.5
   stopDistance: 0.1
   faceMoveDirection: 1
+  towerObstacleMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  colliderRadius: 0.3
+  avoidMargin: 0.2
   ignoreRadius: 1
   refreshInterval: 0.15

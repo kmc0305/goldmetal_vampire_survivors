@@ -186,35 +186,28 @@ public class SpawnPoint : MonoBehaviour
         {
             if (!IsEnabled || PermanentlyOff)
             {
-                // 비활성/파괴 상태에서는 다음 프레임까지 대기
                 yield return null;
                 continue;
             }
 
-            // 적 생성
             GameObject enemy = GameManager.instance.Pool.Get(poolId);
-            enemy.transform.position = transform.position;
 
-            // 스탯 초기화 (Spawner의 현재 스폰 데이터가 존재할 때)
+            // 🔥 여기서 y축 -5.4 지점에 스폰되도록 오프셋 추가
+            enemy.transform.position = transform.position + new Vector3(0f, -5.4f, 0f);
+
             var sp = Spawner.Instance;
             if (sp != null && sp.CurrentSpawnData != null)
-            {
-                var e = enemy.GetComponent<Enemy>();
-                if (e != null) e.init(sp.CurrentSpawnData);
-            }
+                enemy.GetComponent<Enemy>().init(sp.CurrentSpawnData);
 
-            // 간격 계산
-            float interval =
-                (useSpawnerSpawnTime && sp != null && sp.CurrentSpawnData != null)
-                    ? sp.CurrentSpawnData.spawnTime
-                    : fixedInterval;
+            float interval = useSpawnerSpawnTime && sp != null && sp.CurrentSpawnData != null
+                ? sp.CurrentSpawnData.spawnTime
+                : fixedInterval;
 
-            yield return (interval > 0f) ? new WaitForSeconds(interval) : null;
-
-            // HP바는 가끔 갱신
-            UpdateHPBar();
+            if (interval > 0f) yield return new WaitForSeconds(interval);
+            else yield return null;
         }
     }
+
 
     // 에디터에서 참조 자동 세팅 보조
     void OnValidate()
