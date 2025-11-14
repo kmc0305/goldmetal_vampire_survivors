@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 
 public class RTSSelection : MonoBehaviour
@@ -30,8 +31,14 @@ public class RTSSelection : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) { dragging = true; dragStart = Input.mousePosition; }
+        // --- 드래그 박스 시작 ---
+        if (Input.GetMouseButtonDown(0))
+        {
+            dragging = true;
+            dragStart = Input.mousePosition;
+        }
 
+        // --- 드래그 박스 끝 / 선택 처리 ---
         if (Input.GetMouseButtonUp(0))
         {
             if (!dragging) return;
@@ -51,10 +58,13 @@ public class RTSSelection : MonoBehaviour
                     AddToSelection(s);
             }
 
-            // ���� Ŭ���� ��� ���� ����
+            // 작은 클릭일 경우 단일 선택
             if (screenRect.size.magnitude < 4f)
             {
-                var hit = Physics2D.OverlapPoint(cam.ScreenToWorldPoint(Input.mousePosition), selectableLayers);
+                var hit = Physics2D.OverlapPoint(
+                    cam.ScreenToWorldPoint(Input.mousePosition),
+                    selectableLayers
+                );
                 if (hit)
                 {
                     var s = hit.GetComponentInParent<Selectable>();
@@ -63,14 +73,20 @@ public class RTSSelection : MonoBehaviour
             }
         }
 
-        // ��Ŭ�� �̵�
+        
+        // --- 우클릭 이동 (메인 화면) ---
         if (Input.GetMouseButtonDown(1) && selected.Count > 0)
         {
-            Vector3 wp = cam.ScreenToWorldPoint(Input.mousePosition);
-            wp.z = 0f;
-            IssueMoveCommand(wp);
-            if (clearAfterRightClick) ClearSelection();
+            // 🔥 마우스가 UI(미니맵 포함) 위에 있으면 메인카메라 우클릭 이동 막기
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            IssueMoveCommandFromScreen(Input.mousePosition, cam);
+
+            if (clearAfterRightClick)
+                ClearSelection();
         }
+
     }
 
     void OnGUI()
@@ -81,11 +97,33 @@ public class RTSSelection : MonoBehaviour
         DrawScreenRectBorder(guiRect, 2f, boxBorder);
     }
 
-    // --- ����/���� ���� ---
-    void AddToSelection(Selectable s) { if (!selected.Contains(s)) { selected.Add(s); s.SetSelected(true); } }
-    void ClearSelection() { foreach (var s in selected) if (s) s.SetSelected(false); selected.Clear(); }
+    // --- 명령/선택 로직 ---
+    void AddToSelection(Selectable s)
+    {
+        if (!selected.Contains(s))
+        {
+            selected.Add(s);
+            s.SetSelected(true);
+        }
+    }
 
-    void IssueMoveCommand(Vector3 dest)
+    public void ClearSelection()
+    {
+        foreach (var s in selected)
+            if (s) s.SetSelected(false);
+        selected.Clear();
+    }
+
+    // ✅ (A) 화면 좌표 + 카메라 → 월드 좌표 → 이동 명령
+    public void IssueMoveCommandFromScreen(Vector3 screenPos, Camera camera)
+    {
+        Vector3 wp = camera.ScreenToWorldPoint(screenPos);
+        wp.z = 0f;
+        IssueMoveCommand(wp);
+    }
+
+    // ✅ (B) 최종 월드 좌표를 받아서 이동 명령 (이제 public)
+    public void IssueMoveCommand(Vector3 dest)
     {
         int count = selected.Count;
         int cols = Mathf.CeilToInt(Mathf.Sqrt(count));
@@ -110,7 +148,7 @@ public class RTSSelection : MonoBehaviour
         }
     }
 
-    // --- �巡�� �ڽ� ��ƿ ---
+    // --- 드래그 박스 유틸 ---
     Rect GetScreenRect(Vector2 a, Vector2 b)
     {
         var min = Vector2.Min(a, b);
