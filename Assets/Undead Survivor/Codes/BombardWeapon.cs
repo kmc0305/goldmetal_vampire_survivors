@@ -6,10 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 public class BombardWeapon : MonoBehaviour
 {
     [Header("무기 능력치")]
+    public int level = 0;
+
     /// <summary>이 무기가 Bombard Bullet에게 전달할 기본 공격력</summary>
     public float damage = 1f;
     /// <summary>한 번의 공격에 Bullet을 몇개 발사할지(레벨업 시 증가!)</summary>
-    public int count = 1;
+    public int count = 0;
     /// <summary>쿨타임 이후로 경과한 시간</summary>
     private float timer = 0f;
     /// <summary>쿨타임 시간마다 count발 발사</summary>
@@ -44,14 +46,37 @@ public class BombardWeapon : MonoBehaviour
         }
     }
 
-    void doBombard()    ///실제 Bullet 포격하는 부분
+
+    IEnumerator BombardRoutine(Vector3[] targetPosList)
     {
-        if (highHPTarget.Length == 0) return;      ///스캐너에서 적 미탐지시 발사 안함
-        Vector3 targetPos = highHPTarget[0].position;
-        GameObject bullet=poolManager.Get(weaponPrefabIndex);
-        bullet.GetComponent<BombardBullet>().Init(damage,targetPos);
+        for (int i = 0; i < Mathf.Min(count,targetPosList.Length); i++)
+        {
+            Transform bullet = poolManager.Get(weaponPrefabIndex).transform;
+            bullet.position = targetPosList[i];
+            bullet.GetComponent<BombardBullet>().Init(damage, targetPosList[i]);
+            yield return new WaitForSeconds(0.2f);//TIME DIFF. for each bullet
+        }
 
     }
+
+    void doBombard()    ///실제 Bullet 포격하는 부분
+    {
+        int enemycnt = highHPTarget.Length;
+        if (enemycnt < 1 || count <= 0 || level <= 0) { timer = 3f; return; }
+        Vector3[] targetPosList = new Vector3[enemycnt];
+        for (int i = 0; i < enemycnt; i++)  targetPosList[i] = highHPTarget[i].position;
+        //for (int i = 0; i < 6 - enemycnt; i++)  targetPosList[i + enemycnt] = targetPosList[i % enemycnt];
+        StartCoroutine(BombardRoutine(targetPosList));
+
+        if (count >= 6)
+        {
+            Transform specialbullet = poolManager.Get(weaponPrefabIndex).transform;
+            specialbullet.position = transform.parent.position;
+            specialbullet.GetComponent<BombardBullet>().Init(0, specialbullet.position);
+            return;
+        }
+    }
+
 
 
     ///무기 전용 스캐너 부분
@@ -96,4 +121,10 @@ public class BombardWeapon : MonoBehaviour
         return result;
     }
 
+    public int[] UpgradeCounts = {0,1,2,3,4,6};
+    public void LevelUp(int lvl)
+    {
+        level = lvl;
+        count = UpgradeCounts[lvl];
+    }
 }
