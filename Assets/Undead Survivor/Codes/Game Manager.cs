@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     /// <summary>오브젝트 풀링(Pooling) 매니저 참조 (인스펙터에서 할당)</summary>
     public PoolManager Pool;
 
+    //플레이어 가용 경험치, 레벨업시 필요한 경험치
+    public int exp = 0;
+    public int[] nextExp = {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 };
+    public int level=1;
+    public int points=0;
 
     /// <summary>
     /// [Unity 이벤트] Awake() - 스크립트가 로드될 때 1회 호출 (Start()보다 빠름)
@@ -62,5 +67,16 @@ public class GameManager : MonoBehaviour
             gameTime = maxGameTime;
         }
 
+    }
+
+    public void getExp()
+    {
+        exp++;
+        if (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
+        {
+            exp -= nextExp[Mathf.Min(level, nextExp.Length - 1)];
+            level++;
+            points++;
+        }
     }
 }

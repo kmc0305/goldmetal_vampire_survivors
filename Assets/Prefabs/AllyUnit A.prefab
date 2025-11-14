@@ -105,6 +105,8 @@ GameObject:
   - component: {fileID: 6452170663272470704}
   - component: {fileID: 3315000177032367623}
   - component: {fileID: -2889793350090486128}
+  - component: {fileID: 7317495491686954744}
+  - component: {fileID: 5243056413355440059}
   m_Layer: 8
   m_Name: AllyUnit A
   m_TagString: Ally
@@ -310,6 +312,43 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 512
-  detectionRadius: 10
+  detectionRadius: 25
+  aiUpdateFrequency: 0.5
   attackDamage: 1
   attackCooldown: 1
+--- !u!114 &7317495491686954744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7743973790584016687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9640a86bab81374da04d8872c62fae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Selectable
+  outline: {fileID: 2274197645462154524}
+  selectedColor: {r: 0.032850645, g: 0.9496855, b: 0.18531138, a: 1}
+--- !u!114 &5243056413355440059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7743973790584016687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfb8e222adbabdd48bdeae36eb77bb76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitMover2D
+  moveSpeed: 3.5
+  stopDistance: 0.1
+  faceMoveDirection: 1
+  towerObstacleMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  colliderRadius: 0.3
+  avoidMargin: 0.2
+  ignoreRadius: 1
+  refreshInterval: 0.15

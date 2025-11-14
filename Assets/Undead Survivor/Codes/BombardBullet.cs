@@ -30,6 +30,20 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한
         this.transform.position = Coord;
         //부모인 BombardWeapon은 Bullet 활성화와 동시에 Init으로 좌표를 주고,
         //Bullet은 그 좌표로 순간이동합니다(장판이 소환됩니다)
+
+        if (dmg==0)
+        {
+            this.transform.localScale = new Vector3(2f, 2f, 2f);
+            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.color = Color.green;
+        }
+        else
+        {
+            this.transform.localScale = new Vector3(1, 1, 1);
+            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.color = GetComponent<SpriteRenderer>().color;
+        }
+        if (coll != null) coll.enabled = true;
     }
 
     private void Update()   //duration만큼 시간이 지나면 비활성화

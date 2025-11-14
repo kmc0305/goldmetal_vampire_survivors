@@ -22,7 +22,7 @@ public class RangeBullet : MonoBehaviour
         this.per = per;
         if (per > -1)
         {
-            rigid.linearVelocity = dir * 15f;
+            rigid.linearVelocity = dir * 25f;
         }
 
     }

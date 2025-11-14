@@ -159,8 +159,9 @@ public class Targetable : MonoBehaviour
         if (isDead) return;
         isDead = true; // 즉시 사망 상태로 변경
 
-        // 2. 아이템 드롭
+        // 2. 아이템 드롭, 경험치 획득
         DropItem();
+        GameManager.instance.getExp();
 
         // 3. Inspector에서 연결된 사망 이벤트 호출 (onDie)
         //    (예: GameManager의 점수(Score) 증가 함수가 연결되어 있을 수 있습니다.)

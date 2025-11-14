@@ -9,12 +9,13 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("무기 능력치")]
+    public int level = 0;
     /// <summary>이 무기가 MeleeWeapon에게 전달할 기본 공격력</summary>
     public float damage = 1f;
     /// <summary>중심축의 회전 속도 (이것이 곧 '공전' 속도가 됨)</summary>
     public float rotationSpeed = -200f;
     /// <summary>공전 반경 (중심축으로부터 무기(자식)가 떨어져 있을 거리)</summary>
-    public float orbitRadius = 1.5f;
+    public float orbitRadius = 1.6f;
 
     [Header("PoolManager 설정")]
     /// <summary>
@@ -36,6 +37,7 @@ public class Weapon : MonoBehaviour
 
         // 게임 시작 시 무기를 즉시 생성하고 '장착'합니다.
         SpawnAndEquipWeapon();
+        level = 1;
     }
 
     /// <summary>
@@ -77,7 +79,8 @@ public class Weapon : MonoBehaviour
         //    (부모(중심축)로부터 'orbitRadius'만큼 떨어진 곳(예: (1.5, 0, 0))에 배치)
         weaponObj.transform.localPosition = new Vector3(orbitRadius, 0, 0);
         // (참고) 무기 프리팹의 로컬 회전값(localPosition)도 0으로 초기화해주는 것이 좋습니다.
-        weaponObj.transform.localRotation = Quaternion.identity;
+        weaponObj.transform.localRotation = Quaternion.Euler(0, 0, -90);
+        weaponObj.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
 
         // 4. 무기 오브젝트에 붙어있는 MeleeWeapon 스크립트를 찾아, '데미지' 값을 전달합니다.
         MeleeWeapon meleeWeapon = weaponObj.GetComponent<MeleeWeapon>();
@@ -91,5 +94,12 @@ public class Weapon : MonoBehaviour
         {
             Debug.LogWarning("Weapon.cs: 자식 무기 프리팹에 MeleeWeapon.cs 스크립트가 없습니다!");
         }
+    }
+
+    public int[] UpgradeDMG = { 0, 1, 3, 4, 5, 5 };
+    public void LevelUp(int lvl)
+    {
+        level = lvl;
+        damage=UpgradeDMG[lvl];
     }
 }

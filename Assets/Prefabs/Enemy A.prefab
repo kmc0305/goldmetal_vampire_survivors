@@ -284,6 +284,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  avoidDuration: 0.6
+  avoidSpeedMul: 1.2
+  avoidanceGrace: 0.35
+  minSpeedToAvoid: 0.1
+  minDotBlock: 0.25
   hpBarRoot: {fileID: 0}
   hpFill: {fileID: 0}
   barWidth: 2
@@ -298,7 +303,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  detectionRadius: 15
+  detectionRadius: 100
   attackDamage: 1
   attackCooldown: 1
 --- !u!114 &3315000177032367623
