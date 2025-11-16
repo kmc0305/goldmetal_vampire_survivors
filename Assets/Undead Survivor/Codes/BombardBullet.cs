@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한 Bombard Bullet
 {
@@ -49,27 +50,31 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사한
     private void Update()   //duration만큼 시간이 지나면 비활성화
     {
         timer += Time.deltaTime;
-        if(timer>0.1f && coll != null) coll.enabled=false;  //Bullet(장판)생성 직후 비활성화하여 더이상 충돌 방지
-        if(timer>duration) gameObject.SetActive(false);
+        //if(timer>0.2f && coll != null && currentDamage==0) coll.enabled=false;  //Bullet(장판)생성 직후 비활성화하여 더이상 충돌 방지
+        if(timer>=duration) gameObject.SetActive(false);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void doHit(Collider2D other)
     {
         Targetable target = other.GetComponent<Targetable>();
-        if (target == null) return;
+        Enemy enemy=other.GetComponent<Enemy>();
+        if (target == null || target.faction!=Targetable.Faction.Enemy) return;
         if (damagedEnemies.Contains(other.gameObject)) return;  //데미지 중복 방지
 
         /// 부딪힌 대상이 'Enemy' 진영이면 실행
-        if (target.faction == Targetable.Faction.Enemy)
-        {
-            /// [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
-            ///    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
-            target.TakeDamage(currentDamage, transform);
+        /// [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
+        ///    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
+        if (currentDamage > 0) target.TakeDamage(currentDamage, transform);
+        else enemy.slowDown(0.1f, duration - timer);
 
-            GameObject damagedEnemy = other.gameObject;
-            if(!damagedEnemies.Contains(damagedEnemy))
-                damagedEnemies.Add(damagedEnemy);
-        }
+        damagedEnemies.Add(other.gameObject);
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        doHit(collision);
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        doHit(collision);
+    }
 }

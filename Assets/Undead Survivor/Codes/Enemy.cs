@@ -318,6 +318,20 @@ public class Enemy : MonoBehaviour
         isKnockedBack = false;
     }
 
+    public void slowDown(float x,float dur)
+    {
+        StartCoroutine(SlowDownFor(x,dur));
+
+    }
+    private IEnumerator SlowDownFor(float x, float dur)
+    {
+        float og = speed;
+        speed = speed * x;
+        yield return new WaitForSeconds(dur);
+        speed = og;
+    }
+
+
     // === 스폰 데이터/보스 스펙 ===
     public void init(SpawnData data)
     {
