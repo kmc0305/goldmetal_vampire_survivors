@@ -47,8 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f31df00d6c2495cb8040ce012db041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  rotationSpeed: 360
-  lifetime: 1
 --- !u!50 &3501601103239300038
 Rigidbody2D:
   serializedVersion: 5

@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     [Header("Avoidance Filters")]
     public float avoidanceGrace = 0.35f;    // 스폰 직후 우회 비활성 시간(초)
     public float minSpeedToAvoid = 0.1f;    // 너무 느리면 우회 X
-    public float minDotBlock = 0.25f;     // '정말 막혔는지' 판정 임계값(0~1)
+    public float minDotBlock = 0.25f;       // '정말 막혔는지' 판정 임계값(0~1)
 
     private float avoidUntil = 0f;          // 회피 종료 시각
     private Vector2 avoidDir = Vector2.zero;// 회피 이동 방향(접선)
@@ -89,8 +89,17 @@ public class Enemy : MonoBehaviour
             StopCoroutine(aiCoroutine);
             aiCoroutine = null;
         }
+
+        // 🔹 여기서 '죽어서 비활성화된 경우'에만 킬 수 증가
+        var tar = GetComponent<Targetable>();
+        if (tar != null && tar.isDead && GameManager.instance != null)
+        {
+            GameManager.instance.AddKill();
+        }
+
         currentTarget = null;
-        rigid.linearVelocity = Vector2.zero;
+        if (rigid != null)
+            rigid.linearVelocity = Vector2.zero;
         avoidDir = Vector2.zero;
         avoidUntil = 0f;
     }
@@ -224,7 +233,7 @@ public class Enemy : MonoBehaviour
         // 현재타겟이 없으면 굳이 공격 X (원하면 삭제 가능)
         if (currentTarget == null) return;
 
-        // 충돌한 대상이 '현재 타겟'일 때만 트리거(원하면 제거해서 '아무 대상 충돌 시'로 바꿔도 됨)
+        // 충돌한 대상이 '현재 타겟'일 때만 트리거
         if (collision.gameObject != currentTarget.gameObject) return;
 
         if (isAreaAttack)
@@ -292,14 +301,8 @@ public class Enemy : MonoBehaviour
             var t = hits[i].GetComponent<Targetable>();
             if (t == null || t.isDead) continue;
 
-            // (선택) 아군/적군 층 추가 필터가 필요하면 여기서 체크
-            // if (hits[i].gameObject.layer == gameObject.layer) continue; // 자기 진영 제외 등
-
             t.TakeDamage(attackDamage, transform);
         }
-
-        // (선택) 이펙트/사운드 트리거 가능
-        // e.g., PoolManager로 폭발 이펙트 소환 등
     }
 
     // === 넉백 ===
@@ -317,6 +320,20 @@ public class Enemy : MonoBehaviour
         rigid.linearVelocity = Vector2.zero;
         isKnockedBack = false;
     }
+
+    public void slowDown(float x,float dur)
+    {
+        StartCoroutine(SlowDownFor(x,dur));
+
+    }
+    private IEnumerator SlowDownFor(float x, float dur)
+    {
+        float og = speed;
+        speed = speed * x;
+        yield return new WaitForSeconds(dur);
+        speed = og;
+    }
+
 
     // === 스폰 데이터/보스 스펙 ===
     public void init(SpawnData data)
@@ -344,8 +361,8 @@ public class Enemy : MonoBehaviour
         maxHealth = spec.maxHP;
         health = spec.maxHP;
 
-        isAreaAttack = spec.isAreaAttack;  // ★ BossSpec로도 제어됨
-        areaAttackRadius = spec.areaRadius;    // ★ 반경 반영
+        isAreaAttack = spec.isAreaAttack;
+        areaAttackRadius = spec.areaRadius;
 
         var sr = GetComponentInChildren<SpriteRenderer>();
         if (sr) sr.color = spec.tint;

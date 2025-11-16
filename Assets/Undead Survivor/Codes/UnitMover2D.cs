@@ -21,7 +21,7 @@ public class UnitMover2D : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
 
-    // 최종 목적지(디버그용/상태 확인용)
+    // 최종 목적지(디버그용/방향 기준)
     private Vector2? finalTarget;
 
     // 간단한 2포인트 경로: [0] = 현재 목표, [1] = 최종 목표(있을 때)
@@ -40,6 +40,7 @@ public class UnitMover2D : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+
         // 내 자식 포함 모든 Collider2D 수집
         foreach (var c in GetComponentsInChildren<Collider2D>(true))
             if (c) myCols.Add(c);
@@ -71,10 +72,11 @@ public class UnitMover2D : MonoBehaviour
         // 현재 목표 지점에 거의 도착
         if (dist <= stopDistance)
         {
+            rb.linearVelocity = Vector2.zero;
+
             if (pathCount == 1)
             {
                 // 최종 목적지 도착
-                rb.linearVelocity = Vector2.zero;
                 finalTarget = null;
                 pathCount = 0;
                 RestoreAllIgnores();
@@ -90,9 +92,10 @@ public class UnitMover2D : MonoBehaviour
         }
 
         Vector2 dir = to / Mathf.Max(dist, 0.0001f);
-        rb.MovePosition(pos + dir * moveSpeed * Time.fixedDeltaTime);
 
-        if (faceMoveDirection && sr) sr.flipX = dir.x < 0f;
+        // Enemy 와 비슷하게: MovePosition 사용, velocity 는 0 처리
+        rb.MovePosition(pos + dir * moveSpeed * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector2.zero;
 
         if (Time.time >= nextRefresh)
         {
@@ -117,6 +120,7 @@ public class UnitMover2D : MonoBehaviour
     {
         finalTarget = null;
         pathCount = 0;
+        rb.linearVelocity = Vector2.zero;
         RestoreAllIgnores();
     }
 
@@ -175,6 +179,22 @@ public class UnitMover2D : MonoBehaviour
         path[0] = corner;
         path[1] = finalPos;
         pathCount = 2;
+    }
+
+    // ------------------------------------------------------------------
+    //  방향 전환 (Enemy.LateUpdate 스타일)
+    // ------------------------------------------------------------------
+    void LateUpdate()
+    {
+        if (!faceMoveDirection) return;
+        if (sr == null) return;
+        if (finalTarget == null) return;   // 이동 중이 아니면 그대로
+
+        // Enemy:
+        // spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
+        // Ally(수동 이동): 목표 위치 기준으로 좌/우만 판단
+        Vector2 pos = rb.position;
+        sr.flipX = finalTarget.Value.x < pos.x;
     }
 
     // ------------------------------------------------------------------

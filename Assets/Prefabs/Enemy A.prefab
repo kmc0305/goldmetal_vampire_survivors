@@ -297,14 +297,14 @@ MonoBehaviour:
   isAreaAttack: 0
   areaAttackRadius: 3
   speed: 2.5
-  health: 0
-  maxHealth: 0
+  health: 10
+  maxHealth: 10
   animCon: []
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
   detectionRadius: 100
-  attackDamage: 1
+  attackDamage: 3
   attackCooldown: 1
 --- !u!114 &3315000177032367623
 MonoBehaviour:

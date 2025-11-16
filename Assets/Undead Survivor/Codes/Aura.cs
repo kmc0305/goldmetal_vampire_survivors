@@ -8,7 +8,6 @@ public class Aura : MonoBehaviour
     private float AuraScale = 20f;      //20f in 0.3s 
     private float scale = 0f;
 
-    private float t1, t2;
 
     private void Awake()
     {
@@ -35,10 +34,6 @@ public class Aura : MonoBehaviour
         pivot.localScale = new Vector3(0, 0, 0);
     }
 
-    private void Update()       //시간측정용
-    {
-        t2=Time.time;
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -48,7 +43,6 @@ public class Aura : MonoBehaviour
         if (target.faction != Targetable.Faction.Enemy)
             return;
 
-        ///적에게 충돌하면 데미지를 주고, 관통수를 1만큼 감소
         if (target.faction == Targetable.Faction.Enemy)
         {
             target.TakeDamage(AuraDMG, transform);

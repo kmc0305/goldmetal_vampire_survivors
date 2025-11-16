@@ -284,22 +284,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  avoidDuration: 0.6
+  avoidSpeedMul: 1.2
+  avoidanceGrace: 0.35
+  minSpeedToAvoid: 0.1
+  minDotBlock: 0.25
   hpBarRoot: {fileID: 0}
   hpFill: {fileID: 0}
   barWidth: 2
   barHeight: 0.25
   barOffset: {x: 0, y: 1.5, z: 0}
-  isAreaAttack: 0
+  isAreaAttack: 1
   areaAttackRadius: 3
   speed: 2.5
-  health: 0
-  maxHealth: 0
+  health: 20
+  maxHealth: 20
   animCon: []
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
   detectionRadius: 15
-  attackDamage: 1
+  attackDamage: 6
   attackCooldown: 1
 --- !u!114 &-7419056983073608825
 MonoBehaviour:
@@ -314,8 +319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 1
-  maxHealth: 15
-  currentHealth: 15
+  maxHealth: 20
+  currentHealth: 20
   isDead: 0
   dropItemIndex: 3
   knockbackPower: 4

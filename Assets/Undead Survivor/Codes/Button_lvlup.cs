@@ -5,7 +5,7 @@ using System.Collections;
 public class Button_lvlup : MonoBehaviour
 {
     public GameObject wpn;
-    public int w_level;
+    public int w_level=0;
     public Sprite iconimg;
 
     Image icon;
@@ -13,7 +13,6 @@ public class Button_lvlup : MonoBehaviour
 
     void Awake()
     {
-        w_level = 0;
         icon=GetComponentsInChildren<Image>()[1];
         icon.sprite = iconimg;
         textlevel= GetComponentInChildren<Text>();

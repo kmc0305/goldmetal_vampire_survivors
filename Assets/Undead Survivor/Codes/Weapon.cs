@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 /// <summary>
@@ -11,11 +15,16 @@ public class Weapon : MonoBehaviour
     [Header("무기 능력치")]
     public int level = 0;
     /// <summary>이 무기가 MeleeWeapon에게 전달할 기본 공격력</summary>
-    public float damage = 1f;
+    public float damage = 2f;
     /// <summary>중심축의 회전 속도 (이것이 곧 '공전' 속도가 됨)</summary>
     public float rotationSpeed = -200f;
     /// <summary>공전 반경 (중심축으로부터 무기(자식)가 떨어져 있을 거리)</summary>
     public float orbitRadius = 1.6f;
+
+    private float timer = 0f;
+    private float duration = 4.5f;
+    
+
 
     [Header("PoolManager 설정")]
     /// <summary>
@@ -26,6 +35,8 @@ public class Weapon : MonoBehaviour
 
     /// <summary>PoolManager 참조</summary>
     private PoolManager poolManager;
+    private GameObject Melee1, Melee2;
+    //private MeleeWeapon meleeWeapon;
 
     /// <summary>
     /// [Unity 이벤트] Start() - 게임 시작 시 1회 호출
@@ -36,8 +47,9 @@ public class Weapon : MonoBehaviour
         poolManager = GameManager.instance.Pool;
 
         // 게임 시작 시 무기를 즉시 생성하고 '장착'합니다.
-        SpawnAndEquipWeapon();
+        Melee1 = SpawnAndEquipWeapon(1);
         level = 1;
+        damage = UpgradeDMG[1];
     }
 
     /// <summary>
@@ -49,26 +61,33 @@ public class Weapon : MonoBehaviour
         // (Time.deltaTime을 곱해 프레임 속도에 관계없이 일정한 속도로 회전)
         // -> 자식으로 붙어있는 무기(MeleeWeapon)도 함께 '공전'하게 됩니다.
         transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        timer += Time.deltaTime;
+        if(timer > duration && level >= 5)
+        {
+            doBlade();
+        }
     }
 
     /// <summary>
     /// PoolManager에서 실제 무기 프리팹을 가져와 '자식'으로 장착합니다.
     /// (Start 함수에서 호출됩니다.)
     /// </summary>
-    void SpawnAndEquipWeapon()
+    GameObject SpawnAndEquipWeapon(int x)
     {
+        GameObject weaponObj;
+        MeleeWeapon meleeWeapon;
         if (poolManager == null)
         {
             Debug.LogError("Weapon.cs: PoolManager를 찾을 수 없습니다!");
-            return;
+            return null;
         }
 
         // 1. 풀(Pool)에서 'weaponPrefabIndex'번의 무기(예: 칼) 오브젝트를 가져옵니다.
-        GameObject weaponObj = poolManager.Get(weaponPrefabIndex);
+        weaponObj = poolManager.Get(weaponPrefabIndex);
         if (weaponObj == null)
         {
             Debug.LogError("Weapon.cs: PoolManager에서 " + weaponPrefabIndex + "번 프리팹을 가져올 수 없습니다.");
-            return;
+            return null;
         }
 
         // 2. [핵심] 가져온 무기 오브젝트를 '이 중심축(transform)'의 자식(child)으로 설정합니다.
@@ -83,7 +102,7 @@ public class Weapon : MonoBehaviour
         weaponObj.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
 
         // 4. 무기 오브젝트에 붙어있는 MeleeWeapon 스크립트를 찾아, '데미지' 값을 전달합니다.
-        MeleeWeapon meleeWeapon = weaponObj.GetComponent<MeleeWeapon>();
+        meleeWeapon = weaponObj.GetComponent<MeleeWeapon>();
         if (meleeWeapon != null)
         {
             // MeleeWeapon 스크립트의 SetDamage 함수를 호출하여,
@@ -94,12 +113,55 @@ public class Weapon : MonoBehaviour
         {
             Debug.LogWarning("Weapon.cs: 자식 무기 프리팹에 MeleeWeapon.cs 스크립트가 없습니다!");
         }
+        if (x != 1) { 
+            weaponObj.transform.localPosition = new Vector3(-1 * orbitRadius, 0, 0); 
+            weaponObj.transform.localRotation = Quaternion.Euler(0, 0, 90);
+        }
+        return weaponObj;
     }
 
-    public int[] UpgradeDMG = { 0, 1, 3, 4, 5, 5 };
+
+    private float scanRange = 3;
+    private RaycastHit2D[] targets;
+
+    void doBlade()
+    {
+        CircleSector sector = GetComponentInChildren<CircleSector>();
+        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0);
+        if (isthere())
+        {
+            sector.doExpand();
+            timer = 0f;
+        }
+        else
+        {
+            timer = duration - 1f;
+            return;
+        }
+    }
+    bool isthere()
+    {
+        foreach (RaycastHit2D target in targets)
+        {
+            Targetable enemy = target.collider.GetComponent<Targetable>();
+            if (enemy == null) continue;
+            if (enemy.faction != Targetable.Faction.Enemy) continue;
+            return true;
+        }
+        return false;
+    }
+
+
+    public int[] UpgradeDMG = { 0, 2, 4, 6, 6, 8 };
     public void LevelUp(int lvl)
     {
         level = lvl;
         damage=UpgradeDMG[lvl];
+        MeleeWeapon[] m = GetComponentsInChildren<MeleeWeapon>();
+        foreach(MeleeWeapon m_w in m)
+        {
+            m_w.SetDamage(damage);
+        }
+        if (lvl == 3) Melee2 =  SpawnAndEquipWeapon(lvl);
     }
 }

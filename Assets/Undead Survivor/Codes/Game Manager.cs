@@ -18,17 +18,24 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public float gameTime;
     public float maxGameTime = 30 * 6 * 10f;
+
+    public int health;
+    public int maxHealth = 100;
+
     [Header("핵심 오브젝트 참조")]
     /// <summary>플레이어(Player) 오브젝트 참조 (인스펙터에서 할당)</summary>
     public Player player;
     /// <summary>오브젝트 풀링(Pooling) 매니저 참조 (인스펙터에서 할당)</summary>
     public PoolManager Pool;
 
-    //플레이어 가용 경험치, 레벨업시 필요한 경험치
+    // 플레이어 가용 경험치, 레벨업시 필요한 경험치
     public int exp = 0;
-    public int[] nextExp = {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 };
-    public int level=1;
-    public int points=0;
+    public int[] nextExp = { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 };
+    public int level = 1;
+    public int points = 0;
+
+    /// <summary>현재까지 적을 처치한 수</summary>
+    public int kill = 0;
 
     /// <summary>
     /// [Unity 이벤트] Awake() - 스크립트가 로드될 때 1회 호출 (Start()보다 빠름)
@@ -45,7 +52,7 @@ public class GameManager : MonoBehaviour
             // 이제부터 다른 스크립트들이 'GameManager.instance'를 통해
             // 이 스크립트의 public 변수(player, Pool)에 접근할 수 있습니다.
             instance = this;
-            //자기 자신을 모든곳에서 접근 == player를 모든 곳에서 접근 가능 
+            // 자기 자신을 모든곳에서 접근 == player를 모든 곳에서 접근 가능 
         }
         else
         {
@@ -59,6 +66,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        health = maxHealth;
+    }
+
     void Update()
     {
         gameTime += Time.deltaTime;
@@ -66,17 +78,28 @@ public class GameManager : MonoBehaviour
         {
             gameTime = maxGameTime;
         }
-
     }
 
     public void getExp()
     {
         exp++;
-        if (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
+
+        // nextExp 인덱스가 범위를 넘지 않도록 최소/최대 보호
+        int idx = Mathf.Min(level, nextExp.Length - 1);
+
+        if (exp >= nextExp[idx])
         {
-            exp -= nextExp[Mathf.Min(level, nextExp.Length - 1)];
+            exp -= nextExp[idx];
             level++;
             points++;
         }
+    }
+
+    /// <summary>
+    /// 적을 처치했을 때 호출하여 킬 수를 1 증가시키는 함수입니다.
+    /// </summary>
+    public void AddKill()
+    {
+        kill++;
     }
 }
