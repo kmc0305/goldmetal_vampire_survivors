@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RTSSelection : MonoBehaviour
 {
+    [Header("Camera")]
+    public Camera worldCamera;          // 👈 인스펙터에서 “메인 월드 카메라” 연결
+
     [Header("Filters")]
     public LayerMask selectableLayers;
     public KeyCode addMultiKey = KeyCode.LeftShift;
@@ -23,7 +26,10 @@ public class RTSSelection : MonoBehaviour
 
     void Awake()
     {
-        cam = Camera.main;
+        // 월드 카메라 직접 할당 (없으면 Camera.main 사용)
+        cam = worldCamera ? worldCamera : Camera.main;
+        Debug.Log("[RTSSelection] Using camera: " + cam.name);
+
         tex = new Texture2D(1, 1);
         tex.SetPixel(0, 0, Color.white);
         tex.Apply();
@@ -61,10 +67,10 @@ public class RTSSelection : MonoBehaviour
             // 작은 클릭일 경우 단일 선택
             if (screenRect.size.magnitude < 4f)
             {
-                var hit = Physics2D.OverlapPoint(
-                    cam.ScreenToWorldPoint(Input.mousePosition),
-                    selectableLayers
-                );
+                Vector3 wp = cam.ScreenToWorldPoint(Input.mousePosition);
+                wp.z = 0f;
+
+                var hit = Physics2D.OverlapPoint(wp, selectableLayers);
                 if (hit)
                 {
                     var s = hit.GetComponentInParent<Selectable>();
@@ -73,11 +79,10 @@ public class RTSSelection : MonoBehaviour
             }
         }
 
-        
         // --- 우클릭 이동 (메인 화면) ---
         if (Input.GetMouseButtonDown(1) && selected.Count > 0)
         {
-            // 🔥 마우스가 UI(미니맵 포함) 위에 있으면 메인카메라 우클릭 이동 막기
+            // UI 위에서는 무브 명령 막기
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
                 return;
 
@@ -86,7 +91,6 @@ public class RTSSelection : MonoBehaviour
             if (clearAfterRightClick)
                 ClearSelection();
         }
-
     }
 
     void OnGUI()
@@ -114,7 +118,6 @@ public class RTSSelection : MonoBehaviour
         selected.Clear();
     }
 
-    // ✅ (A) 화면 좌표 + 카메라 → 월드 좌표 → 이동 명령
     public void IssueMoveCommandFromScreen(Vector3 screenPos, Camera camera)
     {
         Vector3 wp = camera.ScreenToWorldPoint(screenPos);
@@ -122,7 +125,6 @@ public class RTSSelection : MonoBehaviour
         IssueMoveCommand(wp);
     }
 
-    // ✅ (B) 최종 월드 좌표를 받아서 이동 명령 (이제 public)
     public void IssueMoveCommand(Vector3 dest)
     {
         int count = selected.Count;
@@ -148,7 +150,6 @@ public class RTSSelection : MonoBehaviour
         }
     }
 
-    // --- 드래그 박스 유틸 ---
     Rect GetScreenRect(Vector2 a, Vector2 b)
     {
         var min = Vector2.Min(a, b);
