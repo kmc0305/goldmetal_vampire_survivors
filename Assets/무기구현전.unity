@@ -271608,7 +271608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3d3e9327a4b61143822b12caa343df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RTSSelection
-  worldCamera: {fileID: 512662111}
+  worldCamera: {fileID: 0}
   selectableLayers:
     serializedVersion: 2
     m_Bits: 256

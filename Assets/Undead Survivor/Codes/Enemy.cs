@@ -34,6 +34,9 @@ public class Enemy : MonoBehaviour
     public bool isAreaAttack = false;      // ★ 인스펙터 또는 BossSpec로 제어
     public float areaAttackRadius = 3.0f;  // ★ 반경 (BossSpec.areaRadius로도 세팅됨)
 
+    // ★★★ [추가] 광역 공격 시 생성할 이펙트 프리팹 ★★★
+    public GameObject areaAttackEffectPrefab;
+
     [Header("기본 능력치")]
     public float speed = 2.5f;
     public float health;
@@ -293,6 +296,13 @@ public class Enemy : MonoBehaviour
     // === 범위 공격 구현 ===
     void DoAreaAttack()
     {
+        // ★★★ [추가] 공격 이펙트 생성 ★★★
+        if (areaAttackEffectPrefab != null)
+        {
+            // 보스 위치(transform.position)에 이펙트 생성
+            Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         // 반경 내 '타겟 레이어'에 해당하는 모든 대상 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, areaAttackRadius, targetLayer);
 
@@ -321,9 +331,9 @@ public class Enemy : MonoBehaviour
         isKnockedBack = false;
     }
 
-    public void slowDown(float x,float dur)
+    public void slowDown(float x, float dur)
     {
-        StartCoroutine(SlowDownFor(x,dur));
+        StartCoroutine(SlowDownFor(x, dur));
 
     }
     private IEnumerator SlowDownFor(float x, float dur)

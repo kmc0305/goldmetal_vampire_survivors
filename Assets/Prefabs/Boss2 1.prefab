@@ -317,6 +317,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  avoidDuration: 0.6
+  avoidSpeedMul: 1.2
+  avoidanceGrace: 0.35
+  minSpeedToAvoid: 0.1
+  minDotBlock: 0.25
   hpBarRoot: {fileID: 1748458750050188437}
   hpFill: {fileID: 2907186890046842904}
   barWidth: 2
@@ -324,6 +329,7 @@ MonoBehaviour:
   barOffset: {x: 0, y: 1.5, z: 0}
   isAreaAttack: 1
   areaAttackRadius: 3
+  areaAttackEffectPrefab: {fileID: 405799617569640876, guid: c83e6f3a82e6ff940a54312d46aa3896, type: 3}
   speed: 2.5
   health: 0
   maxHealth: 0
@@ -333,7 +339,7 @@ MonoBehaviour:
     m_Bits: 256
   detectionRadius: 15
   attackDamage: 30
-  attackCooldown: 1
+  attackCooldown: 6
 --- !u!114 &1832217901347699480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +359,8 @@ MonoBehaviour:
   dropItemIndex: 3
   knockbackPower: 4
   knockbackDuration: 0.2
+  invincibilityDuration: 0.3
+  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
   onDie:
     m_PersistentCalls:
       m_Calls: []
