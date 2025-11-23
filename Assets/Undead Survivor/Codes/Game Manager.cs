@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -60,7 +61,8 @@ public class GameManager : MonoBehaviour
             //    (예: 씬을 다시 로드했는데 이전 씬의 GameManager가 안 죽고 넘어온 경우)
 
             // "나는 가짜다!"
-            Debug.LogWarning("중복된 GameManager가 생성되어 하나를 파괴합니다. (Destroy)");
+            // Debug 모호성 해결: UnityEngine.Debug 명시
+            UnityEngine.Debug.LogWarning("중복된 GameManager가 생성되어 하나를 파괴합니다. (Destroy)");
             // 새로 생긴 '나 자신(gameObject)'을 파괴합니다.
             Destroy(gameObject);
         }
@@ -92,6 +94,8 @@ public class GameManager : MonoBehaviour
             exp -= nextExp[idx];
             level++;
             points++;
+            // 레벨업 시 처리 추가 (예: 레벨업 UI 표시, 스탯 증가 등)
+            // UnityEngine.Debug.Log("Level Up! Current Level: " + level); 
         }
     }
 

@@ -306,6 +306,9 @@ MonoBehaviour:
   detectionRadius: 100
   attackDamage: 3
   attackCooldown: 1
+  hitColor: {r: 1, g: 0.5, b: 0.5, a: 1}
+  defaultKnockbackPower: 100
+  defaultKnockbackDuration: 0.2
 --- !u!114 &3315000177032367623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +328,8 @@ MonoBehaviour:
   dropItemIndex: 3
   knockbackPower: 4
   knockbackDuration: 0.2
+  invincibilityDuration: 0.3
+  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
   onDie:
     m_PersistentCalls:
       m_Calls: []

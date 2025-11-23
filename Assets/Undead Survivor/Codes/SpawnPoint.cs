@@ -1,218 +1,128 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
 {
-    // ------------------------------
-    // Boss Spawn Settings
-    // ------------------------------
-    [Header("Boss Spawn Settings")]
-    public GameObject bossPrefab;              // 타워 파괴 시 소환할 보스 프리팹
-    public Transform bossSpawnPoint;           // 보스 소환 위치(없으면 타워 위 약간 위)
-    public bool spawnBossOnlyOnce = true;      // true면 한 번만 보스 소환
-    public float bossScaleMultiplier = 2f;     // 보스 스케일 배수
-    public BossSpec bossSpec;                  // 보스 능력치(체력/공격 등)
+    /// <summary>스포너가 관리하는 스폰 간격(SpawnData.spawnTime)을 따를지 여부</summary>
+    public bool useSpawnerSpawnTime = true;
+    /// <summary>개별 스폰 포인트가 가지는 고유 스폰 간격 (useSpawnerSpawnTime이 false일 때 사용)</summary>
+    public float spawnInterval = 1f;
 
-    // ------------------------------
-    // Spawn Loop (지점별 주기)
-    // ------------------------------
-    [Header("Spawn Loop (지점별 주기)")]
-    public int poolId = 0;                     // PoolManager에서 꺼낼 적 인덱스
-    public bool useSpawnerSpawnTime = true;    // Spawner의 spawnData 간격을 따를지
-    public float fixedInterval = 2f;           // 개별 지점 고정 간격(위가 false일 때 사용)
+    /// <summary>이 스폰 포인트가 영구적으로 비활성화되었는지 여부</summary>
+    public bool PermanentlyOff { get; private set; } = false;
 
-    // ------------------------------
-    // Visuals
-    // ------------------------------
-    [Header("Visuals (상태별 에셋)")]
-    public SpriteRenderer spriteRenderer;      // 연결할 SpriteRenderer
-    public Sprite idle_Sprite;                 // 비활성 시 스프라이트
-    public Sprite active_Sprite;               // 활성 시 스프라이트
-    public Sprite Damaged_Sprite;              // 완전 파괴 시 스프라이트
+    /// <summary>이 스폰 포인트가 한 번이라도 활성화된 적이 있는지 여부 (중복 활성화 방지용)</summary>
+    public bool EverActivated { get; private set; } = false;
 
-    // ------------------------------
-    // HP Bar (Targetable 기준)
-    // ------------------------------
-    [Header("HP Bar (Targetable 기준)")]
-    public Transform hpBarRoot;                // HP 바 부모
-    public Transform hpFill;                   // HP 채우기 (SpriteRenderer 달린 오브젝트)
-    public float barWidth = 1.2f;              // 바 전체 가로 길이
-    public float barHeight = 0.18f;            // 바 높이
-    public Vector3 barOffset = new Vector3(0f, 0.9f, 0f);
+    private float timer = 0f;
 
-    // ------------------------------
-    // 런타임 상태 플래그
-    // ------------------------------
-    public bool IsEnabled { get; private set; } = false;      // 현재 스폰 중인지
-    public bool PermanentlyOff { get; private set; } = false;  // 파괴되어 영구 중단 여부
-    public bool EverActivated { get; private set; } = false;   // 한 번이라도 켜진 적 있는지
+    // [추가] 원거리 유닛의 프리팹 인덱스 (PoolManager에 등록된 순서와 같아야 함)
+    // 인스펙터 창에서 알맞은 번호(예: 1)로 설정해주세요.
+    public int rangedEnemyId = 1;
 
-    // 내부
-    Coroutine loop;
-    bool bossSpawned = false;
+    // [추가] 번갈아 생성하기 위한 카운터
+    private int spawnCount = 0;
 
-    void Awake()
+    /// <summary>
+    /// [Unity 이벤트] OnEnable() - 오브젝트가 활성화될 때 호출
+    /// </summary>
+    private void OnEnable()
     {
-        if (!spriteRenderer) spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // HP바 초기 위치/스케일
-        if (hpBarRoot) hpBarRoot.localPosition = barOffset;
-        if (hpFill) hpFill.localScale = new Vector3(barWidth, barHeight, 1f);
-
-        UpdateVisual();
-        UpdateHPBar(); // Targetable 값을 읽어 표시
+        // 활성화되자마자 타이머를 0으로 초기화하여 바로 스폰 준비
+        timer = 0f;
     }
 
-    void OnEnable()
+    /// <summary>
+    /// [Unity 이벤트] Update() - 매 프레임 호출
+    /// 타이머를 갱신하고 스폰 조건이 되면 적을 생성합니다.
+    /// </summary>
+    private void Update()
     {
-        if (loop == null) loop = StartCoroutine(SpawnLoop());
-        UpdateVisual();
-        UpdateHPBar();
-        bossSpawned = false;
+        // 1. 스폰 간격(interval) 결정
+        float interval = spawnInterval;
+
+        // 2. Spawner의 데이터를 따르기로 했다면, 현재 레벨의 스폰 간격을 가져옴
+        if (useSpawnerSpawnTime && Spawner.Instance != null)
+        {
+            var data = Spawner.Instance.CurrentSpawnData;
+            if (data != null && data.spawnTime > 0f)
+                interval = data.spawnTime;
+        }
+
+        // 3. 타이머 갱신
+        timer += Time.deltaTime;
+
+        // 4. 타이머가 간격보다 커지면 적 생성
+        if (timer > interval)
+        {
+            timer = 0f;
+            Spawn();
+        }
     }
 
-    void OnDisable()
+    /// <summary>
+    /// 실제로 적을 생성(풀링)하는 함수
+    /// </summary>
+    void Spawn()
     {
-        if (loop != null) StopCoroutine(loop);
-        loop = null;
+        int spriteType = 0;
+
+        // 1. Spawner에서 현재 레벨에 맞는 적 데이터 가져오기 (기본값)
+        if (Spawner.Instance != null && Spawner.Instance.CurrentSpawnData != null)
+        {
+            var d = Spawner.Instance.CurrentSpawnData;
+            spriteType = d.spriteType;
+        }
+
+        // 2. [수정] 번갈아 가며 생성하는 로직
+        // spawnCount가 홀수일 때(1, 3, 5...) 원거리 적 ID로 교체
+        if (spawnCount % 2 != 0)
+        {
+            spriteType = rangedEnemyId;
+        }
+
+        // 3. 풀 매니저에서 적 오브젝트 가져오기 (변경된 spriteType 사용)
+        GameObject enemyObj = GameManager.instance.Pool.Get(spriteType);
+
+        // 4. 위치 설정
+        enemyObj.transform.position = transform.position;
+        // Quaternion 모호성 해결을 위해 UnityEngine.Quaternion 명시
+        enemyObj.transform.rotation = UnityEngine.Quaternion.identity;
+
+        // 5. 적 초기화 (컴포넌트 확인 후 초기화)
+        // 근접 적(Enemy)인지, 원거리 적(RangedEnemy)인지 확인
+        Enemy enemy = enemyObj.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            // 근접 적이면 기존 데이터로 초기화
+            enemy.init(Spawner.Instance.CurrentSpawnData);
+        }
+        // 원거리 적(RangedEnemy)은 별도의 init 함수가 없다면 생략 가능
+        // 만약 있다면 여기서 else if로 처리하면 됩니다.
+
+        // [추가] 다음 순서를 위해 카운트 증가
+        spawnCount++;
     }
 
-    // -------------------------------------------------
-    // 외부에서 켜줄 때(Spawner가 주기적으로 한 개씩 활성화)
-    // -------------------------------------------------
+    /// <summary>
+    /// 외부(Spawner.cs)에서 이 스폰 포인트를 '한 번' 활성화할 때 호출하는 함수
+    /// </summary>
+    /// <returns>성공적으로 켜졌으면 true, 이미 켜져있거나 꺼진 상태면 false</returns>
     public bool ActivateOnce()
     {
-        if (PermanentlyOff || EverActivated) return false;
+        if (PermanentlyOff || gameObject.activeSelf) return false;
+
+        gameObject.SetActive(true);
         EverActivated = true;
-        IsEnabled = true;
-        UpdateVisual();
-        UpdateHPBar();
         return true;
     }
 
-    // 씬 리셋/재시작 시 호출(Spawner.Awake에서 호출)
+    /// <summary>
+    /// 게임 재시작 등을 위해 런타임 상태(활성화 기록)를 초기화하는 함수
+    /// </summary>
     public void ResetRuntimeFlags()
     {
-        IsEnabled = false;
-        PermanentlyOff = false;
         EverActivated = false;
-        bossSpawned = false;
-        UpdateVisual();
-        UpdateHPBar();
-    }
-
-    // -------------------------------------------------
-    // 타워 파괴 처리(※ Targetable.onDie 이벤트로 연결해서 호출 권장)
-    // -------------------------------------------------
-    public void DeactivatePermanently()
-    {
-        if (PermanentlyOff) return;
-
-        PermanentlyOff = true;
-        IsEnabled = false;
-        UpdateVisual();
-        UpdateHPBar();
-
-        Debug.Log($"[SpawnPoint] Deactivated. bossPrefab={(bossPrefab ? bossPrefab.name : "null")}");
-
-        // 보스 소환
-        if (bossPrefab != null && (!spawnBossOnlyOnce || !bossSpawned))
-        {
-            bossSpawned = true;
-
-            Vector3 spawnPos = bossSpawnPoint ? bossSpawnPoint.position
-                                              : transform.position + Vector3.up * 1.5f;
-            spawnPos.z = 0f;
-         
-            var boss = Object.Instantiate(bossPrefab, spawnPos, Quaternion.identity);
-            boss.transform.localScale *= bossScaleMultiplier;
-
-            var enemy = boss.GetComponent<Enemy>();
-            if (enemy != null && bossSpec != null)
-                enemy.ApplyBossSpec(bossSpec);
-
-            if (!boss.activeSelf) boss.SetActive(true);
-
-            Debug.Log($"[SpawnPoint] Boss spawned at {spawnPos}, active={boss.activeSelf}");
-        }
-        else
-        {
-            if (!bossPrefab) Debug.LogWarning("[SpawnPoint] bossPrefab is NULL");
-            else Debug.Log("[SpawnPoint] Boss already spawned (spawnBossOnlyOnce=true)");
-        }
-    }
-
-    // -------------------------------------------------
-    // 비주얼/HP바 업데이트 (체력은 Targetable을 단일 출처로)
-    // -------------------------------------------------
-    void UpdateVisual()
-    {
-        if (!spriteRenderer) return;
-
-        if (PermanentlyOff && Damaged_Sprite) spriteRenderer.sprite = Damaged_Sprite;
-        else if (IsEnabled && active_Sprite) spriteRenderer.sprite = active_Sprite;
-        else if (idle_Sprite) spriteRenderer.sprite = idle_Sprite;
-    }
-
-    void UpdateHPBar()
-    {
-        if (!hpBarRoot || !hpFill) return;
-
-        // 파괴되면 HP바 숨김
-        hpBarRoot.gameObject.SetActive(!PermanentlyOff);
-
-        var tar = GetComponent<Targetable>();
-        if (tar == null)
-            return;
-
-        float cur = tar.currentHealth;
-        float max = Mathf.Max(0.0001f, tar.maxHealth); // 0 나눗셈 방지
-        float ratio = Mathf.Clamp01(cur / max);
-
-        float targetWidth = barWidth * ratio;
-        hpFill.localScale = new Vector3(targetWidth, barHeight, 1f);
-        hpFill.localPosition = new Vector3(-(barWidth - targetWidth) * 0.5f, 0f, 0f);
-
-        var sr = hpFill.GetComponent<SpriteRenderer>();
-        if (sr) sr.color = Color.Lerp(Color.red, Color.green, ratio);
-    }
-
-    // -------------------------------------------------
-    // 스폰 루프
-    // -------------------------------------------------
-    IEnumerator SpawnLoop()
-    {
-        while (true)
-        {
-            if (!IsEnabled || PermanentlyOff)
-            {
-                yield return null;
-                continue;
-            }
-
-            GameObject enemy = GameManager.instance.Pool.Get(poolId);
-
-            // 🔥 여기서 y축 -5.4 지점에 스폰되도록 오프셋 추가
-            enemy.transform.position = transform.position + new Vector3(0f, -5.4f, 0f);
-
-            var sp = Spawner.Instance;
-            if (sp != null && sp.CurrentSpawnData != null)
-                enemy.GetComponent<Enemy>().init(sp.CurrentSpawnData);
-
-            float interval = useSpawnerSpawnTime && sp != null && sp.CurrentSpawnData != null
-                ? sp.CurrentSpawnData.spawnTime
-                : fixedInterval;
-
-            if (interval > 0f) yield return new WaitForSeconds(interval);
-            else yield return null;
-        }
-    }
-
-
-    // 에디터에서 참조 자동 세팅 보조
-    void OnValidate()
-    {
-        if (!spriteRenderer) spriteRenderer = GetComponent<SpriteRenderer>();
-        if (hpBarRoot) hpBarRoot.localPosition = barOffset;
+        // PermanentlyOff는 리셋하지 않음 (영구적이라는 의미 유지)
+        // 필요하다면 이 함수에서 gameObject.SetActive(false)를 할 수도 있음
     }
 }
