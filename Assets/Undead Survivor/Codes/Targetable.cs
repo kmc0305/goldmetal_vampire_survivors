@@ -32,7 +32,10 @@ public class Targetable : MonoBehaviour
     [Header("피격 피드백 (무적/색상)")]
     [Tooltip("피격 후 무적 시간(초).")]
     public float invincibilityDuration = 0.2f;
-    public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 1f); // 빨간색
+
+    // [수정] 희미해지는 효과를 위해 알파값(A)을 낮춘 색상 사용
+    // A 값을 0.5 정도로 설정하면 반투명해짐
+    public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
     public UnityEvent onDie;
 
@@ -76,7 +79,6 @@ public class Targetable : MonoBehaviour
         }
         if (rigid != null)
         {
-            // Vector2 모호성 해결
             rigid.linearVelocity = UnityEngine.Vector2.zero;
         }
     }
@@ -148,6 +150,7 @@ public class Targetable : MonoBehaviour
 
         if (spriter != null)
         {
+            // [수정] 피격 색상(반투명) 적용
             spriter.color = invincibilityColor;
         }
 
@@ -156,6 +159,7 @@ public class Targetable : MonoBehaviour
         isInvincible = false;
         if (spriter != null)
         {
+            // 원래 색상(불투명) 복구
             spriter.color = originalColor;
         }
     }
@@ -172,12 +176,12 @@ public class Targetable : MonoBehaviour
         StartCoroutine(PhysicsKnockback(knockbackDir));
     }
 
-    private IEnumerator PhysicsKnockback(UnityEngine.Vector2 dir) // Vector2 모호성 해결
+    private IEnumerator PhysicsKnockback(UnityEngine.Vector2 dir)
     {
         isKnockedBack = true;
 
         // 1. 기존 속도 초기화 (관성 제거)
-        rigid.linearVelocity = UnityEngine.Vector2.zero; // Vector2 모호성 해결
+        rigid.linearVelocity = UnityEngine.Vector2.zero;
 
         // 2. 순간적인 힘(Impulse)을 가해 밀어냄
         rigid.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
@@ -185,7 +189,7 @@ public class Targetable : MonoBehaviour
         yield return new WaitForSeconds(knockbackDuration);
 
         // 3. 넉백 후 정지
-        rigid.linearVelocity = UnityEngine.Vector2.zero; // Vector2 모호성 해결
+        rigid.linearVelocity = UnityEngine.Vector2.zero;
         isKnockedBack = false;
     }
 }

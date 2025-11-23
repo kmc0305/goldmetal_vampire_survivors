@@ -292,7 +292,7 @@ MonoBehaviour:
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  invincibilityColor: {r: 1, g: 0, b: 0, a: 0.5254902}
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -315,6 +315,3 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   detectionRadius: 15
-  knockbackDuration: 0.5
-  knockbackPower: 100
-  hitColor: {r: 1, g: 0.5, b: 0.5, a: 1}
