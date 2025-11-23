@@ -296,6 +296,7 @@ MonoBehaviour:
   barOffset: {x: 0, y: 1.5, z: 0}
   isAreaAttack: 1
   areaAttackRadius: 3
+  areaAttackEffectPrefab: {fileID: 0}
   speed: 2.5
   health: 20
   maxHealth: 20
@@ -325,6 +326,8 @@ MonoBehaviour:
   dropItemIndex: 3
   knockbackPower: 4
   knockbackDuration: 0.2
+  invincibilityDuration: 0.3
+  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
   onDie:
     m_PersistentCalls:
       m_Calls: []
