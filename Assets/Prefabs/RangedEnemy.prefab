@@ -103,10 +103,10 @@ GameObject:
   - component: {fileID: 3999627912393308139}
   - component: {fileID: 5923626830920612819}
   - component: {fileID: 8432850429258907245}
-  - component: {fileID: 3612679571913807130}
   - component: {fileID: -7419056983073608825}
+  - component: {fileID: 4282433489174771726}
   m_Layer: 9
-  m_Name: Enemy B
+  m_Name: RangedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,40 +272,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 0.9}
   m_Direction: 0
---- !u!114 &3612679571913807130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8284777717146878963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  avoidDuration: 0.6
-  avoidSpeedMul: 1.2
-  avoidanceGrace: 0.35
-  minSpeedToAvoid: 0.1
-  minDotBlock: 0.25
-  hpBarRoot: {fileID: 0}
-  hpFill: {fileID: 0}
-  barWidth: 2
-  barHeight: 0.25
-  barOffset: {x: 0, y: 1.5, z: 0}
-  isAreaAttack: 1
-  areaAttackRadius: 3
-  speed: 2.5
-  health: 20
-  maxHealth: 20
-  animCon: []
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  detectionRadius: 15
-  attackDamage: 6
-  attackCooldown: 1
 --- !u!114 &-7419056983073608825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +291,27 @@ MonoBehaviour:
   dropItemIndex: 3
   knockbackPower: 4
   knockbackDuration: 0.2
+  invincibilityDuration: 0.3
+  invincibilityColor: {r: 1, g: 0, b: 0, a: 0.5254902}
   onDie:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4282433489174771726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284777717146878963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d16e5af554d428f809c5f6048e6d80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedEnemy
+  weaponData: {fileID: 11400000, guid: 003dc3350b78b483da49799d178ba116, type: 2}
+  bulletPrefabId: 7
+  speed: 2
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  detectionRadius: 15
