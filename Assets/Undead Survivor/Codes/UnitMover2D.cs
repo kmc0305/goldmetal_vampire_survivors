@@ -194,7 +194,7 @@ public class UnitMover2D : MonoBehaviour
         // spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
         // Ally(수동 이동): 목표 위치 기준으로 좌/우만 판단
         Vector2 pos = rb.position;
-        sr.flipX = finalTarget.Value.x < pos.x;
+        sr.flipX = finalTarget.Value.x > pos.x;
     }
 
     // ------------------------------------------------------------------
