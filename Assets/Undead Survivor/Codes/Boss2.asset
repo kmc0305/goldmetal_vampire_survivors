@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea78405e14a0bb45a350c3d6e6ea8d5, type: 3}
   m_Name: Boss2
   m_EditorClassIdentifier: Assembly-CSharp::BossSpec
-  isAreaAttack: 0
-  areaRadius: 3
   attackDamage: 12
   attackCooldown: 1
+  isAreaAttack: 1
+  areaRadius: 3
+  areaAttackEffect: {fileID: 405799617569640876, guid: c83e6f3a82e6ff940a54312d46aa3896, type: 3}
   detectionRadius: 15
   moveSpeed: 2
   maxHP: 300
   tint: {r: 1, g: 1, b: 1, a: 1}
+  scaleMultiplier: 1.5

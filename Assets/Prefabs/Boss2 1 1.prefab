@@ -340,7 +340,7 @@ MonoBehaviour:
     m_Bits: 256
   detectionRadius: 15
   attackDamage: 30
-  attackCooldown: 6
+  attackCooldown: 2
 --- !u!114 &608099787044503395
 MonoBehaviour:
   m_ObjectHideFlags: 0

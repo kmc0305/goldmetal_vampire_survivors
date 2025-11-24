@@ -289,25 +289,45 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // Enemy.cs 내부의 ApplyBossSpec 함수를 이걸로 교체하세요
     public void ApplyBossSpec(BossSpec spec)
     {
         if (spec == null) return;
+
+        // 1. 기본 스탯 적용
         attackDamage = spec.attackDamage;
         attackCooldown = spec.attackCooldown;
         detectionRadius = spec.detectionRadius;
         speed = spec.moveSpeed;
+
+        // 2. 체력 적용
         maxHealth = spec.maxHP;
         health = spec.maxHP;
-        // Targetable 동기화
         if (myTargetable != null)
         {
             myTargetable.maxHealth = spec.maxHP;
             myTargetable.currentHealth = spec.maxHP;
         }
+
+        // 3. 공격 설정 적용
         isAreaAttack = spec.isAreaAttack;
         areaAttackRadius = spec.areaRadius;
+
+        // ★★★ [수정됨] 이펙트 안전하게 적용하기 ★★★
+        // BossSpec에 이펙트가 설정되어 있다면 그것으로 교체하고,
+        // 비어있다면(null) Enemy 인스펙터에 원래 세팅된 것을 그대로 사용함
+        if (spec.areaAttackEffect != null)
+        {
+            areaAttackEffectPrefab = spec.areaAttackEffect;
+        }
+
+        // 4. 외형(크기/색상) 적용
+        transform.localScale = Vector3.one * spec.scaleMultiplier;
+
         var sr = GetComponentInChildren<SpriteRenderer>();
         if (sr) sr.color = spec.tint;
+
+        // HP바 등 추가 설정이 있다면 여기에 계속...
         UpdateHPBar();
     }
 
