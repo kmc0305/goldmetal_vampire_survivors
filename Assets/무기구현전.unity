@@ -109572,7 +109572,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 16
+  orthographic size: 55.603848
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -249333,7 +249333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllySpawner
   allyPrefabIndex: 2
-  spawnInterval: 1
+  spawnInterval: 100
   spawnRadius: 3
 --- !u!114 &1158587737
 MonoBehaviour:
@@ -249347,12 +249347,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 993d3e459c4456a4eb32348b23b95a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerHPBar
-  target: {fileID: 0}
+  target: {fileID: 1158587733}
   hpBarRoot: {fileID: 514772647}
   hpFill: {fileID: 1429176304}
-  barWidth: 3
+  barWidth: 4
   barHeight: 0.22
-  barOffset: {x: 0, y: 3, z: 0}
+  barOffset: {x: 0, y: 4, z: 0}
 --- !u!70 &1158587738
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -271398,22 +271398,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 7428772624619433262, guid: a1cac5edbb33e9242b855a13088924e1, type: 3}
-  bossSpawnPoint: {fileID: 0}
+  bossPrefab: {fileID: 8272085065762950461, guid: 4c4c752762843c24aa6e1572e02ef886, type: 3}
+  bossSpawnPoint: {fileID: 1279112653}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
   poolId: 0
-  useSpawnerSpawnTime: 1
-  fixedInterval: 2
+  rangedEnemyId: 1
   spriteRenderer: {fileID: 1279112657}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 166792680}
   hpFill: {fileID: 1341388964}
-  barWidth: 4
-  barHeight: 0.3
+  barWidth: 1.2
+  barHeight: 0.18
   barOffset: {x: 0, y: 5, z: 0}
 --- !u!70 &1279112659
 CapsuleCollider2D:
@@ -271464,12 +271463,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 993d3e459c4456a4eb32348b23b95a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerHPBar
-  target: {fileID: 0}
+  target: {fileID: 1279112654}
   hpBarRoot: {fileID: 166792680}
   hpFill: {fileID: 1341388964}
-  barWidth: 3
+  barWidth: 4
   barHeight: 0.22
-  barOffset: {x: 0, y: 1.2, z: 0}
+  barOffset: {x: 0, y: 5, z: 0}
 --- !u!1 &1302525927
 GameObject:
   m_ObjectHideFlags: 0
@@ -271661,22 +271660,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
-  bossSpawnPoint: {fileID: 0}
+  bossPrefab: {fileID: 5368922720114119634, guid: f56427f0d19e658478fc43561db10a6f, type: 3}
+  bossSpawnPoint: {fileID: 1324853767}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
   poolId: 0
-  useSpawnerSpawnTime: 1
-  fixedInterval: 2
+  rangedEnemyId: 1
   spriteRenderer: {fileID: 1324853771}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 116336345}
   hpFill: {fileID: 124820965}
-  barWidth: 4
-  barHeight: 0.3
+  barWidth: 1.2
+  barHeight: 0.18
   barOffset: {x: 0, y: 5, z: 0}
 --- !u!70 &1324853773
 CapsuleCollider2D:
@@ -271730,9 +271728,9 @@ MonoBehaviour:
   target: {fileID: 1324853768}
   hpBarRoot: {fileID: 116336345}
   hpFill: {fileID: 124820965}
-  barWidth: 3
+  barWidth: 4
   barHeight: 0.22
-  barOffset: {x: 0, y: 1.2, z: 0}
+  barOffset: {x: 0, y: 5, z: 0}
 --- !u!1 &1333430424
 GameObject:
   m_ObjectHideFlags: 0
@@ -360239,7 +360237,6 @@ GameObject:
   - component: {fileID: 1738603045}
   - component: {fileID: 1738603048}
   - component: {fileID: 1738603049}
-  - component: {fileID: 1738603051}
   - component: {fileID: 1738603050}
   - component: {fileID: 1738603052}
   m_Layer: 9
@@ -360417,22 +360414,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 3034365821161676388, guid: ab7952fc53fe6e1448b470dcc374b677, type: 3}
-  bossSpawnPoint: {fileID: 0}
+  bossPrefab: {fileID: 4251684276180507167, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+  bossSpawnPoint: {fileID: 1738603044}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
-  useSpawnerSpawnTime: 1
-  fixedInterval: 4
+  rangedEnemyId: 1
   spriteRenderer: {fileID: 1738603048}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   hpBarRoot: {fileID: 1461080390}
   hpFill: {fileID: 2124915932}
-  barWidth: 4
-  barHeight: 0.3
+  barWidth: 1.2
+  barHeight: 0.18
   barOffset: {x: 0, y: 5, z: 0}
 --- !u!70 &1738603050
 CapsuleCollider2D:
@@ -360471,35 +360467,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -2.3}
   m_Size: {x: 7, y: 4}
   m_Direction: 1
---- !u!114 &1738603051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738603043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 0}
-  bossSpawnPoint: {fileID: 0}
-  spawnBossOnlyOnce: 1
-  bossScaleMultiplier: 2
-  bossSpec: {fileID: 0}
-  poolId: 1
-  useSpawnerSpawnTime: 1
-  fixedInterval: 4
-  spriteRenderer: {fileID: 1738603048}
-  idle_Sprite: {fileID: 0}
-  active_Sprite: {fileID: 0}
-  Damaged_Sprite: {fileID: 0}
-  hpBarRoot: {fileID: 0}
-  hpFill: {fileID: 0}
-  barWidth: 1.2
-  barHeight: 0.18
-  barOffset: {x: 0, y: 0.9, z: 0}
 --- !u!114 &1738603052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360512,12 +360479,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 993d3e459c4456a4eb32348b23b95a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerHPBar
-  target: {fileID: 0}
+  target: {fileID: 1738603045}
   hpBarRoot: {fileID: 1461080390}
   hpFill: {fileID: 2124915932}
-  barWidth: 3
+  barWidth: 4
   barHeight: 0.22
-  barOffset: {x: 0, y: 1.2, z: 0}
+  barOffset: {x: 0, y: 5, z: 0}
 --- !u!1 &1739187389
 GameObject:
   m_ObjectHideFlags: 0
@@ -438732,6 +438699,63 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &2093920939
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2797621268853768295, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4251684276180507167, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
+      propertyPath: m_Name
+      value: Boss2 1 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 751bd23c97b55ef45a311d90ab3748d7, type: 3}
 --- !u!1 &2097741947
 GameObject:
   m_ObjectHideFlags: 0
@@ -447540,3 +447564,4 @@ SceneRoots:
   - {fileID: 1333430426}
   - {fileID: 483525607}
   - {fileID: 2001986504}
+  - {fileID: 2093920939}
