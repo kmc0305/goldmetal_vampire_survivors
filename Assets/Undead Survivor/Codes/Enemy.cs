@@ -29,6 +29,9 @@ public class Enemy : MonoBehaviour
     public bool isAreaAttack = false;
     public float areaAttackRadius = 3.0f;
 
+    // ★★★ [추가] 광역 공격 시 생성할 이펙트 프리팹 ★★★
+    public GameObject areaAttackEffectPrefab;
+
     [Header("기본 능력치")]
     public float speed = 2.5f;
     public float health;
@@ -237,6 +240,15 @@ public class Enemy : MonoBehaviour
 
     void DoAreaAttack()
     {
+
+        // ★★★ [추가] 공격 이펙트 생성 ★★★
+        if (areaAttackEffectPrefab != null)
+        {
+            // 보스 위치(transform.position)에 이펙트 생성
+            Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
+        }
+
+        // 반경 내 '타겟 레이어'에 해당하는 모든 대상 탐색
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, areaAttackRadius, targetLayer);
         for (int i = 0; i < hits.Length; i++)
         {
