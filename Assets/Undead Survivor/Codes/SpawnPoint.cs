@@ -20,6 +20,9 @@ public class SpawnPoint : MonoBehaviour
     public int poolId = 0;                     // 기본 적 인덱스 (근거리)
     public int rangedEnemyId = 1;              // 원거리 적 인덱스
 
+    [Tooltip("적 생성 주기 (초 단위)")]
+    public float spawnInterval = 3.0f;         // ★ 추가: 스폰 인터벌
+
     // ------------------------------
     // Visuals & HP Bar
     // ------------------------------
@@ -52,6 +55,7 @@ public class SpawnPoint : MonoBehaviour
     // 내부 변수
     private bool bossSpawned = false;
     private int spawnCount = 0;
+    private Coroutine spawnCoroutine; // ★ 추가: 실행 중인 스폰 코루틴 저장용
 
     void Awake()
     {
@@ -78,6 +82,9 @@ public class SpawnPoint : MonoBehaviour
         // 이미 파괴되었으면 무시
         if (PermanentlyOff) return false;
 
+        // 이미 활성화되어 코루틴이 돌고 있다면 중복 실행 방지
+        if (IsEnabled && spawnCoroutine != null) return true;
+
         // 1. 상태 변경 (활성화 됨)
         EverActivated = true;
         IsEnabled = true; // ★ 이제 이 플래그가 true면 계속 성 모습입니다.
@@ -85,14 +92,35 @@ public class SpawnPoint : MonoBehaviour
         // 2. 비주얼 업데이트 (즉시 성으로 변신)
         UpdateVisual();
 
-        // 3. 적 생성 (딜레이 없이 바로 생성하거나, 필요하면 코루틴 사용 가능)
-        SpawnEnemy();
+        // 3. 적 생성 루틴 시작 (★ 수정: 단발성 호출 -> 코루틴 시작)
+        if (spawnCoroutine != null) StopCoroutine(spawnCoroutine);
+        spawnCoroutine = StartCoroutine(SpawnRoutine());
 
         return true;
     }
 
+    // ★ 추가: 인터벌을 두고 적을 계속 생성하는 코루틴
+    IEnumerator SpawnRoutine()
+    {
+        // 즉시 첫 번째 적 생성 (원치 않으면 이 줄을 지우고 yield return을 먼저 두면 됨)
+        SpawnEnemy();
+        yield return new WaitForSeconds(spawnInterval);
+
+        // 파괴되지 않았고, 활성화 상태라면 계속 반복
+        while (IsEnabled && !PermanentlyOff)
+        {
+            SpawnEnemy();
+            yield return new WaitForSeconds(spawnInterval);
+        }
+
+        spawnCoroutine = null;
+    }
+
     void SpawnEnemy()
     {
+        // 파괴된 상태에서는 생성 안 함 (안전장치)
+        if (PermanentlyOff) return;
+
         int currentPoolId = poolId;
 
         if (Spawner.Instance != null && Spawner.Instance.CurrentSpawnData != null)
@@ -105,6 +133,9 @@ public class SpawnPoint : MonoBehaviour
         {
             currentPoolId = rangedEnemyId;
         }
+
+        // GameManager 인스턴스 체크 (에러 방지)
+        if (GameManager.instance == null) return;
 
         GameObject enemyObj = GameManager.instance.Pool.Get(currentPoolId);
 
@@ -124,6 +155,10 @@ public class SpawnPoint : MonoBehaviour
 
     public void ResetRuntimeFlags()
     {
+        // ★ 리셋 시 코루틴 정지
+        if (spawnCoroutine != null) StopCoroutine(spawnCoroutine);
+        spawnCoroutine = null;
+
         PermanentlyOff = false;
         EverActivated = false;
         IsEnabled = false; // 리셋 시 다시 대기 상태로
@@ -140,6 +175,13 @@ public class SpawnPoint : MonoBehaviour
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
+
+        // ★ 파괴 시 코루틴 정지
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
 
         // 상태 변경
         PermanentlyOff = true;
@@ -190,8 +232,6 @@ public class SpawnPoint : MonoBehaviour
             if (active_Sprite)
             {
                 spriteRenderer.sprite = active_Sprite;
-                // ★ 로그 추가: 정상적으로 들어왔는지 확인
-                // Debug.Log($"[{gameObject.name}] 성 모습으로 변경됨!"); 
             }
             else
             {

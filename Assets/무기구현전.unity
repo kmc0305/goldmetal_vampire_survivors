@@ -109572,7 +109572,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12.333333
+  orthographic size: 55.603848
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -271405,6 +271405,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
   poolId: 0
   rangedEnemyId: 1
+  spawnInterval: 3
   spriteRenderer: {fileID: 1279112657}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
@@ -271667,6 +271668,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
   poolId: 0
   rangedEnemyId: 1
+  spawnInterval: 3
   spriteRenderer: {fileID: 1324853771}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
@@ -360421,6 +360423,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
   rangedEnemyId: 1
+  spawnInterval: 3
   spriteRenderer: {fileID: 1738603048}
   active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
   Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
