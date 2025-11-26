@@ -137,4 +137,5 @@ public class RangedEnemy : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, weaponData.attackRange);
         }
     }
+
 }
