@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 186126665834846205}
   - component: {fileID: 9162774562913268709}
   m_Layer: 0
-  m_Name: Boss_Orc
+  m_Name: Boss_Angel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,7 +105,7 @@ Animator:
   m_GameObject: {fileID: 4111436743865639527}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7833af5e682ed274fa8a1b93e0de71f9, type: 2}
+  m_Controller: {fileID: 9100000, guid: cb3d0f96879345040937d848570fbf1f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
