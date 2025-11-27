@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Vector2 = UnityEngine.Vector2; // ✅ Vector2 모호함 방지
 
 /// <summary>
-/// 유닛의 생명력, 피격, 사망 처리를 담당하는 핵심 컴포넌트입니다.
+/// 유닛의 생명력, 피격, 넉백, 사망 처리를 담당합니다.
+/// [최적화]: 코루틴 관리 강화, 넉백 로직 안정화
+/// [수정]: isDead 변수화, Heal 함수 추가, EXP 획득 로직 변경 (아이템 드랍 -> 즉시 획득)
 /// </summary>
 public class Targetable : MonoBehaviour
 {
     public enum Faction
     {
         Player,
-        Enemy
+        Enemy,
+        Neutral
     }
 
     [Header("진영 설정")]
@@ -20,21 +24,34 @@ public class Targetable : MonoBehaviour
     [Header("체력(HP) 설정")]
     public float maxHealth = 10f;
     public float currentHealth;
+
+    // ✅ [수정] 읽기 전용 프로퍼티( => )에서 변수 필드로 변경하여 수정 가능하게 함
     public bool isDead = false;
 
     [Header("레벨/드롭 아이템 설정")]
     public int dropItemIndex = -1;
 
+    // ✅ [추가] 적 처치 시 획득할 경험치 양 (기본값 1)
+    public int expReward = 1;
+
     [Header("넉백 설정")]
-    public float knockbackPower = 20f; // 넉백 힘 (기본값)
+    public float knockbackPower = 20f;
     public float knockbackDuration = 0.2f;
+    public bool isKnockbackable = true;
+    private bool _isKnockedBack = false;
+
+    /// <summary>
+    /// 현재 넉백 상태인지 여부
+    /// </summary>
+    public bool IsKnockedBack
+    {
+        get { return _isKnockedBack; }
+        private set { _isKnockedBack = value; }
+    }
 
     [Header("피격 피드백 (무적/색상)")]
-    [Tooltip("피격 후 무적 시간(초).")]
     public float invincibilityDuration = 0.2f;
-
-    // A 값을 0.5 정도로 설정하면 반투명해짐
-    public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f);
+    public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f); // 반투명 빨강
 
     public UnityEvent onDie;
 
@@ -42,76 +59,58 @@ public class Targetable : MonoBehaviour
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
     private PoolManager poolManager;
+
     private bool isInvincible = false;
     private Color originalColor;
-    private bool isKnockedBack = false;
+    private Coroutine knockbackCoroutine;
+    private Coroutine flashCoroutine;
+    private Coroutine healFlashCoroutine; // 힐 플래시 코루틴
 
-    // ★ 추가: 내가 타워인지 확인하기 위한 변수
-    private SpawnPoint mySpawnPoint;
-
-    // 외부에서 넉백 상태 확인용 프로퍼티
-    public bool IsKnockedBack => isKnockedBack;
-
-    private void Awake()
+    void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        // 스프라이트가 없으면 흰색을 기본으로
+        originalColor = (spriter != null) ? spriter.color : Color.white;
+    }
 
-        // ★ [핵심] 시작할 때 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워, 없으면 몬스터)
-        mySpawnPoint = GetComponent<SpawnPoint>();
-
+    void Start()
+    {
         if (GameManager.instance != null)
         {
             poolManager = GameManager.instance.Pool;
         }
-
-        if (spriter != null)
-        {
-            originalColor = spriter.color;
-        }
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
+        // 생성 시 초기화
         currentHealth = maxHealth;
         isDead = false;
         isInvincible = false;
-        isKnockedBack = false;
+        IsKnockedBack = false;
 
-        // 다시 활성화될 때 컴포넌트들도 복구 (타워 재사용 대비)
-        if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = true;
-        this.enabled = true;
-        if (rigid != null) rigid.simulated = true;
-
-        if (spriter != null)
-        {
-            spriter.color = originalColor;
-        }
-        if (rigid != null)
-        {
-            rigid.linearVelocity = Vector2.zero;
-        }
+        if (spriter != null) spriter.color = originalColor;
+        if (rigid != null) rigid.linearVelocity = Vector2.zero;
     }
 
     /// <summary>
-    /// 외부에서 호출하여 데미지를 주는 함수
+    /// 데미지를 입는 함수입니다.
     /// </summary>
-    public void TakeDamage(float damage, Transform attacker)
+    public void TakeDamage(float damage, Transform attacker = null)
     {
         if (isDead || isInvincible) return;
 
-        // 체력 감소
         currentHealth -= damage;
 
-        // 넉백 & 무적 효과 (공격자가 있을 때만)
-        if (attacker != null)
+        // 피격 효과 (깜빡임)
+        if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+        flashCoroutine = StartCoroutine(InvincibilityBlinkRoutine());
+
+        // 넉백 적용
+        if (isKnockbackable && attacker != null)
         {
             ApplyKnockback(attacker);
-        }
-
-        if (gameObject.activeInHierarchy)
-        {
-            StartCoroutine(InvincibilityBlinkRoutine());
         }
 
         // 사망 체크
@@ -121,99 +120,96 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    public void Die()
+    // ✅ HealingArea.cs 연동을 위한 힐 함수
+    public void Heal(float amount)
     {
         if (isDead) return;
+
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+        // 힐 이펙트 (초록색 깜빡임 등)
+        if (healFlashCoroutine != null) StopCoroutine(healFlashCoroutine);
+        healFlashCoroutine = StartCoroutine(HealFlashRoutine());
+    }
+
+    // ✅ HealingArea.cs 연동을 위한 힐 플래시 종료 함수
+    public void StopHealFlashAndResetColor()
+    {
+        if (healFlashCoroutine != null) StopCoroutine(healFlashCoroutine);
+        if (spriter != null) spriter.color = originalColor;
+    }
+
+    void Die()
+    {
         isDead = true;
+        onDie?.Invoke();
 
-        DropItem();
-
-        // 킬 수 증가
-        if (GameManager.instance != null && faction == Faction.Enemy)
+        // ✅ [수정] 적 유닛이 사망하면 즉시 경험치 획득
+        // faction이 Enemy일 때만 경험치를 줍니다 (플레이어나 아군 사망 시 경험치 x)
+        if (faction == Faction.Enemy && GameManager.instance != null)
         {
-            GameManager.instance.AddKill();
-        }
-
-        onDie.Invoke();
-
-        // ★ [핵심 수정 부분] 타워와 일반 유닛 구분
-        if (mySpawnPoint != null)
-        {
-            Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
-            // Case A: 나는 타워다 (SpawnPoint 컴포넌트가 있음)
-            // -> 오브젝트를 끄지 않고, 파괴 애니메이션 로직을 실행
-            mySpawnPoint.DeactivatePermanently();
-
-            if (rigid)
+            // GameManager의 getExp()는 1씩 오르므로, expReward만큼 반복 호출
+            for (int i = 0; i < expReward; i++)
             {
-                rigid.linearVelocity = Vector2.zero; // 움직임 멈춤
-                rigid.bodyType = RigidbodyType2D.Static; // ★ 완전 고정된 벽으로 변경
+                GameManager.instance.getExp();
             }
-            // 이 스크립트 끄기 (더 이상 로직 안 돌게)
-            this.enabled = false;
         }
-        else
-        {
-            Debug.Log("👻 일반 몬스터 사망! 사라짐.");
-            // Case B: 나는 일반 몬스터다 (SpawnPoint 컴포넌트가 없음)
-            // -> 깔끔하게 비활성화 (오브젝트 풀링 혹은 삭제)
-            gameObject.SetActive(false);
-        }
+
+        // ✅ [수정] 아이템 드랍 로직 주석 처리 (경험치 젬 드랍 방지)
+        // DropItem(); 
+
+        gameObject.SetActive(false);
     }
 
     void DropItem()
     {
-        if (poolManager == null || dropItemIndex < 0)
-            return;
+        if (poolManager == null || dropItemIndex < 0) return;
 
         GameObject item = poolManager.Get(dropItemIndex);
         if (item != null)
         {
             item.transform.position = transform.position;
+            item.SetActive(true);
         }
     }
 
     // --- 피격 효과 관련 코루틴 ---
-
     private IEnumerator InvincibilityBlinkRoutine()
     {
         isInvincible = true;
-
-        if (spriter != null)
-        {
-            spriter.color = invincibilityColor;
-        }
-
+        if (spriter != null) spriter.color = invincibilityColor;
         yield return new WaitForSeconds(invincibilityDuration);
-
+        if (spriter != null) spriter.color = originalColor;
         isInvincible = false;
-        if (spriter != null)
-        {
-            spriter.color = originalColor;
-        }
+    }
+
+    // ✅ 힐 효과 코루틴
+    private IEnumerator HealFlashRoutine()
+    {
+        if (spriter != null) spriter.color = Color.green; // 힐은 초록색
+        yield return new WaitForSeconds(0.2f);
+        if (spriter != null) spriter.color = originalColor;
     }
 
     private void ApplyKnockback(Transform attacker)
     {
         if (rigid == null) return;
-
-        // 공격자 반대 방향 계산
         Vector2 knockbackDir = (transform.position - attacker.position).normalized;
 
-        if (isKnockedBack) StopCoroutine("PhysicsKnockback");
-        StartCoroutine(PhysicsKnockback(knockbackDir));
+        if (knockbackCoroutine != null) StopCoroutine(knockbackCoroutine);
+        knockbackCoroutine = StartCoroutine(PhysicsKnockback(knockbackDir));
     }
 
     private IEnumerator PhysicsKnockback(Vector2 dir)
     {
-        isKnockedBack = true;
-
+        IsKnockedBack = true;
         rigid.linearVelocity = Vector2.zero;
         rigid.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockbackDuration);
 
         rigid.linearVelocity = Vector2.zero;
-        isKnockedBack = false;
+        IsKnockedBack = false;
     }
 }
