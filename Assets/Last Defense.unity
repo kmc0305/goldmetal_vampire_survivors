@@ -109576,7 +109576,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 55.603848
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -192701,7 +192701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 928721232}
   - component: {fileID: 928721231}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HealingAreaManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249367,7 +249367,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 20
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
@@ -271319,7 +271318,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 20
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
@@ -271593,7 +271591,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 20
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
@@ -325474,7 +325471,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 20
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
@@ -360313,7 +360309,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 20
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:

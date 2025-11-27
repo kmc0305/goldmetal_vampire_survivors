@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3516356827761091701}
   - component: {fileID: 3556527851992451596}
-  m_Layer: 20
+  m_Layer: 11
   m_Name: healRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,6 +141,14 @@ PrefabInstance:
     - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
       propertyPath: m_Name
       value: PF_HealingStatue Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7947911505844789836, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

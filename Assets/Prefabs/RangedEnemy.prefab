@@ -289,6 +289,7 @@ MonoBehaviour:
   currentHealth: 20
   isDead: 0
   dropItemIndex: 3
+  expReward: 1
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
@@ -314,4 +315,5 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  detectionRadius: 15
+  detectionRadius: 100
+  aiUpdateFrequency: 0.5

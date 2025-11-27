@@ -294,7 +294,6 @@ MonoBehaviour:
   expReward: 1
   knockbackPower: 4
   knockbackDuration: 0.2
-  isKnockbackable: 1
   invincibilityDuration: 0.2
   invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:

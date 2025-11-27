@@ -223,14 +223,14 @@ public class AllyAI : MonoBehaviour
         // ✅ 집결 모드일 때도 바라보는 방향 처리
         if (isRecallMode)
         {
-            spriter.flipX = recallTargetPos.x < rb.position.x;
+            spriter.flipX = recallTargetPos.x > rb.position.x;
             return;
         }
 
         if (currentTarget == null) return;
 
         // 타겟 위치에 따라 스프라이트 좌우 반전
-        spriter.flipX = currentTarget.transform.position.x < rb.position.x;
+        spriter.flipX = currentTarget.transform.position.x > rb.position.x;
     }
 
     void OnCollisionStay2D(Collision2D collision)
