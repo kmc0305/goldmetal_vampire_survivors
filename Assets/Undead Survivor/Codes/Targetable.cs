@@ -33,7 +33,6 @@ public class Targetable : MonoBehaviour
     [Tooltip("피격 후 무적 시간(초).")]
     public float invincibilityDuration = 0.2f;
 
-    // [수정] 희미해지는 효과를 위해 알파값(A)을 낮춘 색상 사용
     // A 값을 0.5 정도로 설정하면 반투명해짐
     public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
@@ -45,7 +44,10 @@ public class Targetable : MonoBehaviour
     private PoolManager poolManager;
     private bool isInvincible = false;
     private Color originalColor;
-    private bool isKnockedBack = false; // 넉백 상태 플래그
+    private bool isKnockedBack = false;
+
+    // ★ 추가: 내가 타워인지 확인하기 위한 변수
+    private SpawnPoint mySpawnPoint;
 
     // 외부에서 넉백 상태 확인용 프로퍼티
     public bool IsKnockedBack => isKnockedBack;
@@ -54,6 +56,9 @@ public class Targetable : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+
+        // ★ [핵심] 시작할 때 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워, 없으면 몬스터)
+        mySpawnPoint = GetComponent<SpawnPoint>();
 
         if (GameManager.instance != null)
         {
@@ -73,13 +78,18 @@ public class Targetable : MonoBehaviour
         isInvincible = false;
         isKnockedBack = false;
 
+        // 다시 활성화될 때 컴포넌트들도 복구 (타워 재사용 대비)
+        if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = true;
+        this.enabled = true;
+        if (rigid != null) rigid.simulated = true;
+
         if (spriter != null)
         {
             spriter.color = originalColor;
         }
         if (rigid != null)
         {
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
+            rigid.linearVelocity = Vector2.zero;
         }
     }
 
@@ -118,8 +128,6 @@ public class Targetable : MonoBehaviour
 
         DropItem();
 
-        // 경험치 획득 코드 삭제됨 (중복 방지)
-
         // 킬 수 증가
         if (GameManager.instance != null && faction == Faction.Enemy)
         {
@@ -127,7 +135,30 @@ public class Targetable : MonoBehaviour
         }
 
         onDie.Invoke();
-        gameObject.SetActive(false);
+
+        // ★ [핵심 수정 부분] 타워와 일반 유닛 구분
+        if (mySpawnPoint != null)
+        {
+            Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
+            // Case A: 나는 타워다 (SpawnPoint 컴포넌트가 있음)
+            // -> 오브젝트를 끄지 않고, 파괴 애니메이션 로직을 실행
+            mySpawnPoint.DeactivatePermanently();
+
+            if (rigid)
+            {
+                rigid.linearVelocity = Vector2.zero; // 움직임 멈춤
+                rigid.bodyType = RigidbodyType2D.Static; // ★ 완전 고정된 벽으로 변경
+            }
+            // 이 스크립트 끄기 (더 이상 로직 안 돌게)
+            this.enabled = false;
+        }
+        else
+        {
+            Debug.Log("👻 일반 몬스터 사망! 사라짐.");
+            // Case B: 나는 일반 몬스터다 (SpawnPoint 컴포넌트가 없음)
+            // -> 깔끔하게 비활성화 (오브젝트 풀링 혹은 삭제)
+            gameObject.SetActive(false);
+        }
     }
 
     void DropItem()
@@ -150,7 +181,6 @@ public class Targetable : MonoBehaviour
 
         if (spriter != null)
         {
-            // [수정] 피격 색상(반투명) 적용
             spriter.color = invincibilityColor;
         }
 
@@ -159,7 +189,6 @@ public class Targetable : MonoBehaviour
         isInvincible = false;
         if (spriter != null)
         {
-            // 원래 색상(불투명) 복구
             spriter.color = originalColor;
         }
     }
@@ -168,28 +197,23 @@ public class Targetable : MonoBehaviour
     {
         if (rigid == null) return;
 
-        // 공격자 반대 방향 계산 (Vector2 모호성 해결)
-        UnityEngine.Vector2 knockbackDir = (transform.position - attacker.position).normalized;
+        // 공격자 반대 방향 계산
+        Vector2 knockbackDir = (transform.position - attacker.position).normalized;
 
-        // Targetable 자체적으로 물리 넉백 처리
         if (isKnockedBack) StopCoroutine("PhysicsKnockback");
         StartCoroutine(PhysicsKnockback(knockbackDir));
     }
 
-    private IEnumerator PhysicsKnockback(UnityEngine.Vector2 dir)
+    private IEnumerator PhysicsKnockback(Vector2 dir)
     {
         isKnockedBack = true;
 
-        // 1. 기존 속도 초기화 (관성 제거)
-        rigid.linearVelocity = UnityEngine.Vector2.zero;
-
-        // 2. 순간적인 힘(Impulse)을 가해 밀어냄
+        rigid.linearVelocity = Vector2.zero;
         rigid.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockbackDuration);
 
-        // 3. 넉백 후 정지
-        rigid.linearVelocity = UnityEngine.Vector2.zero;
+        rigid.linearVelocity = Vector2.zero;
         isKnockedBack = false;
     }
 }

@@ -87809,7 +87809,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
   spawnData: []
   Lv_Time: 10
-  activateInterval: 10
+  towerSequence:
+  - {fileID: 1324853772}
+  - {fileID: 1738603049}
+  - {fileID: 1279112658}
+  activationInterval: 1
 --- !u!1 &452952954
 GameObject:
   m_ObjectHideFlags: 0
@@ -271218,12 +271222,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1279112653}
-  - component: {fileID: 1279112655}
   - component: {fileID: 1279112654}
   - component: {fileID: 1279112657}
   - component: {fileID: 1279112658}
   - component: {fileID: 1279112659}
   - component: {fileID: 1279112660}
+  - component: {fileID: 1279112661}
   m_Layer: 9
   m_Name: enemyTower 3
   m_TagString: Untagged
@@ -271240,8 +271244,8 @@ Transform:
   m_GameObject: {fileID: 1279112652}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 90, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 90.7, y: -6.5, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 166792680}
@@ -271283,52 +271287,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!61 &1279112655
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279112652}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 1, y: -0.09892249}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5555556, y: 0.33333334}
-    newSize: {x: 0.5555556, y: 0.33333334}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3.7698288, y: 3.9676747}
-  m_EdgeRadius: 0
 --- !u!212 &1279112657
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -271376,12 +271334,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  m_Sprite: {fileID: -3030099771799340779, guid: d750aa1e40791a64e8cc5cba878f35e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5555556, y: 0.33333334}
+  m_Size: {x: 2.74, y: 1.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -271407,10 +271365,8 @@ MonoBehaviour:
   poolId: 0
   rangedEnemyId: 1
   spawnInterval: 3
-  spriteRenderer: {fileID: 1279112657}
-  active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
-  Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  animator: {fileID: 1279112661}
+  burningThreshold: 0.4
   hpBarRoot: {fileID: 166792680}
   hpFill: {fileID: 1341388964}
   barWidth: 1.2
@@ -271450,8 +271406,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -2.3}
-  m_Size: {x: 7, y: 4}
+  m_Offset: {x: 0, y: 0.65}
+  m_Size: {x: 2.8, y: 1.3}
   m_Direction: 1
 --- !u!114 &1279112660
 MonoBehaviour:
@@ -271468,9 +271424,31 @@ MonoBehaviour:
   target: {fileID: 1279112654}
   hpBarRoot: {fileID: 166792680}
   hpFill: {fileID: 1341388964}
-  barWidth: 4
+  barWidth: 3
   barHeight: 0.22
-  barOffset: {x: 0, y: 5, z: 0}
+  barOffset: {x: 0, y: 3.5, z: 0}
+--- !u!95 &1279112661
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279112652}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 10381980e9ce8c5468d9078b0599daa2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1302525927
 GameObject:
   m_ObjectHideFlags: 0
@@ -271533,6 +271511,7 @@ GameObject:
   - component: {fileID: 1324853772}
   - component: {fileID: 1324853773}
   - component: {fileID: 1324853774}
+  - component: {fileID: 1324853775}
   m_Layer: 9
   m_Name: enemyTower1
   m_TagString: Untagged
@@ -271549,8 +271528,8 @@ Transform:
   m_GameObject: {fileID: 1324853766}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -90, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: -88.1, y: -5.4, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 116336345}
@@ -271639,12 +271618,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  m_Sprite: {fileID: -3030099771799340779, guid: d750aa1e40791a64e8cc5cba878f35e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5555556, y: 0.33333334}
+  m_Size: {x: 2.38, y: 2.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -271670,10 +271649,8 @@ MonoBehaviour:
   poolId: 0
   rangedEnemyId: 1
   spawnInterval: 3
-  spriteRenderer: {fileID: 1324853771}
-  active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
-  Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  animator: {fileID: 1324853775}
+  burningThreshold: 0.4
   hpBarRoot: {fileID: 116336345}
   hpFill: {fileID: 124820965}
   barWidth: 1.2
@@ -271713,8 +271690,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -2.3}
-  m_Size: {x: 7, y: 4}
+  m_Offset: {x: 0, y: 0.65}
+  m_Size: {x: 2.8, y: 1.3}
   m_Direction: 1
 --- !u!114 &1324853774
 MonoBehaviour:
@@ -271731,9 +271708,31 @@ MonoBehaviour:
   target: {fileID: 1324853768}
   hpBarRoot: {fileID: 116336345}
   hpFill: {fileID: 124820965}
-  barWidth: 4
+  barWidth: 3
   barHeight: 0.22
-  barOffset: {x: 0, y: 5, z: 0}
+  barOffset: {x: 0, y: 3.5, z: 0}
+--- !u!95 &1324853775
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324853766}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 10381980e9ce8c5468d9078b0599daa2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1333430424
 GameObject:
   m_ObjectHideFlags: 0
@@ -360236,12 +360235,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1738603044}
-  - component: {fileID: 1738603046}
   - component: {fileID: 1738603045}
   - component: {fileID: 1738603048}
   - component: {fileID: 1738603049}
   - component: {fileID: 1738603050}
   - component: {fileID: 1738603052}
+  - component: {fileID: 1738603053}
   m_Layer: 9
   m_Name: enemyTower 2
   m_TagString: Untagged
@@ -360258,8 +360257,8 @@ Transform:
   m_GameObject: {fileID: 1738603043}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 90, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0.3, y: 85.5, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1461080390}
@@ -360301,52 +360300,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!61 &1738603046
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738603043}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5555556, y: 0.33333334}
-    newSize: {x: 0.5555556, y: 0.33333334}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3.7698288, y: 3.9676747}
-  m_EdgeRadius: 0
 --- !u!212 &1738603048
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -360394,12 +360347,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  m_Sprite: {fileID: -3030099771799340779, guid: d750aa1e40791a64e8cc5cba878f35e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5555556, y: 0.33333334}
+  m_Size: {x: 2.74, y: 1.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -360425,10 +360378,8 @@ MonoBehaviour:
   poolId: 0
   rangedEnemyId: 1
   spawnInterval: 3
-  spriteRenderer: {fileID: 1738603048}
-  active_Sprite: {fileID: -7656388521277752240, guid: 90a98f25026584cb6958dff783404b42, type: 3}
-  Damaged_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
-  idle_Sprite: {fileID: 1304559308, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
+  animator: {fileID: 1738603053}
+  burningThreshold: 0.4
   hpBarRoot: {fileID: 1461080390}
   hpFill: {fileID: 2124915932}
   barWidth: 1.2
@@ -360468,8 +360419,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -2.3}
-  m_Size: {x: 7, y: 4}
+  m_Offset: {x: 0, y: 0.65}
+  m_Size: {x: 2.8, y: 1.3}
   m_Direction: 1
 --- !u!114 &1738603052
 MonoBehaviour:
@@ -360486,9 +360437,31 @@ MonoBehaviour:
   target: {fileID: 1738603045}
   hpBarRoot: {fileID: 1461080390}
   hpFill: {fileID: 2124915932}
-  barWidth: 4
+  barWidth: 3
   barHeight: 0.22
-  barOffset: {x: 0, y: 5, z: 0}
+  barOffset: {x: 0, y: 3.5, z: 0}
+--- !u!95 &1738603053
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738603043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 10381980e9ce8c5468d9078b0599daa2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1739187389
 GameObject:
   m_ObjectHideFlags: 0

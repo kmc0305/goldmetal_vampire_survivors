@@ -1,4 +1,4 @@
-// Spawner.cs 교체/추가 부분만 발췌
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,18 +6,61 @@ public class Spawner : MonoBehaviour
 {
     public static Spawner Instance { get; private set; }
 
-    [Header("난이도 / 스폰 데이터 (스폰 간격용)")]
-    public SpawnData[] spawnData;   // 비어 있어도 동작하도록 방어코드 처리
-    public float Lv_Time = 10f;     // (원한다면 유지)
-
-    [Header("타워 활성화 타이머")]
-    public float activateInterval = 10f;  // ★ 10초마다 다음 성 활성화
-    float activateTimer = 0f;
-
-    readonly List<SpawnPoint> points = new List<SpawnPoint>();
-    int prevLevel = -1;
+    [Header("난이도 / 스폰 데이터")]
+    public SpawnData[] spawnData;
+    public float Lv_Time = 10f;
     public int Level { get; private set; } = 0;
 
+    [Header("타워 활성화 순서 (드래그해서 순서를 정해주세요)")]
+    // ★ 여기에 EnemyTower1, 2, 3을 순서대로 넣으세요.
+    public List<SpawnPoint> towerSequence;
+
+    [Header("활성화 간격 (초)")]
+    public float activationInterval = 10f; // 10초마다 다음 타워 활성화
+
+    void Awake()
+    {
+        Instance = this;
+        // 시작 전에 모든 타워의 상태를 리셋해줍니다.
+        foreach (var tower in towerSequence)
+        {
+            if (tower != null) tower.ResetRuntimeFlags();
+        }
+    }
+
+    void Start()
+    {
+        // 순차적 활성화 코루틴 시작
+        StartCoroutine(ActivationRoutine());
+    }
+
+    void Update()
+    {
+        // 레벨 계산 (적 강해지는 로직) 유지
+        if (spawnData != null && spawnData.Length > 0)
+        {
+            float t = GameManager.instance.gameTime;
+            Level = Mathf.Min(Mathf.FloorToInt(t / Lv_Time), spawnData.Length - 1);
+        }
+    }
+
+    // ★ 1개 켜고 -> 10초 대기 -> 다음 거 켜고 -> 반복
+    IEnumerator ActivationRoutine()
+    {
+        foreach (var tower in towerSequence)
+        {
+            if (tower != null)
+            {
+                Debug.Log($"타워 활성화: {tower.name}");
+                tower.ActivateOnce();
+            }
+
+            // 다음 타워를 켜기 전 대기 (마지막 타워 켜고 나서는 대기해도 상관없으니 단순하게 처리)
+            yield return new WaitForSeconds(activationInterval);
+        }
+    }
+
+    // 데이터 참조용
     public SpawnData CurrentSpawnData
     {
         get
@@ -26,63 +69,12 @@ public class Spawner : MonoBehaviour
             return spawnData[Mathf.Clamp(Level, 0, spawnData.Length - 1)];
         }
     }
-
-    void Awake()
-    {
-        Instance = this;
-        points.Clear();
-        GetComponentsInChildren(true, points); // 또는 씬 전역 수집 버전이면 FindObjectsOfType 사용
-
-        foreach (var p in points) p?.ResetRuntimeFlags();
-    }
-
-    void Start()
-    {
-        ActivateOneVirginPoint();          // 시작: 왼쪽 성 1개 켜기
-        prevLevel = ComputeLevel();        // (spawnData 없어도 무관)
-        Level = prevLevel;
-    }
-
-    void Update()
-    {
-        // ① 스폰 난이도(Level)는 기존대로(선택)
-        Level = ComputeLevel();
-
-        // ② ★ 타워 활성화는 별도 타이머로 진행 (spawnData 개수와 무관)
-        activateTimer += Time.deltaTime;
-        if (activateTimer >= activateInterval)
-        {
-            activateTimer = 0f;
-            ActivateOneVirginPoint();      // 다음 성 하나 더 켬
-        }
-    }
-
-    int ComputeLevel()
-    {
-        // spawnData 없어도 0 반환 (스폰 포인트 활성화에는 영향 X)
-        if (spawnData == null || spawnData.Length == 0) return 0;
-        float t = GameManager.instance.gameTime;
-        return Mathf.Min(Mathf.FloorToInt(t / Lv_Time), spawnData.Length - 1);
-    }
-
-    void ActivateOneVirginPoint()
-    {
-        foreach (var p in points)
-        {
-            if (p == null) continue;
-            if (!p.PermanentlyOff && !p.EverActivated)
-            {
-                if (p.ActivateOnce())
-                    return; // 한 번에 1개만
-            }
-        }
-    }
-
 }
+
 [System.Serializable]
 public class SpawnData
 {
-    public float spawnTime; // SpawnPoint가 useSpawnerSpawnTime = true일 때 쓰는 간격(초)
+    public float spawnTime;
     public int spriteType;
     public int health;
     public float speed;
