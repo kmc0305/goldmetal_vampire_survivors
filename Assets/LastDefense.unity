@@ -249313,7 +249313,7 @@ MonoBehaviour:
   maxHealth: 1000
   currentHealth: 0
   isDead: 0
-  dropItemIndex: -1
+  IsKnockedBack: 0
   knockbackPower: 0
   knockbackDuration: 0
   invincibilityDuration: 0.3
@@ -271263,7 +271263,7 @@ MonoBehaviour:
   maxHealth: 200
   currentHealth: 0
   isDead: 0
-  dropItemIndex: -1
+  IsKnockedBack: 0
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
@@ -271572,7 +271572,7 @@ MonoBehaviour:
   maxHealth: 200
   currentHealth: 0
   isDead: 0
-  dropItemIndex: -1
+  IsKnockedBack: 0
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
@@ -325445,7 +325445,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   isDead: 0
-  dropItemIndex: -1
+  IsKnockedBack: 0
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
@@ -360347,7 +360347,7 @@ MonoBehaviour:
   maxHealth: 200
   currentHealth: 0
   isDead: 0
-  dropItemIndex: -1
+  IsKnockedBack: 0
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3
