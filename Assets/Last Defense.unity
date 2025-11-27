@@ -87813,7 +87813,7 @@ MonoBehaviour:
   - {fileID: 1324853772}
   - {fileID: 1738603049}
   - {fileID: 1279112658}
-  activationInterval: 1
+  activationInterval: 10
 --- !u!1 &452952954
 GameObject:
   m_ObjectHideFlags: 0
