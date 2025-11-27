@@ -287,12 +287,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 0
-  maxHealth: 10
-  currentHealth: 10
+  maxHealth: 20
+  currentHealth: 20
   isDead: 0
   dropItemIndex: -1
+  expReward: 1
   knockbackPower: 4
   knockbackDuration: 0.2
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -312,7 +316,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 512
-  detectionRadius: 25
+  detectionRadius: 5
   aiUpdateFrequency: 0.5
   attackDamage: 1
   attackCooldown: 1

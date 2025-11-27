@@ -109576,7 +109576,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 11.25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -109601,7 +109601,7 @@ Transform:
   m_GameObject: {fileID: 512662109}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.07, y: -2.61, z: -10}
+  m_LocalPosition: {x: 0.3, y: -10.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -192691,6 +192691,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &928721230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 928721232}
+  - component: {fileID: 928721231}
+  m_Layer: 0
+  m_Name: HealingAreaManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &928721231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928721230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b5c2fe6a48445ed88a6c399dbf786c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatueSpawner
+  healingStatuePrefab: {fileID: 5745390109216811210, guid: 2b7a94cbd390c45e3bda77e838787e2b, type: 3}
+  spawnInterval: 45
+--- !u!4 &928721232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928721230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.44543, y: -0.8091, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &929005497
 GameObject:
   m_ObjectHideFlags: 0
@@ -249318,10 +249364,12 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 0
-  knockbackDuration: 0
-  invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  expReward: 1
+  knockbackPower: 20
+  knockbackDuration: 0.2
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -262552,7 +262600,7 @@ Transform:
   m_GameObject: {fileID: 1213585756}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.07, y: -2.61, z: -10}
+  m_LocalPosition: {x: 0.3, y: -10.2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -271268,25 +271316,15 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 4
+  expReward: 1
+  knockbackPower: 20
   knockbackDuration: 0.2
-  invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1279112658}
-        m_TargetAssemblyTypeName: SpawnPoint, Assembly-CSharp
-        m_MethodName: DeactivatePermanently
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!212 &1279112657
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -271552,25 +271590,15 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 4
+  expReward: 1
+  knockbackPower: 20
   knockbackDuration: 0.2
-  invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1324853772}
-        m_TargetAssemblyTypeName: SpawnPoint, Assembly-CSharp
-        m_MethodName: DeactivatePermanently
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!212 &1324853771
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -280933,8 +280961,6 @@ Transform:
   - {fileID: 1469614342}
   - {fileID: 1939727176}
   - {fileID: 1535514159}
-  - {fileID: 1993236173}
-  - {fileID: 1885572946}
   m_Father: {fileID: 1018329400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1429176303
@@ -325349,7 +325375,7 @@ Transform:
   m_GameObject: {fileID: 1569412820}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.07, y: -2.61, z: 0}
+  m_LocalPosition: {x: 0.3, y: -10.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -325375,6 +325401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   inputVec: {x: 0, y: 0}
   speed: 5
+  runSpeedMultiplier: 2
 --- !u!114 &1569412826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325444,10 +325471,12 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 4
+  expReward: 1
+  knockbackPower: 20
   knockbackDuration: 0.2
-  invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
       m_Calls: []
@@ -360281,25 +360310,15 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
-  knockbackPower: 4
+  expReward: 1
+  knockbackPower: 20
   knockbackDuration: 0.2
-  invincibilityDuration: 0.3
-  invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
+  isKnockbackable: 1
+  invincibilityDuration: 0.2
+  invincibilityColor: {r: 1, g: 0.5, b: 0.5, a: 0.5}
   onDie:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1738603049}
-        m_TargetAssemblyTypeName: SpawnPoint, Assembly-CSharp
-        m_MethodName: DeactivatePermanently
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!212 &1738603048
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -395084,80 +395103,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1876394746}
   m_CullTransparentMesh: 1
---- !u!1001 &1885572945
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1409698712}
-    m_Modifications:
-    - target: {fileID: 5391186442010338111, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 33.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -17
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Name
-      value: PF Props - Statue 01 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
---- !u!4 &1885572946 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-  m_PrefabInstance: {fileID: 1885572945}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1897168665
 GameObject:
   m_ObjectHideFlags: 0
@@ -416797,80 +416742,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950613521}
   m_CullTransparentMesh: 1
---- !u!1001 &1993236172
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1409698712}
-    m_Modifications:
-    - target: {fileID: 5391186442010338111, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -22.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 73.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Name
-      value: PF Props - Statue 01
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505737750455, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7947911505844789836, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
---- !u!4 &1993236173 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7947911505737750448, guid: d730038d263986f4dac93230e1dd62b0, type: 3}
-  m_PrefabInstance: {fileID: 1993236172}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2001986500
 GameObject:
   m_ObjectHideFlags: 0
@@ -447500,3 +447371,4 @@ SceneRoots:
   - {fileID: 1333430426}
   - {fileID: 483525607}
   - {fileID: 2001986504}
+  - {fileID: 928721232}
