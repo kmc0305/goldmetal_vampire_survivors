@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 186126665834846205}
   - component: {fileID: 9162774562913268709}
   m_Layer: 0
-  m_Name: Boss_Orc
+  m_Name: Boss_Orc 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 589264519, guid: bba34b8f6c6b47d4a83317ae9a0b3b02, type: 3}
+  m_Sprite: {fileID: 1650516199, guid: c53e88e53cc245b41820069e4466c03d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

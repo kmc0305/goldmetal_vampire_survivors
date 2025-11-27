@@ -7,7 +7,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss_Orc_Move
+  m_Name: Boss_Orc2_Move
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 123f32aa45e4f194bb78c91ef18e92a9, type: 2}
+  m_Motion: {fileID: 7400000, guid: 3b6b6e6b01398354d987e49c60c4ff94, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -32,7 +32,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss_Orc
+  m_Name: Boss_Orc2
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -55,7 +55,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss_Orc_Idle
+  m_Name: Boss_Orc2_Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -68,7 +68,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 4924624508674a64593d6d7ef464fdd4, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6964c9f0777fcbd48b7cdc794af124d0, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -81,7 +81,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Boss_Orc_Attack
+  m_Name: Boss_Orc2_Attack
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -94,7 +94,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8c3b555867743be408a851d95b2f96f7, type: 2}
+  m_Motion: {fileID: 7400000, guid: abf9e61e5c014f742978566c375e23bf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -114,7 +114,7 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8782633766861165177}
-    m_Position: {x: 235, y: 65, z: 0}
+    m_Position: {x: 240, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6404783609479283880}
     m_Position: {x: 270, y: 130, z: 0}
