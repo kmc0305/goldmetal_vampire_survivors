@@ -109576,7 +109576,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 11.25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -192721,7 +192721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatueSpawner
   healingStatuePrefab: {fileID: 5745390109216811210, guid: 2b7a94cbd390c45e3bda77e838787e2b, type: 3}
-  spawnInterval: 45
+  spawnInterval: 30
 --- !u!4 &928721232
 Transform:
   m_ObjectHideFlags: 0
@@ -249385,7 +249385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllySpawner
   allyPrefabIndex: 2
-  spawnInterval: 1
+  spawnInterval: 0.3
   spawnRadius: 3
 --- !u!114 &1158587737
 MonoBehaviour:
@@ -271400,7 +271400,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
   poolId: 0
   rangedEnemyId: 1
-  spawnInterval: 3
+  spawnInterval: 1
   animator: {fileID: 1279112661}
   burningThreshold: 0.4
   hpBarRoot: {fileID: 166792680}
@@ -271673,7 +271673,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
   poolId: 0
   rangedEnemyId: 1
-  spawnInterval: 3
+  spawnInterval: 1
   animator: {fileID: 1324853775}
   burningThreshold: 0.4
   hpBarRoot: {fileID: 116336345}
@@ -360391,7 +360391,7 @@ MonoBehaviour:
   bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
   rangedEnemyId: 1
-  spawnInterval: 3
+  spawnInterval: 1
   animator: {fileID: 1738603053}
   burningThreshold: 0.4
   hpBarRoot: {fileID: 1461080390}

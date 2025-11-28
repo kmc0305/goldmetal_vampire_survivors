@@ -156,7 +156,7 @@ public class Targetable : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        DropItem();
+        
 
         // 킬 수 증가 및 경험치 획득
         if (GameManager.instance != null && faction == Faction.Enemy)
