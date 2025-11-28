@@ -19,7 +19,17 @@ public class Enemy : MonoBehaviour
     public float detectionRadius = 100f;
     public float aiUpdateFrequency = 0.5f;
 
+    // 성 우선 공격 범위 (노란 원)
+    public float castlePriorityRadius = 15.0f;
+
     private float aiUpdateRandomDelay = 0.1f;
+
+    // 물리 연산용 버퍼
+    private Collider2D[] targetBuffer = new Collider2D[30]; // 버퍼 크기도 조금 늘림
+    private ContactFilter2D contactFilter;
+
+    // ★ [추가] 성을 미리 기억해둘 변수
+    private Targetable cachedCastle;
 
     [Header("Friendly Tower Avoidance")]
     public float avoidDuration = 0.6f;
@@ -45,10 +55,6 @@ public class Enemy : MonoBehaviour
     private Targetable myTargetable;
     private Coroutine aiCoroutine;
 
-    private float maxHealth;
-    private float health;
-
-    // 움직임 허가 플래그 (init 대기용)
     private bool isLive = false;
 
     void Awake()
@@ -61,7 +67,7 @@ public class Enemy : MonoBehaviour
     void OnEnable()
     {
         currentTarget = null;
-        isLive = false; // 태어날 때는 무조건 false. init()을 기다림.
+        isLive = false;
         spawnGraceUntil = Time.time + avoidanceGrace;
 
         if (aiCoroutine != null) StopCoroutine(aiCoroutine);
@@ -70,34 +76,55 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        // 강제 실행 코드 삭제됨. 
-        // 이제 SpawnPoint가 init을 안 부르면 얘는 영원히 안 움직이는 게 정상임.
         if (targetLayer.value == 0)
         {
             Debug.LogError($"⛔ [Enemy] '{name}' Target Layer가 설정되지 않았습니다!");
+        }
+
+        contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(targetLayer);
+        contactFilter.useTriggers = true;
+
+        // ★ [핵심 수정] 태어날 때, 맵에 있는 'Castle'을 찾아서 기억해둠!
+        GameObject castleObj = GameObject.FindGameObjectWithTag("Castle");
+        if (castleObj != null)
+        {
+            cachedCastle = castleObj.GetComponent<Targetable>();
+        }
+        else
+        {
+            // 성을 못 찾았으면 경고 (태그 확인 필수!)
+            // Debug.LogWarning("Enemy: Castle 태그를 가진 오브젝트를 찾을 수 없습니다.");
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(1, 0, 0, 0.3f);
+        Gizmos.color = new Color(1, 0, 0, 0.1f);
         Gizmos.DrawSphere(transform.position, detectionRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, castlePriorityRadius);
+
+        if (currentTarget != null && isLive)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, currentTarget.transform.position);
+
+            if (currentTarget.CompareTag("Castle"))
+                Gizmos.DrawSphere(currentTarget.transform.position, 0.5f);
+        }
     }
 
-    // ★ SpawnPoint에서 이 함수를 불러줘야만 움직임 시작!
+    // SpawnPoint에서 호출
     public void init(SpawnData data)
     {
         speed = data.speed;
-        maxHealth = data.health;
-        health = data.health;
-
         if (myTargetable != null)
         {
             myTargetable.maxHealth = data.health;
             myTargetable.currentHealth = data.health;
         }
-
-        // 데이터 세팅 끝났으니 움직임 허가
         isLive = true;
     }
 
@@ -141,33 +168,76 @@ public class Enemy : MonoBehaviour
 
     Targetable FindClosestTarget()
     {
-        // init 안됐으면 타겟 탐색도 안 함
         if (!isLive) return null;
 
-        float closestDist = float.MaxValue;
-        Targetable bestTarget = null;
+        // 1. 유닛 탐색 (기존 로직)
+        Targetable bestUnit = null;
+        float closestUnitDist = float.MaxValue;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
+        // 주변 유닛들을 물리 탐색
+        int count = Physics2D.OverlapCircle(transform.position, detectionRadius, contactFilter, targetBuffer);
 
-        foreach (Collider2D col in hits)
+        for (int i = 0; i < count; i++)
         {
-            Targetable t = col.GetComponent<Targetable>();
-            if (t != null && !t.isDead)
+            Collider2D col = targetBuffer[i];
+
+            // 성은 따로 계산할 거니까 여기서 걸려도 무시 (중복 계산 방지)
+            if (col.CompareTag("Castle")) continue;
+
+            if (col.TryGetComponent(out Targetable t))
             {
-                float dist = Vector2.Distance(transform.position, col.transform.position);
-                if (dist < closestDist)
+                if (!t.isDead)
                 {
-                    closestDist = dist;
-                    bestTarget = t;
+                    float dist = Vector2.Distance(transform.position, col.ClosestPoint(transform.position));
+                    if (dist < closestUnitDist)
+                    {
+                        closestUnitDist = dist;
+                        bestUnit = t;
+                    }
                 }
             }
         }
-        return bestTarget;
+
+        // 2. 성 거리 계산 (★ 물리 탐색에 의존하지 않고 직접 계산)
+        float distToCastle = float.MaxValue;
+        bool isCastleAlive = (cachedCastle != null && !cachedCastle.isDead);
+
+        if (isCastleAlive)
+        {
+            // 내 위치에서 미리 기억해둔 성까지의 거리 계산
+            distToCastle = Vector2.Distance(transform.position, cachedCastle.GetComponent<Collider2D>().ClosestPoint(transform.position));
+        }
+
+        // 3. ★ 최종 우선순위 결정 로직 ★
+
+        // [우선순위 1] 성이 살아있고, '노란 원(15m)' 안에 들어왔는가?
+        if (isCastleAlive && distToCastle <= castlePriorityRadius)
+        {
+            // 유닛이 옆에 있든 말든 무조건 성 공격!
+            return cachedCastle;
+        }
+
+        // [우선순위 2] 노란 원 밖이라면? -> 더 가까운 놈 공격
+        if (bestUnit != null)
+        {
+            // 유닛이 성보다 가까우면 유닛 공격
+            if (closestUnitDist < distToCastle)
+            {
+                return bestUnit;
+            }
+        }
+
+        // 유닛이 없거나, 성이 유닛보다 가까우면 성 공격
+        if (isCastleAlive)
+        {
+            return cachedCastle;
+        }
+
+        return bestUnit;
     }
 
     void FixedUpdate()
     {
-        // isLive가 false면 절대 움직이지 않음
         if (!isLive || (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)))
         {
             if (myTargetable != null && !myTargetable.IsKnockedBack)
@@ -224,11 +294,14 @@ public class Enemy : MonoBehaviour
     void PerformAreaAttack()
     {
         if (areaAttackEffectPrefab != null) Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, areaAttackRadius, targetLayer);
-        foreach (Collider2D hit in hits)
+
+        int count = Physics2D.OverlapCircle(transform.position, areaAttackRadius, contactFilter, targetBuffer);
+        for (int i = 0; i < count; i++)
         {
-            Targetable t = hit.GetComponent<Targetable>();
-            if (t != null && !t.isDead) t.TakeDamage(attackDamage, transform);
+            if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead)
+            {
+                t.TakeDamage(attackDamage, transform);
+            }
         }
     }
 
@@ -258,8 +331,6 @@ public class Enemy : MonoBehaviour
         attackCooldown = spec.attackCooldown;
         detectionRadius = spec.detectionRadius;
         speed = spec.moveSpeed;
-        maxHealth = spec.maxHP;
-        health = spec.maxHP;
 
         if (myTargetable != null)
         {
