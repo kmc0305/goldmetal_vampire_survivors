@@ -18,17 +18,13 @@ public class Enemy : MonoBehaviour
     public LayerMask targetLayer;
     public float detectionRadius = 100f;
     public float aiUpdateFrequency = 0.5f;
-
-    // 성 우선 공격 범위 (노란 원)
     public float castlePriorityRadius = 15.0f;
 
     private float aiUpdateRandomDelay = 0.1f;
 
-    // 물리 연산용 버퍼
-    private Collider2D[] targetBuffer = new Collider2D[30]; // 버퍼 크기도 조금 늘림
+    private Collider2D[] targetBuffer = new Collider2D[30];
     private ContactFilter2D contactFilter;
 
-    // ★ [추가] 성을 미리 기억해둘 변수
     private Targetable cachedCastle;
 
     [Header("Friendly Tower Avoidance")]
@@ -51,6 +47,7 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer spriter;
+    private Animator anim;   // ★ 공격 애니메이션용
     private Targetable currentTarget;
     private Targetable myTargetable;
     private Coroutine aiCoroutine;
@@ -61,6 +58,7 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
         myTargetable = GetComponent<Targetable>();
     }
 
@@ -69,6 +67,8 @@ public class Enemy : MonoBehaviour
         currentTarget = null;
         isLive = false;
         spawnGraceUntil = Time.time + avoidanceGrace;
+        avoidDir = Vector2.zero;
+        avoidUntil = 0f;
 
         if (aiCoroutine != null) StopCoroutine(aiCoroutine);
         aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
@@ -76,47 +76,15 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        if (targetLayer.value == 0)
-        {
-            Debug.LogError($"⛔ [Enemy] '{name}' Target Layer가 설정되지 않았습니다!");
-        }
-
         contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(targetLayer);
         contactFilter.useTriggers = true;
 
-        // ★ [핵심 수정] 태어날 때, 맵에 있는 'Castle'을 찾아서 기억해둠!
         GameObject castleObj = GameObject.FindGameObjectWithTag("Castle");
         if (castleObj != null)
-        {
             cachedCastle = castleObj.GetComponent<Targetable>();
-        }
-        else
-        {
-            // 성을 못 찾았으면 경고 (태그 확인 필수!)
-            // Debug.LogWarning("Enemy: Castle 태그를 가진 오브젝트를 찾을 수 없습니다.");
-        }
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(1, 0, 0, 0.1f);
-        Gizmos.DrawSphere(transform.position, detectionRadius);
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, castlePriorityRadius);
-
-        if (currentTarget != null && isLive)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, currentTarget.transform.position);
-
-            if (currentTarget.CompareTag("Castle"))
-                Gizmos.DrawSphere(currentTarget.transform.position, 0.5f);
-        }
-    }
-
-    // SpawnPoint에서 호출
     public void init(SpawnData data)
     {
         speed = data.speed;
@@ -154,14 +122,13 @@ public class Enemy : MonoBehaviour
         while (gameObject.activeSelf)
         {
             if (currentTarget != null && currentTarget.isDead)
-            {
                 currentTarget = null;
-            }
 
             currentTarget = FindClosestTarget();
 
             float wait = aiUpdateFrequency + Random.Range(-aiUpdateRandomDelay, aiUpdateRandomDelay);
             if (wait < 0.1f) wait = 0.1f;
+
             yield return new WaitForSeconds(wait);
         }
     }
@@ -170,18 +137,15 @@ public class Enemy : MonoBehaviour
     {
         if (!isLive) return null;
 
-        // 1. 유닛 탐색 (기존 로직)
         Targetable bestUnit = null;
         float closestUnitDist = float.MaxValue;
 
-        // 주변 유닛들을 물리 탐색
         int count = Physics2D.OverlapCircle(transform.position, detectionRadius, contactFilter, targetBuffer);
 
         for (int i = 0; i < count; i++)
         {
             Collider2D col = targetBuffer[i];
 
-            // 성은 따로 계산할 거니까 여기서 걸려도 무시 (중복 계산 방지)
             if (col.CompareTag("Castle")) continue;
 
             if (col.TryGetComponent(out Targetable t))
@@ -198,47 +162,31 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // 2. 성 거리 계산 (★ 물리 탐색에 의존하지 않고 직접 계산)
         float distToCastle = float.MaxValue;
-        bool isCastleAlive = (cachedCastle != null && !cachedCastle.isDead);
+        bool castleAlive = (cachedCastle != null && !cachedCastle.isDead);
 
-        if (isCastleAlive)
+        if (castleAlive)
         {
-            // 내 위치에서 미리 기억해둔 성까지의 거리 계산
-            distToCastle = Vector2.Distance(transform.position, cachedCastle.GetComponent<Collider2D>().ClosestPoint(transform.position));
+            distToCastle = Vector2.Distance(transform.position,
+                cachedCastle.GetComponent<Collider2D>().ClosestPoint(transform.position));
         }
 
-        // 3. ★ 최종 우선순위 결정 로직 ★
-
-        // [우선순위 1] 성이 살아있고, '노란 원(15m)' 안에 들어왔는가?
-        if (isCastleAlive && distToCastle <= castlePriorityRadius)
-        {
-            // 유닛이 옆에 있든 말든 무조건 성 공격!
+        if (castleAlive && distToCastle <= castlePriorityRadius)
             return cachedCastle;
-        }
 
-        // [우선순위 2] 노란 원 밖이라면? -> 더 가까운 놈 공격
-        if (bestUnit != null)
-        {
-            // 유닛이 성보다 가까우면 유닛 공격
-            if (closestUnitDist < distToCastle)
-            {
-                return bestUnit;
-            }
-        }
+        if (bestUnit != null && closestUnitDist < distToCastle)
+            return bestUnit;
 
-        // 유닛이 없거나, 성이 유닛보다 가까우면 성 공격
-        if (isCastleAlive)
-        {
+        if (castleAlive)
             return cachedCastle;
-        }
 
         return bestUnit;
     }
 
     void FixedUpdate()
     {
-        if (!isLive || (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)))
+        if (!isLive ||
+            (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)))
         {
             if (myTargetable != null && !myTargetable.IsKnockedBack)
                 rb.linearVelocity = Vector2.zero;
@@ -257,8 +205,7 @@ public class Enemy : MonoBehaviour
 
         if (Time.time < avoidUntil)
         {
-            dir = Vector2.Lerp(dir, avoidDir, 0.7f).normalized;
-            dir *= avoidSpeedMul;
+            dir = Vector2.Lerp(dir, avoidDir, 0.7f).normalized * avoidSpeedMul;
         }
 
         Vector2 nextPos = currentPos + dir * speed * Time.fixedDeltaTime;
@@ -280,12 +227,16 @@ public class Enemy : MonoBehaviour
         if (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)) return;
         if (Time.time < lastAttackTime + attackCooldown) return;
 
-        Targetable target = collision.gameObject.GetComponent<Targetable>();
+        Targetable t = collision.gameObject.GetComponent<Targetable>();
 
-        if (target != null && ((1 << collision.gameObject.layer) & targetLayer) != 0)
+        if (t != null && ((1 << collision.gameObject.layer) & targetLayer) != 0)
         {
+            // ★ 공격 애니메이션 추가
+            if (anim != null)
+                anim.SetTrigger("Attack");
+
             if (isAreaAttack) PerformAreaAttack();
-            else target.TakeDamage(attackDamage, transform);
+            else t.TakeDamage(attackDamage, transform);
 
             lastAttackTime = Time.time;
         }
@@ -293,40 +244,22 @@ public class Enemy : MonoBehaviour
 
     void PerformAreaAttack()
     {
-        if (areaAttackEffectPrefab != null) Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
+        if (areaAttackEffectPrefab != null)
+            Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
 
         int count = Physics2D.OverlapCircle(transform.position, areaAttackRadius, contactFilter, targetBuffer);
+
         for (int i = 0; i < count; i++)
         {
             if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead)
-            {
                 t.TakeDamage(attackDamage, transform);
-            }
-        }
-    }
-
-    public void TryAvoid(Vector2 obstaclePos)
-    {
-        if (!isLive) return;
-        if (Time.time < spawnGraceUntil) return;
-        if (Time.time < avoidUntil) return;
-
-        if (rb.linearVelocity.magnitude > minSpeedToAvoid) return;
-
-        Vector2 toObstacle = (obstaclePos - (Vector2)transform.position).normalized;
-        float dot = Vector2.Dot(rb.linearVelocity.normalized, toObstacle);
-
-        if (dot > minDotBlock)
-        {
-            Vector2 away = -(toObstacle + Random.insideUnitCircle * 0.5f).normalized;
-            avoidDir = away;
-            avoidUntil = Time.time + avoidDuration;
         }
     }
 
     public void ApplyBossSpec(BossSpec spec)
     {
         if (spec == null) return;
+
         attackDamage = spec.attackDamage;
         attackCooldown = spec.attackCooldown;
         detectionRadius = spec.detectionRadius;
@@ -337,13 +270,13 @@ public class Enemy : MonoBehaviour
             myTargetable.maxHealth = spec.maxHP;
             myTargetable.currentHealth = spec.maxHP;
         }
+
         isAreaAttack = spec.isAreaAttack;
         areaAttackRadius = spec.areaRadius;
         if (spec.areaAttackEffect != null)
             areaAttackEffectPrefab = spec.areaAttackEffect;
 
         transform.localScale = Vector3.one * spec.scaleMultiplier;
-
         isLive = true;
     }
 }
