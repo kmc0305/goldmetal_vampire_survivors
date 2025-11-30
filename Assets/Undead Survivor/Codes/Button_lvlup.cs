@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.EventSystems;
 
-public class Button_lvlup : MonoBehaviour
+public class Button_lvlup : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
     public GameObject wpn;
     public int w_level=0;
@@ -10,12 +11,22 @@ public class Button_lvlup : MonoBehaviour
 
     Image icon;
     Text textlevel;
+    public GameObject connectedPanel;
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        connectedPanel.SetActive(true);
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        connectedPanel.SetActive(false);
+    }
     void Awake()
     {
         icon=GetComponentsInChildren<Image>()[1];
         icon.sprite = iconimg;
         textlevel= GetComponentInChildren<Text>();
+        connectedPanel.GetComponentsInChildren<Text>()[2].text = "Lvl. " + w_level;
     }
 
     void LateUpdate()
@@ -41,6 +52,7 @@ public class Button_lvlup : MonoBehaviour
             }
         }
         w_level++;
+        connectedPanel.GetComponentsInChildren<Text>()[2].text = "Lvl. "+w_level;
         GameManager.instance.points--;
 
         if (w_level >= 5)   //무기의 만렙은 5을 기본으로 한다.(0레벨은 무기 미사용)
