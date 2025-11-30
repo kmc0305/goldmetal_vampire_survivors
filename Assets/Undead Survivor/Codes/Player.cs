@@ -3,8 +3,7 @@ using UnityEngine.InputSystem;
 
 /// <summary>
 /// 플레이어의 입력을 받고, 이동 및 애니메이션을 처리합니다.
-/// [기능 추가]: 스페이스바 입력 시 아군 집결(CallAllies)
-/// [수정]: Debug 모호함 해결
+/// [기능 추가]: 스페이스바 입력 시 아군 집결(CallAllies) - 반경 50m 이내, 타워 회피 적용
 /// </summary>
 public class Player : MonoBehaviour
 {
@@ -28,7 +27,6 @@ public class Player : MonoBehaviour
         if (speed == 0) speed = 8;
     }
 
-    // ✅ [추가] 스페이스바 입력을 감지하여 아군 호출
     private void Update()
     {
         // 키보드가 연결되어 있고 스페이스바를 눌렀을 때
@@ -38,21 +36,41 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ✅ [추가] 모든 아군에게 현재 내 위치로 오라고 명령
+    // ✅ [수정] 반경 50 이내 아군에게 UnitMover2D를 통해 이동 명령 (장애물 회피 포함)
     void CallAllies()
     {
-        // AllyAI의 정적 리스트를 순회하며 명령 전달 (매우 빠름)
         if (AllyAI.ActiveAllies != null)
         {
+            float range = 50f;
+            float rangeSq = range * range; // 최적화를 위해 거리 제곱값 미리 계산
+            Vector2 playerPos = transform.position;
+
+            int count = 0;
+
             foreach (var ally in AllyAI.ActiveAllies)
             {
                 if (ally != null && ally.gameObject.activeSelf)
                 {
-                    ally.CommandMoveTo(transform.position);
+                    // 1. 거리 체크 (현재 위치와 아군 위치 사이의 거리 제곱 비교)
+                    // Vector2로 캐스팅하여 Z축 높이 차이로 인한 오차 방지
+                    float distSq = (playerPos - (Vector2)ally.transform.position).sqrMagnitude;
+
+                    if (distSq <= rangeSq)
+                    {
+                        // 2. UnitMover2D 컴포넌트 가져오기
+                        // (AllyAI와 같은 오브젝트에 붙어있다고 가정)
+                        UnitMover2D mover = ally.GetComponent<UnitMover2D>();
+
+                        if (mover != null)
+                        {
+                            // 3. 타워 회피 알고리즘이 포함된 SetMoveTarget 호출
+                            mover.SetMoveTarget(playerPos);
+                            count++;
+                        }
+                    }
                 }
             }
-            // System.Diagnostics와의 충돌 방지를 위해 UnityEngine.Debug 명시
-            UnityEngine.Debug.Log("🚩 아군 집결 명령 (Recall)!");
+            UnityEngine.Debug.Log($"🚩 아군 집결 명령! (반경 50 내 {count}기 호출)");
         }
     }
 
