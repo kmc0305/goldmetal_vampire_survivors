@@ -109898,11 +109898,11 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 55.603848
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3895
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -109986,7 +109986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
   m_ComponentVersion: 1
-  m_AssetsPPU: 12
+  m_AssetsPPU: 9
   m_RefResolutionX: 135
   m_RefResolutionY: 270
   m_CropFrame: 0
@@ -180135,7 +180135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::cameraLock
   virtualCamera: {fileID: 1213585757}
-  cameraMoveSpeed: 20
+  cameraMoveSpeed: 40
   edgeScrollSize: 40
 --- !u!1 &897784349
 GameObject:
@@ -193147,7 +193147,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3840
+    m_Bits: 3904
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0cb4cbb1c33ef9d45827ecfb09f11310, type: 2}
   m_TargetDisplay: 0
