@@ -16,7 +16,7 @@ MonoBehaviour:
   attackCooldown: 1
   isAreaAttack: 1
   areaRadius: 3
-  areaAttackEffect: {fileID: 405799617569640876, guid: c83e6f3a82e6ff940a54312d46aa3896, type: 3}
+  areaAttackEffect: {fileID: 1074014484771137264, guid: 3fda8dc752d61a8409275e8eaa2a0321, type: 3}
   detectionRadius: 50
   moveSpeed: 2
   maxHP: 300
