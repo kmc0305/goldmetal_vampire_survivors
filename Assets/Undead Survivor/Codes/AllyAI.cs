@@ -6,18 +6,20 @@ using Vector2 = UnityEngine.Vector2;
 
 public class AllyAI : MonoBehaviour
 {
-    // 활성화된 모든 아군 유닛 전역 리스트
     public static List<AllyAI> ActiveAllies = new List<AllyAI>();
 
     [Header("기본 능력치")]
     public float speed = 2.5f;
 
     [Header("AI 설정")]
-    public LayerMask targetLayer;       // 공격할 대상(적)의 레이어
-    public float detectionRadius = 15f; // 기본은 15f (너 작업 버전 유지)
+    public LayerMask targetLayer;
+    public float baseDetectionRadius = 15f; // 기본(성 근처) 탐지 거리
+    public float wideDetectionRadius = 100f; // 성 밖 탐지 거리
+    public float castleSafeDistance = 20f;   // 성으로부터의 기준 거리 (이 거리 안이면 base, 밖이면 wide)
+
     public float aiUpdateFrequency = 0.5f;
 
-    // 추적 포기 거리 = 탐지 반경 x 1.3
+    // 추적 포기 거리 배수
     private float giveUpRangeMultiplier = 1.3f;
     private float aiUpdateRandomDelay = 0.1f;
 
@@ -34,6 +36,9 @@ public class AllyAI : MonoBehaviour
     private bool isKnockedBack = false;
     private Animator anim;
 
+    // 성(Castle) 참조 변수 추가
+    private Transform castleTransform;
+
     // 집결(리콜) 모드
     private bool isRecallMode = false;
     private Vector2 recallTargetPos;
@@ -46,14 +51,26 @@ public class AllyAI : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    void Start()
+    {
+        // 씬에서 "Castle" 태그를 가진 오브젝트를 찾음 (성의 태그를 꼭 Castle로 설정해줘!)
+        GameObject castleObj = GameObject.FindGameObjectWithTag("Castle");
+        if (castleObj != null)
+        {
+            castleTransform = castleObj.transform;
+        }
+        else
+        {
+            Debug.LogWarning("AllyAI: 'Castle' 태그를 가진 오브젝트를 찾을 수 없어! 기본 탐지 거리만 사용됨.");
+        }
+    }
+
     void OnEnable()
     {
         isKnockedBack = false;
         isRecallMode = false;
-
         ActiveAllies.Add(this);
 
-        // 초기 AI 시작은 랜덤 딜레이 후
         if (aiCoroutine == null)
             aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
     }
@@ -61,18 +78,15 @@ public class AllyAI : MonoBehaviour
     void OnDisable()
     {
         ActiveAllies.Remove(this);
-
         if (aiCoroutine != null)
         {
             StopCoroutine(aiCoroutine);
             aiCoroutine = null;
         }
-
         currentTarget = null;
         rb.linearVelocity = Vector2.zero;
     }
 
-    // 플레이어 명령 집결
     public void CommandMoveTo(Vector2 targetPos)
     {
         isRecallMode = true;
@@ -80,11 +94,29 @@ public class AllyAI : MonoBehaviour
         currentTarget = null;
     }
 
+    // 현재 상황에 맞는 탐지 거리 계산 함수
+    float GetCurrentDetectionRadius()
+    {
+        // 성을 못 찾았으면 기본값 반환
+        if (castleTransform == null) return baseDetectionRadius;
+
+        float distToCastle = Vector2.Distance(transform.position, castleTransform.position);
+
+        // 성과의 거리가 20 이하(내부)면 15, 아니면 100 반환
+        if (distToCastle <= castleSafeDistance)
+        {
+            return baseDetectionRadius;
+        }
+        else
+        {
+            return wideDetectionRadius;
+        }
+    }
+
     IEnumerator UpdateTargetCoroutineDelayed()
     {
         float initialDelay = Random.Range(0f, aiUpdateFrequency);
         yield return new WaitForSeconds(initialDelay);
-
         StartCoroutine(UpdateTargetCoroutine());
     }
 
@@ -94,7 +126,9 @@ public class AllyAI : MonoBehaviour
         {
             if (!isRecallMode)
             {
-                // 타겟이 있다면 상태 체크
+                // 현재 적용되어야 할 탐지 거리 가져오기
+                float currentRadius = GetCurrentDetectionRadius();
+
                 if (currentTarget != null)
                 {
                     if (currentTarget.isDead)
@@ -104,15 +138,15 @@ public class AllyAI : MonoBehaviour
                     else
                     {
                         float dist = Vector2.Distance(transform.position, currentTarget.transform.position);
-                        if (dist > detectionRadius * giveUpRangeMultiplier)
+                        // 추적 포기 거리도 현재 탐지 거리에 비례해서 계산
+                        if (dist > currentRadius * giveUpRangeMultiplier)
                             currentTarget = null;
                     }
                 }
 
-                // 타겟 없으면 탐색
                 if (currentTarget == null)
                 {
-                    currentTarget = FindClosestTarget();
+                    currentTarget = FindClosestTarget(currentRadius);
                 }
             }
 
@@ -122,12 +156,14 @@ public class AllyAI : MonoBehaviour
         }
     }
 
-    Targetable FindClosestTarget()
+    // 인자로 탐지 범위를 받도록 수정
+    Targetable FindClosestTarget(float radius)
     {
         float closest = float.MaxValue;
         Targetable best = null;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
+        // 넘겨받은 radius 사용
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer);
         foreach (var col in hits)
         {
             Targetable t = col.GetComponent<Targetable>();
@@ -146,7 +182,6 @@ public class AllyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 플레이어가 선택해서 이동 시키는 중이면 AI 멈춤
         var mover = GetComponent<UnitMover2D>();
         if (mover && mover.HasCommand())
         {
@@ -154,14 +189,11 @@ public class AllyAI : MonoBehaviour
             return;
         }
 
-        // 넉백 중이면 이동 불가
         if (isKnockedBack) return;
 
-        // 집결 모드 이동
         if (isRecallMode)
         {
             float dist = Vector2.Distance(transform.position, recallTargetPos);
-
             if (dist <= recallStopDistance)
             {
                 isRecallMode = false;
@@ -171,13 +203,11 @@ public class AllyAI : MonoBehaviour
             {
                 Vector2 dir = (recallTargetPos - (Vector2)transform.position).normalized;
                 Vector2 step = dir * speed * 1.2f * Time.fixedDeltaTime;
-
                 rb.MovePosition(rb.position + step);
             }
             return;
         }
 
-        // 일반 AI 이동
         if (currentTarget == null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -203,7 +233,6 @@ public class AllyAI : MonoBehaviour
         }
 
         if (currentTarget == null) return;
-
         spriter.flipX = currentTarget.transform.position.x > rb.position.x;
     }
 
@@ -218,7 +247,6 @@ public class AllyAI : MonoBehaviour
         if (collision.gameObject == currentTarget.gameObject)
         {
             anim.SetTrigger("Attack");
-
             currentTarget.TakeDamage(attackDamage, transform);
             lastAttackTime = Time.time;
         }
@@ -234,23 +262,36 @@ public class AllyAI : MonoBehaviour
     {
         isKnockedBack = true;
         isRecallMode = false;
-
         rb.linearVelocity = dir.normalized * power;
         anim.SetFloat("Speed", 0f);
-
         yield return new WaitForSeconds(duration);
-
         rb.linearVelocity = Vector2.zero;
         isKnockedBack = false;
     }
 
-    // 기즈모 표시
     void OnDrawGizmosSelected()
     {
+        // 기즈모에서도 현재 상태에 따라 범위를 보여줌
+        float currentRadius = baseDetectionRadius;
+
+        // 에디터 모드에서는 castleTransform이 연결 안 되어 있을 수 있으니 태그로 임시 찾기 (선택사항)
+        if (Application.isPlaying && castleTransform != null)
+        {
+            float distToCastle = Vector2.Distance(transform.position, castleTransform.position);
+            if (distToCastle > castleSafeDistance) currentRadius = wideDetectionRadius;
+        }
+
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.DrawWireSphere(transform.position, currentRadius);
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius * giveUpRangeMultiplier);
+        Gizmos.DrawWireSphere(transform.position, currentRadius * giveUpRangeMultiplier);
+
+        // 성 안전 거리도 빨간색으로 살짝 표시 (참고용)
+        if (castleTransform != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(castleTransform.position, castleSafeDistance);
+        }
     }
 }

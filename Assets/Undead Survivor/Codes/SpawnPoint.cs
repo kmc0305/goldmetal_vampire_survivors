@@ -35,15 +35,24 @@ public class SpawnPoint : MonoBehaviour
     private bool bossSpawned = false;
     private int spawnCount = 0;
     private Coroutine spawnCoroutine;
+
+    // [추가됨] 컴포넌트 제어를 위한 변수
     private Targetable myTargetable;
+    private Collider2D myCollider;
 
     void Awake()
     {
         if (!animator) animator = GetComponent<Animator>();
+
         myTargetable = GetComponent<Targetable>();
+        // [추가됨] 콜라이더 가져오기
+        myCollider = GetComponent<Collider2D>();
 
         if (hpBarRoot) hpBarRoot.localPosition = barOffset;
         if (hpFill) hpFill.localScale = new Vector3(barWidth, barHeight, 1f);
+
+        // 초기 상태: 일단 꺼둠 (Spawner가 ResetRuntimeFlags를 호출하며 확실히 정리함)
+        SetTargetableState(false);
 
         UpdateHPBar();
     }
@@ -64,6 +73,9 @@ public class SpawnPoint : MonoBehaviour
 
         EverActivated = true;
         IsEnabled = true;
+
+        // [추가됨] 활성화되면 타겟팅 가능하게 변경
+        SetTargetableState(true);
 
         if (animator)
         {
@@ -97,7 +109,6 @@ public class SpawnPoint : MonoBehaviour
         int currentPoolId = poolId;
         SpawnData dataToUse = null;
 
-        // 1. Spawner에서 데이터 가져오기 시도
         if (Spawner.Instance != null && Spawner.Instance.CurrentSpawnData != null)
         {
             currentPoolId = Spawner.Instance.CurrentSpawnData.spriteType;
@@ -122,15 +133,11 @@ public class SpawnPoint : MonoBehaviour
             }
             else
             {
-                // ★ [수정됨] float -> int 형변환 오류 해결!
                 SpawnData defaultData = new SpawnData();
                 defaultData.speed = enemyScript.speed;
-
                 var t = enemyScript.GetComponent<Targetable>();
-                // (int)를 붙여서 강제로 정수로 변환함
                 defaultData.health = (int)(t ? t.maxHealth : 10f);
                 defaultData.spriteType = currentPoolId;
-
                 enemyScript.init(defaultData);
             }
         }
@@ -145,6 +152,9 @@ public class SpawnPoint : MonoBehaviour
 
         PermanentlyOff = true;
         IsEnabled = false;
+
+        // [추가됨] 파괴되면 타겟팅 불가능하게 변경
+        SetTargetableState(false);
 
         if (animator) animator.SetTrigger("DoDestroy");
         UpdateHPBar();
@@ -173,14 +183,32 @@ public class SpawnPoint : MonoBehaviour
         bossSpawned = false;
         spawnCount = 0;
 
+        // [추가됨] 리셋 시 타겟팅 꺼둠 (Spawner가 게임 시작시 호출함)
+        SetTargetableState(false);
+
         if (animator) animator.SetTrigger("DoReset");
         UpdateHPBar();
+    }
+
+    // [추가됨] 타겟 가능 여부(Collider 및 컴포넌트)를 끄고 켜는 헬퍼 함수
+    private void SetTargetableState(bool state)
+    {
+        // 1. Targetable 컴포넌트를 끄면 로직적으로 비활성화됨
+        if (myTargetable != null)
+            myTargetable.enabled = state;
+
+        // 2. Collider2D를 끄면 물리 감지(AllyAI의 탐색)에 걸리지 않음
+        if (myCollider != null)
+            myCollider.enabled = state;
     }
 
     void UpdateHPBar()
     {
         if (!hpBarRoot || !hpFill) return;
+
+        // [수정됨] PermanentlyOff 일때만 끄는게 아니라, 활성화(IsEnabled)가 안됐을 때도 바를 숨김
         hpBarRoot.gameObject.SetActive(!PermanentlyOff && IsEnabled);
+
         if (myTargetable == null) return;
 
         float cur = myTargetable.currentHealth;

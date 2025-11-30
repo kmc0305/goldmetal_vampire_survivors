@@ -232,7 +232,7 @@ MonoBehaviour:
   dropItemIndex: 3
   expReward: 1
   knockbackPower: 0.2
-  knockbackDuration: 0.2
+  knockbackDuration: 0
   invincibilityDuration: 0.3
   invincibilityColor: {r: 1, g: 0, b: 0, a: 1}
   onDie:
