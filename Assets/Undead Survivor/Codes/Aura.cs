@@ -45,7 +45,8 @@ public class Aura : MonoBehaviour
 
         if (target.faction == Targetable.Faction.Enemy)
         {
-            target.TakeDamage(AuraDMG, transform);
+            if(target.maxHealth>=50)target.TakeDamage(AuraDMG*2, transform);
+            else target.TakeDamage(AuraDMG, transform);
         }
     }
 }

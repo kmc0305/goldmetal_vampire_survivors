@@ -43,7 +43,8 @@ public class MeleeWeapon : MonoBehaviour
         {
             // 4. [핵심] 적('Enemy')의 Targetable 스크립트에 TakeDamage() 함수를 호출합니다.
             //    넉백 방향 계산을 위해 '나(무기)'의 위치(transform)를 넘겨줍니다.
-            target.TakeDamage(currentDamage, transform);
+            if(target.maxHealth>=200)target.TakeDamage(currentDamage*4, transform);
+            else target.TakeDamage(currentDamage*1, transform);
             Weapon wpn = GetComponentInParent<Weapon>();
         }
     }
