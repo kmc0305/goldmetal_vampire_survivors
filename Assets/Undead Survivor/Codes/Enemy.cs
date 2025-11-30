@@ -85,6 +85,25 @@ public class Enemy : MonoBehaviour
             cachedCastle = castleObj.GetComponent<Targetable>();
     }
 
+    // ★ [복구] 에디터에서 공격 범위와 성 우선 범위를 보여주는 기능
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.1f);
+        Gizmos.DrawSphere(transform.position, detectionRadius);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, castlePriorityRadius);
+
+        if (currentTarget != null && isLive)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, currentTarget.transform.position);
+
+            if (currentTarget.CompareTag("Castle"))
+                Gizmos.DrawSphere(currentTarget.transform.position, 0.5f);
+        }
+    }
+
     public void init(SpawnData data)
     {
         speed = data.speed;
@@ -253,6 +272,26 @@ public class Enemy : MonoBehaviour
         {
             if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead)
                 t.TakeDamage(attackDamage, transform);
+        }
+    }
+
+    // ★ [복구] 장애물이나 아군 타워를 만났을 때 비켜가는 로직
+    public void TryAvoid(Vector2 obstaclePos)
+    {
+        if (!isLive) return;
+        if (Time.time < spawnGraceUntil) return;
+        if (Time.time < avoidUntil) return;
+
+        if (rb.linearVelocity.magnitude > minSpeedToAvoid) return;
+
+        Vector2 toObstacle = (obstaclePos - (Vector2)transform.position).normalized;
+        float dot = Vector2.Dot(rb.linearVelocity.normalized, toObstacle);
+
+        if (dot > minDotBlock)
+        {
+            Vector2 away = -(toObstacle + Random.insideUnitCircle * 0.5f).normalized;
+            avoidDir = away;
+            avoidUntil = Time.time + avoidDuration;
         }
     }
 
