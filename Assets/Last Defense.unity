@@ -119,6 +119,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &5524714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5524716}
+  - component: {fileID: 5524715}
+  m_Layer: 0
+  m_Name: SwampAreaSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &5524715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150f92ad4c7a14f8eaa78a3de24f2f15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwampAreaSpawner
+  swampAreaPrefab: {fileID: 7621771572392213734, guid: e03893d1b257f4213b3cec67fdb23716, type: 3}
+  numberOfSwamps: 10
+  mapHalfSize: 50
+  minDistanceToPlayer: 15
+--- !u!4 &5524716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.34121, y: 57.24649, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6492461
 GameObject:
   m_ObjectHideFlags: 0
@@ -109898,7 +109946,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -326039,6 +326087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   inputVec: {x: 0, y: 0}
   speed: 5
+  speedMultiplier: 1
   runSpeedMultiplier: 2
 --- !u!114 &1569412826
 MonoBehaviour:
@@ -448324,3 +448373,4 @@ SceneRoots:
   - {fileID: 483525607}
   - {fileID: 2001986504}
   - {fileID: 928721232}
+  - {fileID: 5524716}

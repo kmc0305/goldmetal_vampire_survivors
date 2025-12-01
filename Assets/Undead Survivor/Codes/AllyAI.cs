@@ -10,6 +10,8 @@ public class AllyAI : MonoBehaviour
 
     [Header("기본 능력치")]
     public float speed = 2.5f;
+    // [추가] 늪지대/외부 효과를 위한 속도 배율
+    public float speedMultiplier = 1f;
 
     [Header("AI 설정")]
     public LayerMask targetLayer;
@@ -61,7 +63,8 @@ public class AllyAI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("AllyAI: 'Castle' 태그를 가진 오브젝트를 찾을 수 없어! 기본 탐지 거리만 사용됨.");
+            // [수정] Debug 모호성 해결
+            UnityEngine.Debug.LogWarning("AllyAI: 'Castle' 태그를 가진 오브젝트를 찾을 수 없어! 기본 탐지 거리만 사용됨.");
         }
     }
 
@@ -69,6 +72,8 @@ public class AllyAI : MonoBehaviour
     {
         isKnockedBack = false;
         isRecallMode = false;
+        // [수정] 활성화 시 속도 배율 초기화
+        speedMultiplier = 1f;
         ActiveAllies.Add(this);
 
         if (aiCoroutine == null)
@@ -191,6 +196,9 @@ public class AllyAI : MonoBehaviour
 
         if (isKnockedBack) return;
 
+        // [추가] 실제 이동 속도 계산 (기본 속도 * 속도 배율)
+        float currentMoveSpeed = speed * speedMultiplier;
+
         if (isRecallMode)
         {
             float dist = Vector2.Distance(transform.position, recallTargetPos);
@@ -201,8 +209,9 @@ public class AllyAI : MonoBehaviour
             }
             else
             {
+                // [수정] 이동 속도에 speedMultiplier 적용
                 Vector2 dir = (recallTargetPos - (Vector2)transform.position).normalized;
-                Vector2 step = dir * speed * 1.2f * Time.fixedDeltaTime;
+                Vector2 step = dir * (currentMoveSpeed * 1.2f) * Time.fixedDeltaTime;
                 rb.MovePosition(rb.position + step);
             }
             return;
@@ -215,8 +224,9 @@ public class AllyAI : MonoBehaviour
             return;
         }
 
+        // [수정] 이동 속도에 speedMultiplier 적용
         Vector2 dir2 = (currentTarget.transform.position - transform.position).normalized;
-        Vector2 step2 = dir2 * speed * Time.fixedDeltaTime;
+        Vector2 step2 = dir2 * currentMoveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + step2);
 
         anim.SetFloat("Speed", step2.magnitude);
@@ -268,6 +278,16 @@ public class AllyAI : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
         isKnockedBack = false;
     }
+
+    // [추가 시작] 늪지대에서 호출할 함수 (CS1061 오류 해결)
+    /// <summary>
+    /// 외부 요인에 의한 이동 속도 배율을 설정합니다.
+    /// </summary>
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
+    // [추가 끝]
 
     void OnDrawGizmosSelected()
     {

@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour
     public float attackCooldown = 1f;
     private float lastAttackTime;
 
+    // [추가] 늪지대/외부 효과를 위한 속도 배율
+    [Header("외부 속도 제어")]
+    public float speedMultiplier = 1f;
+
     [Header("AI 설정")]
     public LayerMask targetLayer;
     public float detectionRadius = 100f;
@@ -69,6 +73,8 @@ public class Enemy : MonoBehaviour
         spawnGraceUntil = Time.time + avoidanceGrace;
         avoidDir = Vector2.zero;
         avoidUntil = 0f;
+        // [수정] 활성화 시 속도 배율 초기화
+        speedMultiplier = 1f;
 
         if (aiCoroutine != null) StopCoroutine(aiCoroutine);
         aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
@@ -120,6 +126,16 @@ public class Enemy : MonoBehaviour
         if (!gameObject.activeInHierarchy) return;
         StartCoroutine(SlowDownRoutine(rate, duration));
     }
+
+    // [추가 시작] 늪지대에서 호출할 함수 (CS1061 오류 해결)
+    /// <summary>
+    /// 외부 요인에 의한 이동 속도 배율을 설정합니다.
+    /// </summary>
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
+    // [추가 끝]
 
     private IEnumerator SlowDownRoutine(float rate, float duration)
     {
@@ -227,7 +243,10 @@ public class Enemy : MonoBehaviour
             dir = Vector2.Lerp(dir, avoidDir, 0.7f).normalized * avoidSpeedMul;
         }
 
-        Vector2 nextPos = currentPos + dir * speed * Time.fixedDeltaTime;
+        // [수정] 최종 이동 속도에 speedMultiplier 적용
+        float finalSpeed = speed * speedMultiplier;
+
+        Vector2 nextPos = currentPos + dir * finalSpeed * Time.fixedDeltaTime;
         rb.MovePosition(nextPos);
     }
 

@@ -12,6 +12,9 @@ public class RangedEnemy : MonoBehaviour
 
     [Header("기본 설정")]
     public float speed = 2.0f;
+    // [추가] 늪지대/외부 효과를 위한 속도 배율
+    public float speedMultiplier = 1f;
+
     public LayerMask targetLayer;
     public float detectionRadius = 15f;
 
@@ -39,6 +42,8 @@ public class RangedEnemy : MonoBehaviour
     void OnEnable()
     {
         currentTarget = null;
+        // [수정] 활성화 시 속도 배율 초기화
+        speedMultiplier = 1f;
 
         if (aiCoroutine == null)
             aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
@@ -129,7 +134,10 @@ public class RangedEnemy : MonoBehaviour
 
         // 공격 사거리 밖 -> 이동하며 추적
         Vector2 dir = (currentTarget.transform.position - transform.position).normalized;
-        Vector2 step = dir * speed * Time.fixedDeltaTime;
+
+        // [수정] 이동 속도에 speedMultiplier 적용
+        float currentMoveSpeed = speed * speedMultiplier;
+        Vector2 step = dir * currentMoveSpeed * Time.fixedDeltaTime;
 
         rigid.MovePosition(rigid.position + step);
     }
@@ -174,6 +182,16 @@ public class RangedEnemy : MonoBehaviour
             b.Init(weaponData, dir);
         }
     }
+
+    // [추가 시작] 늪지대에서 호출할 함수 (CS1061 오류 해결)
+    /// <summary>
+    /// 외부 요인에 의한 이동 속도 배율을 설정합니다.
+    /// </summary>
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
+    // [추가 끝]
 
     void OnDrawGizmosSelected()
     {

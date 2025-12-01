@@ -11,6 +11,12 @@ public class Player : MonoBehaviour
     public UnityEngine.Vector2 inputVec;
     public float speed;
 
+    // [추가 시작] 늪지대 기능을 위한 변수
+    [Header("속도 제어")]
+    // 이 배율은 늪지대와 같은 외부 환경 요소에 의해 조절됩니다.
+    public float speedMultiplier = 1f;
+    // [추가 끝]
+
     [Header("달리기 설정")]
     public float runSpeedMultiplier = 1.5f;
 
@@ -43,7 +49,8 @@ public class Player : MonoBehaviour
         {
             float range = 50f;
             float rangeSq = range * range; // 최적화를 위해 거리 제곱값 미리 계산
-            Vector2 playerPos = transform.position;
+            // [수정] Vector2 모호성 해결
+            UnityEngine.Vector2 playerPos = transform.position;
 
             int count = 0;
 
@@ -53,7 +60,8 @@ public class Player : MonoBehaviour
                 {
                     // 1. 거리 체크 (현재 위치와 아군 위치 사이의 거리 제곱 비교)
                     // Vector2로 캐스팅하여 Z축 높이 차이로 인한 오차 방지
-                    float distSq = (playerPos - (Vector2)ally.transform.position).sqrMagnitude;
+                    // [수정] Vector2 모호성 해결
+                    float distSq = (playerPos - (UnityEngine.Vector2)ally.transform.position).sqrMagnitude;
 
                     if (distSq <= rangeSq)
                     {
@@ -70,6 +78,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+            // [수정] Debug 모호성 해결
             UnityEngine.Debug.Log($"🚩 아군 집결 명령! (반경 50 내 {count}기 호출)");
         }
     }
@@ -81,7 +90,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float currentSpeed = speed;
+        // [수정] 기본 속도에 외부 환경 속도 배율을 곱하여 현재 속도 계산
+        float currentSpeed = speed * speedMultiplier;
 
         if (Keyboard.current != null && Keyboard.current.shiftKey.isPressed)
         {
@@ -91,6 +101,18 @@ public class Player : MonoBehaviour
         UnityEngine.Vector2 nextVec = inputVec * currentSpeed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
+
+    // [추가 시작] 늪지대에서 호출할 함수 (CS1061 오류 해결)
+    /// <summary>
+    /// 외부 요인에 의한 이동 속도 배율을 설정합니다.
+    /// </summary>
+    /// <param name="multiplier">1.0f = 정상, 0.5f = 50% 둔화</param>
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        // 기존의 임시 둔화 효과와는 별도로, 늪지대와 같은 영구적인 영역 효과를 담당합니다.
+        speedMultiplier = multiplier;
+    }
+    // [추가 끝]
 
     private void LateUpdate()
     {
