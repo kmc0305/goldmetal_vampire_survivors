@@ -287,11 +287,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75387aa39f8d84bd2a830677e6880122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  enemyType: 0
   speed: 2.5
   attackDamage: 40
   attackCooldown: 1
   speedMultiplier: 1
-  attackImpactDelay: 0.5
+  attackImpactDelay: 0.2
   hitEffectPrefab: {fileID: 0}
   attackStyle: 2
   areaAttackRadius: 3
