@@ -415,6 +415,10 @@ MonoBehaviour:
   speedMultiplier: 1
   attackImpactDelay: 0.5
   hitEffectPrefab: {fileID: 0}
+  attackStyle: 1
+  areaAttackRadius: 3
+  fanAngle: 120
+  areaAttackEffectPrefab: {fileID: 1074014484771137264, guid: 3fda8dc752d61a8409275e8eaa2a0321, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -426,9 +430,6 @@ MonoBehaviour:
   avoidanceGrace: 0.35
   minSpeedToAvoid: 0.1
   minDotBlock: 0.25
-  isAreaAttack: 1
-  areaAttackRadius: 3
-  areaAttackEffectPrefab: {fileID: 1074014484771137264, guid: 3fda8dc752d61a8409275e8eaa2a0321, type: 3}
 --- !u!114 &9162774562913268709
 MonoBehaviour:
   m_ObjectHideFlags: 0

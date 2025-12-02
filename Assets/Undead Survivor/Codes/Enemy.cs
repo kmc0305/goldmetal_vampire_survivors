@@ -310,6 +310,7 @@ public class Enemy : MonoBehaviour
     }
 
     // ★ [수정] 공격 스타일에 따라 로직 분기
+    // ★ [수정] 공격 스타일에 따라 로직 분기
     IEnumerator AttackRoutine(Targetable target)
     {
         yield return new WaitForSeconds(attackImpactDelay);
@@ -319,8 +320,26 @@ public class Enemy : MonoBehaviour
         // 범위 이펙트는 단일 공격이 아닐 때만 재생
         if (attackStyle != AttackStyle.Single && areaAttackEffectPrefab != null)
         {
-            // 보스거나, 범위공격일 때 이펙트 생성
-            Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
+            // 1. 이펙트를 변수에 담아서 생성
+            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
+
+            // 2. ★ [추가] 적이 왼쪽을 보고 있다면(flipX가 true라면) 이펙트도 반전
+            if (spriter.flipX)
+            {
+                // (1) 이펙트 프리팹 최상위에 SpriteRenderer가 있는 경우
+                SpriteRenderer effectSpriter = effectInstance.GetComponent<SpriteRenderer>();
+                if (effectSpriter != null)
+                {
+                    effectSpriter.flipX = true;
+                }
+                // (2) 만약 SpriteRenderer가 없거나(파티클 등), 자식 오브젝트로 구성된 경우 스케일 반전
+                else
+                {
+                    Vector3 scale = effectInstance.transform.localScale;
+                    scale.x *= -1; // X축 스케일을 -1로 곱해서 뒤집음
+                    effectInstance.transform.localScale = scale;
+                }
+            }
         }
 
         switch (attackStyle)

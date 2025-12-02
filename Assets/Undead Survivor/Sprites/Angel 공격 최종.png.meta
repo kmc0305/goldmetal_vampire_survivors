@@ -1,0 +1,667 @@
+fileFormatVersion: 2
+guid: 09c571b659c49324d8d8e550f82b2005
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -306029819141604726
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_0"
+  - first:
+      213: -1331109856646539504
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_1"
+  - first:
+      213: -4387861332320859188
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_2"
+  - first:
+      213: -2416833174387273991
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_3"
+  - first:
+      213: 8053125024957584044
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_4"
+  - first:
+      213: -4031013673576069732
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_5"
+  - first:
+      213: 1921023946605918173
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_6"
+  - first:
+      213: -5597470432098437704
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_7"
+  - first:
+      213: 5940855019126337407
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_8"
+  - first:
+      213: 6205864150586304131
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_9"
+  - first:
+      213: 3820907098687545467
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_10"
+  - first:
+      213: -1798660173001032908
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_11"
+  - first:
+      213: -8762681333339685898
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_12"
+  - first:
+      213: -2566118998038156020
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_13"
+  - first:
+      213: 3216877542770496815
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_14"
+  - first:
+      213: 2132072509159287356
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_15"
+  - first:
+      213: -4354186447373808571
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_16"
+  - first:
+      213: 1519764171184886491
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_17"
+  - first:
+      213: 4745858274516960255
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_18"
+  - first:
+      213: -6382302314559035836
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_19"
+  - first:
+      213: 6657345823888023266
+    second: "Angel \uACF5\uACA9 \uCD5C\uC885_20"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_0"
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 1113
+        width: 88
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8a336b3083c0cbf0800000000000000
+      internalID: -306029819141604726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_1"
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 1219
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 017df8d43a2f68de0800000000000000
+      internalID: -1331109856646539504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_2"
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 1103
+        width: 284
+        height: 145
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccbc75bbd5f2b13c0800000000000000
+      internalID: -4387861332320859188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_3"
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 1130
+        width: 34
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fe4447680fa57ed0800000000000000
+      internalID: -2416833174387273991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_4"
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 1124
+        width: 87
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca2d76cfa8272cf60800000000000000
+      internalID: 8053125024957584044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_5"
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 1106
+        width: 87
+        height: 110
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9581cdcb66fe08c0800000000000000
+      internalID: -4031013673576069732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_6"
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 959
+        width: 115
+        height: 124
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd7f676f919d8aa10800000000000000
+      internalID: 1921023946605918173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_7"
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 986
+        width: 77
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b535067c4ac152b0800000000000000
+      internalID: -5597470432098437704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_8"
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 986
+        width: 80
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7f2f15f928227250800000000000000
+      internalID: 5940855019126337407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_9"
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 989
+        width: 83
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 386270c9098af1650800000000000000
+      internalID: 6205864150586304131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_10"
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 992
+        width: 60
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b702a0123c6960530800000000000000
+      internalID: 3820907098687545467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_11"
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 746
+        width: 34
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43b71a43a10e907e0800000000000000
+      internalID: -1798660173001032908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_12"
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 742
+        width: 97
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fb775601c3b46680800000000000000
+      internalID: -8762681333339685898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_14"
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 749
+        width: 111
+        height: 109
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2554c6d415a4ac20800000000000000
+      internalID: 3216877542770496815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_15"
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 742
+        width: 296
+        height: 192
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3aa0df96a4a69d10800000000000000
+      internalID: 2132072509159287356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_16"
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 509
+        width: 341
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54cc67ede72d293c0800000000000000
+      internalID: -4354186447373808571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_17"
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 502
+        width: 371
+        height: 220
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd257dd2679471510800000000000000
+      internalID: 1519764171184886491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_18"
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 265
+        width: 342
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff38eeeb4fcacd140800000000000000
+      internalID: 4745858274516960255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_19"
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 264
+        width: 341
+        height: 213
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4462e8b1cd18d67a0800000000000000
+      internalID: -6382302314559035836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Angel \uACF5\uACA9 \uCD5C\uC885_20"
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 21
+        width: 329
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ee96c331c4a36c50800000000000000
+      internalID: 6657345823888023266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 4465579f1f89b8f4695d6f20cf82623b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "Angel \uACF5\uACA9 \uCD5C\uC885_0": -306029819141604726
+      "Angel \uACF5\uACA9 \uCD5C\uC885_1": -1331109856646539504
+      "Angel \uACF5\uACA9 \uCD5C\uC885_10": 3820907098687545467
+      "Angel \uACF5\uACA9 \uCD5C\uC885_11": -1798660173001032908
+      "Angel \uACF5\uACA9 \uCD5C\uC885_12": -8762681333339685898
+      "Angel \uACF5\uACA9 \uCD5C\uC885_13": -2566118998038156020
+      "Angel \uACF5\uACA9 \uCD5C\uC885_14": 3216877542770496815
+      "Angel \uACF5\uACA9 \uCD5C\uC885_15": 2132072509159287356
+      "Angel \uACF5\uACA9 \uCD5C\uC885_16": -4354186447373808571
+      "Angel \uACF5\uACA9 \uCD5C\uC885_17": 1519764171184886491
+      "Angel \uACF5\uACA9 \uCD5C\uC885_18": 4745858274516960255
+      "Angel \uACF5\uACA9 \uCD5C\uC885_19": -6382302314559035836
+      "Angel \uACF5\uACA9 \uCD5C\uC885_2": -4387861332320859188
+      "Angel \uACF5\uACA9 \uCD5C\uC885_20": 6657345823888023266
+      "Angel \uACF5\uACA9 \uCD5C\uC885_3": -2416833174387273991
+      "Angel \uACF5\uACA9 \uCD5C\uC885_4": 8053125024957584044
+      "Angel \uACF5\uACA9 \uCD5C\uC885_5": -4031013673576069732
+      "Angel \uACF5\uACA9 \uCD5C\uC885_6": 1921023946605918173
+      "Angel \uACF5\uACA9 \uCD5C\uC885_7": -5597470432098437704
+      "Angel \uACF5\uACA9 \uCD5C\uC885_8": 5940855019126337407
+      "Angel \uACF5\uACA9 \uCD5C\uC885_9": 6205864150586304131
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
