@@ -363,7 +363,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 0.9}
+  m_Size: {x: 1.3, y: 1.3}
   m_Direction: 0
 --- !u!114 &3315000177032367623
 MonoBehaviour:
@@ -403,6 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllyAI
   speed: 2.5
+  speedMultiplier: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 512

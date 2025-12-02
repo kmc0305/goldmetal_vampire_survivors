@@ -361,7 +361,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 0.9}
+  m_Size: {x: 1.3, y: 1.3}
   m_Direction: 0
 --- !u!114 &8318115738249123368
 MonoBehaviour:
@@ -378,6 +378,13 @@ MonoBehaviour:
   speed: 2.5
   attackDamage: 3
   attackCooldown: 1
+  speedMultiplier: 1
+  attackImpactDelay: 0.2
+  hitEffectPrefab: {fileID: 0}
+  attackStyle: 0
+  areaAttackRadius: 3
+  fanAngle: 120
+  areaAttackEffectPrefab: {fileID: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -389,9 +396,6 @@ MonoBehaviour:
   avoidanceGrace: 0.35
   minSpeedToAvoid: 0.1
   minDotBlock: 0.25
-  isAreaAttack: 0
-  areaAttackRadius: 3
-  areaAttackEffectPrefab: {fileID: 0}
 --- !u!114 &3315000177032367623
 MonoBehaviour:
   m_ObjectHideFlags: 0
