@@ -45,13 +45,12 @@ public class SpawnPoint : MonoBehaviour
         if (!animator) animator = GetComponent<Animator>();
 
         myTargetable = GetComponent<Targetable>();
-        // [추가됨] 콜라이더 가져오기
         myCollider = GetComponent<Collider2D>();
 
         if (hpBarRoot) hpBarRoot.localPosition = barOffset;
         if (hpFill) hpFill.localScale = new Vector3(barWidth, barHeight, 1f);
 
-        // 초기 상태: 일단 꺼둠 (Spawner가 ResetRuntimeFlags를 호출하며 확실히 정리함)
+        // 초기 상태: 게임 시작 시에는 꺼둠
         SetTargetableState(false);
 
         UpdateHPBar();
@@ -74,7 +73,6 @@ public class SpawnPoint : MonoBehaviour
         EverActivated = true;
         IsEnabled = true;
 
-        // [추가됨] 활성화되면 타겟팅 가능하게 변경
         SetTargetableState(true);
 
         if (animator)
@@ -145,6 +143,7 @@ public class SpawnPoint : MonoBehaviour
         spawnCount++;
     }
 
+    // ★★★ [수정된 부분] ★★★
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
@@ -153,8 +152,14 @@ public class SpawnPoint : MonoBehaviour
         PermanentlyOff = true;
         IsEnabled = false;
 
-        // [추가됨] 파괴되면 타겟팅 불가능하게 변경
-        SetTargetableState(false);
+        // [이전 코드] SetTargetableState(false); -> 이 함수가 콜라이더까지 꺼버림
+
+        // [수정 코드] Targetable 스크립트만 꺼서 '더 이상 공격받지 않게' 만들고, 콜라이더는 놔둡니다.
+        if (myTargetable != null)
+            myTargetable.enabled = false;
+
+        // 참고: Targetable.cs의 Die()에서 이미 Rigidbody를 Static으로 바꾸므로
+        // 콜라이더가 켜져 있으면 움직이지 않는 벽(장애물)이 됩니다.
 
         if (animator) animator.SetTrigger("DoDestroy");
         UpdateHPBar();
@@ -183,21 +188,18 @@ public class SpawnPoint : MonoBehaviour
         bossSpawned = false;
         spawnCount = 0;
 
-        // [추가됨] 리셋 시 타겟팅 꺼둠 (Spawner가 게임 시작시 호출함)
+        // 리셋 시에는 콜라이더와 타겟팅 모두 끄는 것이 맞음 (게임 재시작 등)
         SetTargetableState(false);
 
         if (animator) animator.SetTrigger("DoReset");
         UpdateHPBar();
     }
 
-    // [추가됨] 타겟 가능 여부(Collider 및 컴포넌트)를 끄고 켜는 헬퍼 함수
     private void SetTargetableState(bool state)
     {
-        // 1. Targetable 컴포넌트를 끄면 로직적으로 비활성화됨
         if (myTargetable != null)
             myTargetable.enabled = state;
 
-        // 2. Collider2D를 끄면 물리 감지(AllyAI의 탐색)에 걸리지 않음
         if (myCollider != null)
             myCollider.enabled = state;
     }
@@ -206,7 +208,6 @@ public class SpawnPoint : MonoBehaviour
     {
         if (!hpBarRoot || !hpFill) return;
 
-        // [수정됨] PermanentlyOff 일때만 끄는게 아니라, 활성화(IsEnabled)가 안됐을 때도 바를 숨김
         hpBarRoot.gameObject.SetActive(!PermanentlyOff && IsEnabled);
 
         if (myTargetable == null) return;

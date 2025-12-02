@@ -200,6 +200,7 @@ MonoBehaviour:
   speed: 2.5
   attackDamage: 40
   attackCooldown: 1
+  speedMultiplier: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 256

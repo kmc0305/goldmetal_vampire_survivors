@@ -411,7 +411,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   speed: 2.5
   attackDamage: 40
-  attackCooldown: 1
+  attackCooldown: 2
+  speedMultiplier: 1
+  attackImpactDelay: 0.5
+  hitEffectPrefab: {fileID: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 256

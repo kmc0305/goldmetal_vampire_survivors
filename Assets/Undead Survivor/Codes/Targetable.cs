@@ -151,22 +151,18 @@ public class Targetable : MonoBehaviour
         if (spriter != null) spriter.color = originalColor;
     }
 
+    // Targetable.cs의 Die() 함수 수정
+
     public void Die()
     {
         if (isDead) return;
         isDead = true;
 
-        
-
         // 킬 수 증가 및 경험치 획득
         if (GameManager.instance != null && faction == Faction.Enemy)
         {
-            GameManager.instance.AddKill(); // 팀원 기능 (킬 카운트)
-
-            for (int i = 0; i < expReward; i++) // 네 기능 (경험치)
-            {
-                GameManager.instance.getExp();
-            }
+            GameManager.instance.AddKill();
+            for (int i = 0; i < expReward; i++) GameManager.instance.getExp();
         }
 
         onDie.Invoke();
@@ -175,7 +171,7 @@ public class Targetable : MonoBehaviour
         if (mySpawnPoint != null)
         {
             Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
-            mySpawnPoint.DeactivatePermanently(); // 보스 소환
+            mySpawnPoint.DeactivatePermanently();
 
             if (rigid)
             {
@@ -186,7 +182,18 @@ public class Targetable : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            // ★★★ [수정됨] ★★★
+            // 바로 끄지 말고, Enemy 스크립트가 있으면 "사망 연출해라" 시키기
+            Enemy enemyScript = GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.OnEnemyDead(); // Enemy.cs에 추가한 함수 호출
+            }
+            else
+            {
+                // Enemy 스크립트가 없는 잡동사니면 그냥 바로 끔
+                gameObject.SetActive(false);
+            }
         }
     }
 
