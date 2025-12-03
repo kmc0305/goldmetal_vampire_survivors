@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 892695782159499780}
   - component: {fileID: -1839272917506556930}
   m_Layer: 0
-  m_Name: Swamp
+  m_Name: snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
-  m_Color: {r: 0.22930342, g: 0.4245283, b: 0, a: 0.59607846}
+  m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 0.59607846}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e8e671571a14cdfa69e5af590c8b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampArea
-  areaType: 0
+  areaType: 2
   effectDuration: 1
   effectValue: 0.5
   targetLayer:

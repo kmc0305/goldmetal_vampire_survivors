@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 892695782159499780}
   - component: {fileID: -1839272917506556930}
   m_Layer: 0
-  m_Name: Swamp
+  m_Name: engel_Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
-  m_Color: {r: 0.22930342, g: 0.4245283, b: 0, a: 0.59607846}
+  m_Color: {r: 1, g: 0.98006, b: 0.2688679, a: 0.59607846}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -145,4 +145,7 @@ MonoBehaviour:
   effectValue: 0.5
   targetLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
+  swampTint: {r: 0.6, g: 0.4, b: 0.2, a: 1}
+  snowTint: {r: 0.7, g: 0.9, b: 1, a: 1}
+  healingTint: {r: 0.14831792, g: 0.9528302, b: 0.14831792, a: 0.74509805}

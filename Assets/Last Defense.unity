@@ -164,6 +164,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5524716}
   - component: {fileID: 5524715}
+  - component: {fileID: 5524718}
+  - component: {fileID: 5524717}
   m_Layer: 0
   m_Name: SwampAreaSpawner
   m_TagString: Untagged
@@ -183,10 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150f92ad4c7a14f8eaa78a3de24f2f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampAreaSpawner
-  swampAreaPrefab: {fileID: 7621771572392213734, guid: e03893d1b257f4213b3cec67fdb23716, type: 3}
-  numberOfSwamps: 10
-  mapHalfSize: 50
-  minDistanceToPlayer: 15
 --- !u!4 &5524716
 Transform:
   m_ObjectHideFlags: 0
@@ -202,6 +200,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5524717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77d6029fcb19e40f0ba47828f3c29665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldMetal.Survivors.SwampAreaSpawner1
+  _SwampArea: {fileID: 7621771572392213734, guid: e03893d1b257f4213b3cec67fdb23716, type: 3}
+  _Castle: {fileID: 1158587731}
+  _SnowAreaPrefab: {fileID: 7621771572392213734, guid: dbebce43ed1694ac5b9cf8dc3c498820, type: 3}
+  _HealingAreaPrefab: {fileID: 7621771572392213734, guid: dde327290a35a4ebab2adfe114a88f26, type: 3}
+--- !u!114 &5524718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db14a96dcfe6a4b8a80c752fa4c063b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::spawnAreaaSponer
 --- !u!1 &6492461
 GameObject:
   m_ObjectHideFlags: 0
@@ -110139,7 +110165,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -193444,8 +193470,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b5c2fe6a48445ed88a6c399dbf786c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatueSpawner
-  healingStatuePrefab: {fileID: 5745390109216811210, guid: 2b7a94cbd390c45e3bda77e838787e2b, type: 3}
-  spawnInterval: 30
+  _SwampArea: {fileID: 0}
+  _Castle: {fileID: 0}
+  _SnowAreaPrefab: {fileID: 0}
+  _HealingAreaPrefab: {fileID: 0}
 --- !u!4 &928721232
 Transform:
   m_ObjectHideFlags: 0
