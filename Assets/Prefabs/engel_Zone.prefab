@@ -118,7 +118,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
-  m_Color: {r: 1, g: 0.98006, b: 0.2688679, a: 0.59607846}
+  m_Color: {r: 1, g: 0.9656106, b: 0.2028302, a: 0.59607846}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -141,11 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampArea
   areaType: 0
-  effectDuration: 1
-  effectValue: 0.5
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 768
-  swampTint: {r: 0.6, g: 0.4, b: 0.2, a: 1}
-  snowTint: {r: 0.7, g: 0.9, b: 1, a: 1}
-  healingTint: {r: 0.14831792, g: 0.9528302, b: 0.14831792, a: 0.74509805}
+  speedMultiplier: 0.5
+  healPerSecond: 2
+  areaTintColor: {r: 0.5, g: 0.8, b: 0.5, a: 1}

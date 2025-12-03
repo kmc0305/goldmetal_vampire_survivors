@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2; // Vector2 참조 모호성 해결 (CS0104)
 
-// UnitMover2D도 다른 스크립트들과 같은 네임스페이스에 정의
-// namespace GoldMetal.Survivors  <-- 주석 처리: 다른 스크립트(Player, AllyAI 등)가 이 클래스를 찾을 수 있게 해제
-// {
 [RequireComponent(typeof(Rigidbody2D))]
 public class UnitMover2D : MonoBehaviour
 {
@@ -43,38 +39,100 @@ public class UnitMover2D : MonoBehaviour
     // 무시 중인 "상대 루트 Rigidbody" -> 그 리지드의 모든 콜라이더
     private readonly Dictionary<Rigidbody2D, List<Collider2D>> ignoredByRoot = new();
 
+    private float nextRefresh;
+
     // [최적화] Physics2D 버퍼 및 재사용 리스트 (GC 방지)
     private static readonly Collider2D[] overlapBuffer = new Collider2D[50];
-    private readonly List<Rigidbody2D> rootsBuffer = new();
     private readonly List<Rigidbody2D> toRestoreBuffer = new();
-    private readonly List<Collider2D> tempCollidersBuffer = new();
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponentInChildren<SpriteRenderer>();
-        // 모든 Collider2D 컴포넌트 찾기
-        myCols.AddRange(GetComponentsInChildren<Collider2D>());
+        sr = GetComponent<SpriteRenderer>();
+
+        // 내 자식 포함 모든 Collider2D 수집
+        foreach (var c in GetComponentsInChildren<Collider2D>(true))
+            if (c) myCols.Add(c);
     }
 
-    void Start()
+    void OnDisable()
     {
-        // 0.15초마다 팀원 무시 로직 갱신 (기존 로직 유지)
-        InvokeRepeating(nameof(RefreshIgnores), refreshInterval, refreshInterval);
+        RestoreAllIgnores();
+        finalTarget = null;
+        pathCount = 0;
+        rb.linearVelocity = Vector2.zero;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        // 현재 목표 경로로 이동
-        MoveTowardsPath();
+        // 이동 명령 없으면 정지 + 아군 충돌 복원
+        if (pathCount == 0)
+        {
+            rb.linearVelocity = Vector2.zero;
+            RestoreAllIgnores(); // 명령 없을 땐 항상 복원 상태
+            return;
+        }
+
+        Vector2 pos = rb.position;
+        Vector2 tgt = path[0];           // 현재 따라가야 할 지점
+        Vector2 to = tgt - pos;
+        float dist = to.magnitude;
+
+        // 현재 목표 지점에 거의 도착
+        if (dist <= stopDistance)
+        {
+            rb.linearVelocity = Vector2.zero;
+
+            if (pathCount == 1)
+            {
+                // 최종 목적지 도착
+                finalTarget = null;
+                pathCount = 0;
+                RestoreAllIgnores();
+                return;
+            }
+            else
+            {
+                // 코너를 지나쳤으니 다음(최종) 지점으로
+                path[0] = path[1];
+                pathCount = 1;
+                return;
+            }
+        }
+
+        Vector2 dir = to / Mathf.Max(dist, 0.0001f);
+
+        // 지형 효과 반영한 속도
+        float finalSpeed = moveSpeed * speedMultiplier;
+
+        // Enemy 와 비슷하게: MovePosition 사용, velocity 는 0 처리
+        rb.MovePosition(pos + dir * finalSpeed * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector2.zero;
+
+        if (Time.time >= nextRefresh)
+        {
+            nextRefresh = Time.time + refreshInterval;
+            RefreshIgnoreSameTeam();
+        }
     }
+
+    /// <summary>
+    /// 외부(AllyAI / RTS Selection)에서 호출하는 이동 명령
+    /// </summary>
+    public void SetMoveTarget(Vector2 worldPos)
+    {
+        finalTarget = worldPos;
+        BuildPredictedPath(worldPos); // 타워 예측해서 경로 작성
+        RefreshIgnoreSameTeam();      // 명령 시작 즉시 한 번 적용
+    }
+
+    public bool HasCommand() => pathCount > 0;
 
     // --- 지형 효과 관련 메서드 (Terrain Effect Methods) ---
 
     // 속도 보정 배율을 적용하는 함수 (Swamp Area Logic에서 호출됨)
     public void ApplySpeedMultiplier(float multiplier)
     {
-        // 새로운 보정값으로 설정
         speedMultiplier = multiplier;
     }
 
@@ -84,190 +142,144 @@ public class UnitMover2D : MonoBehaviour
         speedMultiplier = 1.0f;
     }
 
-    // --- 기존 이동 로직 ---
-
-    public void MoveTo(Vector2 direction) // Vector2 사용
+    public void ClearCommand()
     {
-        if (rb == null || direction.sqrMagnitude == 0) return;
-
-        // 지형 효과를 반영한 최종 속도 계산
-        float finalSpeed = moveSpeed * speedMultiplier;
-
-        // 물리 이동 적용 (FixedUpdate에서 호출하는 것이 일반적)
-        rb.velocity = direction.normalized * finalSpeed;
-
-        // 방향 전환 (Face Move Direction) 로직은 MoveTowardsPath에 통합되어 있다고 가정
+        finalTarget = null;
+        pathCount = 0;
+        rb.linearVelocity = Vector2.zero;
+        RestoreAllIgnores();
     }
 
-    // 외부에서 최종 목적지(Target)를 설정하는 함수
-    public void SetTarget(Vector2 targetPos) // Vector2 사용
+    // ------------------------------------------------------------------
+    //  타워 예측 회피 경로 생성 (현재 위치 → finalTarget)
+    // ------------------------------------------------------------------
+    void BuildPredictedPath(Vector2 finalPos)
     {
-        finalTarget = targetPos;
-        path[0] = targetPos; // 초기 목표를 최종 목표로 설정
-        pathCount = 1;
+        pathCount = 0;
 
-        // 이 곳에서 유닛이 움직이도록 MoveTo를 호출할 필요는 없습니다.
-        // MoveTowardsPath가 FixedUpdate에서 지속적으로 호출되어야 합니다.
-    }
+        Vector2 origin = rb.position;
+        Vector2 toTarget = finalPos - origin;
+        float dist = toTarget.magnitude;
+        if (dist < 0.01f) return;
 
-    // SetTarget의 별칭 (다른 스크립트 호환용)
-    public void SetMoveTarget(Vector2 targetPos)
-    {
-        SetTarget(targetPos);
-    }
+        Vector2 dir = toTarget / dist;
 
-    // 현재 이동 명령이 있는지 확인
-    public bool HasCommand()
-    {
-        return finalTarget.HasValue;
-    }
+        // 예측: 현재 위치에서 최종 목표까지 CircleCast
+        // 중간에 TowerObstacle 에 부딪힐 예정인지 확인
+        RaycastHit2D hit = Physics2D.CircleCast(
+            origin,
+            colliderRadius,
+            dir,
+            dist,
+            towerObstacleMask
+        );
 
-    // FixedUpdate에서 호출되어 경로를 따라 이동하고 충돌 회피를 수행
-    private void MoveTowardsPath()
-    {
-        if (!finalTarget.HasValue || pathCount == 0 || rb == null)
+        if (!hit)
         {
-            rb.velocity = Vector2.zero;
+            // 막힌 것 없으면 직선 경로만 사용
+            path[0] = finalPos;
+            pathCount = 1;
             return;
         }
 
-        // 현재 목표 위치
-        Vector2 targetPosition = path[0];
+        // 여기부터는 "타워 콜라이더에 충돌할 예정"인 경우
+        Collider2D col = hit.collider;
+        Vector2 center = col.bounds.center;
 
-        // 이동 방향 계산
-        Vector2 direction = targetPosition - (Vector2)transform.position; // Vector2 사용
+        // 타워 반경(대략) + 내 반지름 + 여유 거리
+        float towerRadius =
+            Mathf.Max(col.bounds.extents.x, col.bounds.extents.y)
+            + colliderRadius + avoidMargin;
 
-        // 회피 로직 (Obstacle Avoidance Logic)
-        if (CheckForObstacles(direction, out Vector2 avoidanceDirection)) // Vector2 사용
-        {
-            direction = avoidanceDirection;
-        }
+        // 목적지 방향과 수직인 두 방향(왼/오른쪽) 중 더 짧은 쪽 선택
+        Vector2 tangent = Vector2.Perpendicular(dir); // 왼쪽
+        Vector2 cand1 = center + tangent * towerRadius;
+        Vector2 cand2 = center - tangent * towerRadius;
 
-        // 목표에 충분히 가까워졌는지 확인 (Close enough to current point)
-        if (direction.magnitude <= stopDistance)
-        {
-            // 경로가 남아 있다면 다음 경로로 이동
-            if (pathCount > 1)
-            {
-                // 다음 경로 포인트를 현재 목표로 설정
-                path[0] = path[1];
-                pathCount = 1; // 경로가 1개 남음
-                direction = path[0] - (Vector2)transform.position;
-            }
-            else
-            {
-                // 최종 목표에 도달
-                finalTarget = null;
-                rb.velocity = Vector2.zero;
-                return;
-            }
-        }
+        float d1 = Vector2.Distance(cand1, finalPos);
+        float d2 = Vector2.Distance(cand2, finalPos);
 
-        // 최종 이동 속도 계산: 기본 속도 * 지형 보정 배율
-        float finalSpeed = moveSpeed * speedMultiplier;
+        Vector2 corner = (d1 < d2) ? cand1 : cand2;
 
-        // 물리 이동 적용
-        rb.velocity = direction.normalized * finalSpeed;
-
-        // 방향에 따라 스프라이트 뒤집기 (Face Move Direction)
-        if (faceMoveDirection && direction.x != 0)
-        {
-            sr.flipX = direction.x < 0;
-        }
+        // 경로: 현재 → corner → 최종 목적지
+        path[0] = corner;
+        path[1] = finalPos;
+        pathCount = 2;
     }
 
-    // 장애물 회피 로직 (기존 코드의 일부를 가정하여 단순화)
-    private bool CheckForObstacles(Vector2 currentDirection, out Vector2 avoidanceDirection) // Vector2 사용
+    // ------------------------------------------------------------------
+    //  방향 전환 (Enemy.LateUpdate 스타일)
+    // ------------------------------------------------------------------
+    void LateUpdate()
     {
-        // 타워(Obstacle)를 피하는 로직을 여기에 구현 (CapsuleCast, CircleCast 등)
+        if (!faceMoveDirection) return;
+        if (sr == null) return;
+        if (finalTarget == null) return;   // 이동 중이 아니면 그대로
 
-        // 임시: 장애물이 없다고 가정
-        avoidanceDirection = currentDirection;
-        return false;
+        // Enemy:
+        // spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
+        // Ally(수동 이동): 목표 위치 기준으로 좌/우만 판단
+        Vector2 pos = rb.position;
+        sr.flipX = finalTarget.Value.x > pos.x;
     }
 
-    // --- 팀원 무시 로직 (Same-Team Pass Through Logic) ---
-
-    // [최적화] 리스트 재사용으로 GC 방지
-    void RefreshIgnores()
+    // ------------------------------------------------------------------
+    // 같은 진영(루트 Rigidbody 기준) 충돌 무시/복원
+    // [최적화] 정적 버퍼 재사용으로 GC 방지
+    // ------------------------------------------------------------------
+    void RefreshIgnoreSameTeam()
     {
         if (myCols.Count == 0) return;
 
-        // 이동 명령이 없으면 충돌 무시를 모두 복구하고 종료
-        if (!HasCommand())
-        {
-            if (ignoredByRoot.Count > 0)
-            {
-                RestoreAllIgnores();
-            }
-            return;
-        }
-
         // [최적화] 정적 버퍼 사용
         int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, ignoreRadius, overlapBuffer);
+        int myLayer = gameObject.layer;
 
-        // [최적화] 리스트 재사용 (Clear 후 사용)
-        rootsBuffer.Clear();
+        // 새로 발견된 팀원에게 Ignore Collision 적용
         for (int i = 0; i < hitCount; i++)
         {
-            Collider2D c = overlapBuffer[i];
-            if (!c || c.attachedRigidbody == null || c.gameObject == gameObject) continue;
-            if (c.CompareTag(gameObject.tag) && !rootsBuffer.Contains(c.attachedRigidbody))
+            var col = overlapBuffer[i];
+            if (!col) continue;
+
+            var otherRoot = col.attachedRigidbody;
+            if (!otherRoot) continue;                   // 정적 콜라이더는 무시
+            if (otherRoot == rb) continue;              // 자기 자신
+            if (otherRoot.gameObject.layer != myLayer)  // 같은 진영(같은 레이어)만
+                continue;
+
+            if (ignoredByRoot.ContainsKey(otherRoot)) continue; // 이미 처리
+
+            // 해당 루트의 모든 자식 콜라이더 수집
+            var others = new List<Collider2D>();
+            otherRoot.GetComponentsInChildren(true, others);
+
+            // 내 모든 콜라이더 ↔ 상대 루트의 모든 콜라이더 쌍에 대해 IgnoreCollision
+            foreach (var mine in myCols)
             {
-                rootsBuffer.Add(c.attachedRigidbody);
+                if (!mine) continue;
+                foreach (var oc in others)
+                {
+                    if (!oc) continue;
+                    Physics2D.IgnoreCollision(mine, oc, true);
+                }
             }
+            ignoredByRoot.Add(otherRoot, others);
         }
 
-        // [최적화] 리스트 재사용
+        // [최적화] 재사용 버퍼로 GC 방지
         toRestoreBuffer.Clear();
-        foreach (var root in ignoredByRoot.Keys)
+        foreach (var kv in ignoredByRoot)
         {
-            if (root == null || root.transform == null) // Rigidbody가 파괴되었을 경우 처리
-            {
-                toRestoreBuffer.Add(root);
-                continue;
-            }
+            var root = kv.Key;
+            if (!root) { toRestoreBuffer.Add(root); continue; }
 
-            // 거리가 너무 멀어졌는지 확인 (기존 로직)
-            Vector2 pos = root.transform.position;
-            float sqr = ((Vector2)transform.position - pos).sqrMagnitude;
+            float sqr = (root.position - rb.position).sqrMagnitude;
             if (sqr > ignoreRadius * ignoreRadius * 4f)
                 toRestoreBuffer.Add(root);
         }
 
         for (int i = 0; i < toRestoreBuffer.Count; i++)
             RestoreByRoot(toRestoreBuffer[i]);
-
-        foreach (var root in rootsBuffer)
-        {
-            if (!ignoredByRoot.ContainsKey(root))
-                IgnoreByRoot(root);
-        }
-    }
-
-    // [최적화] 리스트 재사용
-    void IgnoreByRoot(Rigidbody2D root)
-    {
-        if (!root || myCols.Count == 0) return;
-
-        // [최적화] 버퍼 리스트 재사용
-        tempCollidersBuffer.Clear();
-        root.GetComponentsInChildren(tempCollidersBuffer);
-        if (tempCollidersBuffer.Count == 0) return;
-
-        // Dictionary에 저장할 때는 새 리스트 생성 필요 (참조 유지)
-        List<Collider2D> storedList = new List<Collider2D>(tempCollidersBuffer);
-        ignoredByRoot.Add(root, storedList);
-
-        foreach (var mine in myCols)
-        {
-            if (!mine) continue;
-            foreach (var oc in storedList)
-            {
-                if (!oc) continue;
-                Physics2D.IgnoreCollision(mine, oc, true);
-            }
-        }
     }
 
     void RestoreByRoot(Rigidbody2D root)
@@ -313,6 +325,10 @@ public class UnitMover2D : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, ignoreRadius);
 
         // 최종 목적지 디버그용
+        if (finalTarget != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(finalTarget.Value, 0.1f);
+        }
     }
 }
-// } <--- namespace 닫는 괄호 주석 처리

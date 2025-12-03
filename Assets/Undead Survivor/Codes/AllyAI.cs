@@ -49,11 +49,6 @@ public class AllyAI : MonoBehaviour
 
     // [최적화] Physics2D 버퍼 재사용 (GC 방지)
     private static readonly Collider2D[] targetBuffer = new Collider2D[100];
-    private ContactFilter2D contactFilter;
-
-    // [최적화] WaitForSeconds 캐싱
-    private static readonly WaitForSeconds waitHalfSec = new WaitForSeconds(0.5f);
-    private static readonly WaitForSeconds waitPointOne = new WaitForSeconds(0.1f);
 
     void Awake()
     {
@@ -61,12 +56,6 @@ public class AllyAI : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         mover = GetComponent<UnitMover2D>(); // [최적화] 캐싱
-
-        // [최적화] ContactFilter 설정
-        contactFilter = new ContactFilter2D();
-        contactFilter.useTriggers = false;
-        contactFilter.SetLayerMask(targetLayer);
-        contactFilter.useLayerMask = true;
     }
 
     void Start()
@@ -180,11 +169,11 @@ public class AllyAI : MonoBehaviour
     // [최적화] 인자로 탐지 범위를 받도록 수정 - 버퍼 재사용으로 GC 방지
     Targetable FindClosestTarget(float radius)
     {
-        float closest = float.MaxValue;
+        float closestSqr = float.MaxValue;
         Targetable best = null;
 
-        // [최적화] 정적 버퍼 사용으로 매 프레임 배열 할당 방지
-        int hitCount = Physics2D.OverlapCircle(transform.position, radius, contactFilter, targetBuffer);
+        // [최적화] 정적 버퍼 사용으로 매 호출마다 배열 할당 방지
+        int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, radius, targetBuffer, targetLayer);
         for (int i = 0; i < hitCount; i++)
         {
             Collider2D col = targetBuffer[i];
@@ -193,9 +182,9 @@ public class AllyAI : MonoBehaviour
             {
                 // [최적화] sqrMagnitude 사용으로 sqrt 연산 제거
                 float sqrDist = ((Vector2)transform.position - (Vector2)col.transform.position).sqrMagnitude;
-                if (sqrDist < closest)
+                if (sqrDist < closestSqr)
                 {
-                    closest = sqrDist;
+                    closestSqr = sqrDist;
                     best = t;
                 }
             }
