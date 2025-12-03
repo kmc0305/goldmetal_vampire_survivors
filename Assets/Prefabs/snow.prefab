@@ -140,9 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e8e671571a14cdfa69e5af590c8b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampArea
-  areaType: 2
-  effectDuration: 1
-  effectValue: 0.5
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 256
+  areaType: 1
+  speedMultiplier: 0.5
+  healPerSecond: 0
+  areaTintColor: {r: 0.5, g: 0.8, b: 0.5, a: 1}
