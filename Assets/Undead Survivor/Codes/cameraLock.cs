@@ -48,7 +48,7 @@ public class CameraLock : MonoBehaviour
     void Update()
     {
         // 'Y' 키를 눌렀는지 감지
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             // 카메라 잠금 상태를 토글(Toggle)
             isCameraLocked = !isCameraLocked;

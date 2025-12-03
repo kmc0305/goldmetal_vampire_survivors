@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Vector2 = UnityEngine.Vector2; // ✅ 혹시 모를 모호함 방지 (네 원본 코드 반영)
 
 /// <summary>
 /// 유닛의 생명력, 피격, 사망 처리를 담당하는 핵심 컴포넌트입니다.
+/// [최종 검수 완료]: 보스 소환 + 힐/경험치 + HealingArea 연동 + 코루틴 초기화 로직 보완
 /// </summary>
 public class Targetable : MonoBehaviour
 {
@@ -25,15 +27,16 @@ public class Targetable : MonoBehaviour
     [Header("레벨/드롭 아이템 설정")]
     public int dropItemIndex = -1;
 
+    // ★ 적 처치 시 획득할 경험치 양
+    public int expReward = 1;
+
     [Header("넉백 설정")]
-    public float knockbackPower = 20f; // 넉백 힘 (기본값)
+    public float knockbackPower = 20f;
     public float knockbackDuration = 0.2f;
 
     [Header("피격 피드백 (무적/색상)")]
     [Tooltip("피격 후 무적 시간(초).")]
     public float invincibilityDuration = 0.2f;
-
-    // A 값을 0.5 정도로 설정하면 반투명해짐
     public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
     public UnityEvent onDie;
@@ -46,8 +49,11 @@ public class Targetable : MonoBehaviour
     private Color originalColor;
     private bool isKnockedBack = false;
 
-    // ★ 추가: 내가 타워인지 확인하기 위한 변수
+    // ★ 타워 여부 확인용
     private SpawnPoint mySpawnPoint;
+
+    // ★ 힐 효과 코루틴
+    private Coroutine healFlashCoroutine;
 
     // 외부에서 넉백 상태 확인용 프로퍼티
     public bool IsKnockedBack => isKnockedBack;
@@ -57,7 +63,7 @@ public class Targetable : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
 
-        // ★ [핵심] 시작할 때 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워, 없으면 몬스터)
+        // 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워)
         mySpawnPoint = GetComponent<SpawnPoint>();
 
         if (GameManager.instance != null)
@@ -78,7 +84,9 @@ public class Targetable : MonoBehaviour
         isInvincible = false;
         isKnockedBack = false;
 
-        // 다시 활성화될 때 컴포넌트들도 복구 (타워 재사용 대비)
+        // 코루틴 변수 초기화 (중요)
+        healFlashCoroutine = null;
+
         if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = true;
         this.enabled = true;
         if (rigid != null) rigid.simulated = true;
@@ -100,10 +108,8 @@ public class Targetable : MonoBehaviour
     {
         if (isDead || isInvincible) return;
 
-        // 체력 감소
         currentHealth -= damage;
 
-        // 넉백 & 무적 효과 (공격자가 있을 때만)
         if (attacker != null)
         {
             ApplyKnockback(attacker);
@@ -114,50 +120,80 @@ public class Targetable : MonoBehaviour
             StartCoroutine(InvincibilityBlinkRoutine());
         }
 
-        // 사망 체크
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
+    // ★ [힐 함수]
+    public void Heal(float amount)
+    {
+        if (isDead) return;
+
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+        // 힐 이펙트 (초록색 깜빡임)
+        if (healFlashCoroutine != null) StopCoroutine(healFlashCoroutine);
+        healFlashCoroutine = StartCoroutine(HealFlashRoutine());
+    }
+
+    // ★ [추가] HealingArea.cs에서 호출하는 함수
+    public void StopHealFlashAndResetColor()
+    {
+        if (healFlashCoroutine != null)
+        {
+            StopCoroutine(healFlashCoroutine);
+            healFlashCoroutine = null; // ★ [중요] 변수를 비워줘야 다른 색상 로직이 꼬이지 않음
+        }
+
+        if (spriter != null) spriter.color = originalColor;
+    }
+
+    // Targetable.cs의 Die() 함수 수정
+
     public void Die()
     {
         if (isDead) return;
         isDead = true;
 
-        DropItem();
-
-        // 킬 수 증가
+        // 킬 수 증가 및 경험치 획득
         if (GameManager.instance != null && faction == Faction.Enemy)
         {
             GameManager.instance.AddKill();
+            for (int i = 0; i < expReward; i++) GameManager.instance.getExp();
         }
 
         onDie.Invoke();
 
-        // ★ [핵심 수정 부분] 타워와 일반 유닛 구분
+        // ★ 타워와 일반 유닛 구분
         if (mySpawnPoint != null)
         {
             Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
-            // Case A: 나는 타워다 (SpawnPoint 컴포넌트가 있음)
-            // -> 오브젝트를 끄지 않고, 파괴 애니메이션 로직을 실행
             mySpawnPoint.DeactivatePermanently();
 
             if (rigid)
             {
-                rigid.linearVelocity = Vector2.zero; // 움직임 멈춤
-                rigid.bodyType = RigidbodyType2D.Static; // ★ 완전 고정된 벽으로 변경
+                rigid.linearVelocity = Vector2.zero;
+                rigid.bodyType = RigidbodyType2D.Static;
             }
-            // 이 스크립트 끄기 (더 이상 로직 안 돌게)
             this.enabled = false;
         }
         else
         {
-            Debug.Log("👻 일반 몬스터 사망! 사라짐.");
-            // Case B: 나는 일반 몬스터다 (SpawnPoint 컴포넌트가 없음)
-            // -> 깔끔하게 비활성화 (오브젝트 풀링 혹은 삭제)
-            gameObject.SetActive(false);
+            // ★★★ [수정됨] ★★★
+            // 바로 끄지 말고, Enemy 스크립트가 있으면 "사망 연출해라" 시키기
+            Enemy enemyScript = GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.OnEnemyDead(); // Enemy.cs에 추가한 함수 호출
+            }
+            else
+            {
+                // Enemy 스크립트가 없는 잡동사니면 그냥 바로 끔
+                gameObject.SetActive(false);
+            }
         }
     }
 
@@ -173,31 +209,36 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    // --- 피격 효과 관련 코루틴 ---
+    // --- 코루틴들 ---
 
     private IEnumerator InvincibilityBlinkRoutine()
     {
         isInvincible = true;
-
-        if (spriter != null)
-        {
-            spriter.color = invincibilityColor;
-        }
+        if (spriter != null) spriter.color = invincibilityColor;
 
         yield return new WaitForSeconds(invincibilityDuration);
 
         isInvincible = false;
-        if (spriter != null)
+        // 힐 중이 아닐 때만 원래 색으로 복구 (충돌 방지 로직)
+        if (spriter != null && healFlashCoroutine == null)
         {
             spriter.color = originalColor;
         }
+    }
+
+    private IEnumerator HealFlashRoutine()
+    {
+        if (spriter != null) spriter.color = Color.green;
+        yield return new WaitForSeconds(0.2f);
+
+        if (spriter != null) spriter.color = originalColor;
+        healFlashCoroutine = null; // 종료 시 변수 비우기
     }
 
     private void ApplyKnockback(Transform attacker)
     {
         if (rigid == null) return;
 
-        // 공격자 반대 방향 계산
         Vector2 knockbackDir = (transform.position - attacker.position).normalized;
 
         if (isKnockedBack) StopCoroutine("PhysicsKnockback");
@@ -207,7 +248,6 @@ public class Targetable : MonoBehaviour
     private IEnumerator PhysicsKnockback(Vector2 dir)
     {
         isKnockedBack = true;
-
         rigid.linearVelocity = Vector2.zero;
         rigid.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
 

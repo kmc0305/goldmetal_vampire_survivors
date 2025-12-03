@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: 4c0eeb50616f9c142b925c8056aa9f03
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5643399248617547226
+    second: Angel2_Effect_0
+  - first:
+      213: -7373533043989049324
+    second: Angel2_Effect_1
+  - first:
+      213: 6086437052428257492
+    second: Angel2_Effect_2
+  - first:
+      213: -2966711334640575625
+    second: Angel2_Effect_3
+  - first:
+      213: -2474090366124630695
+    second: Angel2_Effect_4
+  - first:
+      213: -2961806364356708875
+    second: Angel2_Effect_5
+  - first:
+      213: -2563111899360850261
+    second: Angel2_Effect_6
+  - first:
+      213: -3570999228567728793
+    second: Angel2_Effect_7
+  - first:
+      213: 1353743206076410839
+    second: Angel2_Effect_8
+  - first:
+      213: -2980813504631134697
+    second: Angel2_Effect_9
+  - first:
+      213: -2872737479845281492
+    second: Angel2_Effect_10
+  - first:
+      213: 2665544456019926356
+    second: Angel2_Effect_11
+  - first:
+      213: 4813558936339393277
+    second: Angel2_Effect_12
+  - first:
+      213: 2830424867281639214
+    second: Angel2_Effect_13
+  - first:
+      213: 8181927874469923404
+    second: Angel2_Effect_14
+  - first:
+      213: 1936095478373768327
+    second: Angel2_Effect_15
+  - first:
+      213: -2644858011594985535
+    second: Angel2_Effect_16
+  - first:
+      213: 5911058379661390372
+    second: Angel2_Effect_17
+  - first:
+      213: 3036187138474016186
+    second: Angel2_Effect_18
+  - first:
+      213: 6813283556414992888
+    second: Angel2_Effect_19
+  - first:
+      213: -3286221631333081854
+    second: Angel2_Effect_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Angel2_Effect_0
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 1137
+        width: 31
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62ad17c884e9ea1b0800000000000000
+      internalID: -5643399248617547226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_1
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 1124
+        width: 87
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4109d6d53c2fba990800000000000000
+      internalID: -7373533043989049324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_2
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 1116
+        width: 86
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d803c9704e577450800000000000000
+      internalID: 6086437052428257492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_3
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 1109
+        width: 85
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77b9f9b62cf14d6d0800000000000000
+      internalID: -2966711334640575625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_4
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 1115
+        width: 87
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95ddce89be34aadd0800000000000000
+      internalID: -2474090366124630695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_5
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 1129
+        width: 104
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f5f60fcdcc85e6d0800000000000000
+      internalID: -2961806364356708875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_6
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 1122
+        width: 84
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bae0507be4ffd6cd0800000000000000
+      internalID: -2563111899360850261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_7
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 965
+        width: 113
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76dc6002f13417ec0800000000000000
+      internalID: -3570999228567728793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 986
+        width: 76
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7db6843064679c210800000000000000
+      internalID: 1353743206076410839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_9
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 986
+        width: 79
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71626ca19e502a6d0800000000000000
+      internalID: -2980813504631134697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_10
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 989
+        width: 82
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c210fd48b7cf128d0800000000000000
+      internalID: -2872737479845281492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_11
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 993
+        width: 57
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45d54126f8aedf420800000000000000
+      internalID: 2665544456019926356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_12
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 748
+        width: 34
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfaaae969523dc240800000000000000
+      internalID: 4813558936339393277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_13
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 747
+        width: 93
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2711c9ab60b74720800000000000000
+      internalID: 2830424867281639214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_14
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 749
+        width: 106
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4a85a75d0c0c8170800000000000000
+      internalID: 8181927874469923404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_15
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 742
+        width: 292
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78c55b764946eda10800000000000000
+      internalID: 1936095478373768327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_16
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 511
+        width: 339
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cfe889c6a39b4bd0800000000000000
+      internalID: -2644858011594985535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_17
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 503
+        width: 369
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4223056374c480250800000000000000
+      internalID: 5911058379661390372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_18
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 266
+        width: 339
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd7a54bd14b22a20800000000000000
+      internalID: 3036187138474016186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_19
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 266
+        width: 318
+        height: 175
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f13026db45ad8e50800000000000000
+      internalID: 6813283556414992888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Angel2_Effect_20
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 25
+        width: 261
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20ddf2366def462d0800000000000000
+      internalID: -3286221631333081854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Angel2_Effect_0: -5643399248617547226
+      Angel2_Effect_1: -7373533043989049324
+      Angel2_Effect_10: -2872737479845281492
+      Angel2_Effect_11: 2665544456019926356
+      Angel2_Effect_12: 4813558936339393277
+      Angel2_Effect_13: 2830424867281639214
+      Angel2_Effect_14: 8181927874469923404
+      Angel2_Effect_15: 1936095478373768327
+      Angel2_Effect_16: -2644858011594985535
+      Angel2_Effect_17: 5911058379661390372
+      Angel2_Effect_18: 3036187138474016186
+      Angel2_Effect_19: 6813283556414992888
+      Angel2_Effect_2: 6086437052428257492
+      Angel2_Effect_20: -3286221631333081854
+      Angel2_Effect_3: -2966711334640575625
+      Angel2_Effect_4: -2474090366124630695
+      Angel2_Effect_5: -2961806364356708875
+      Angel2_Effect_6: -2563111899360850261
+      Angel2_Effect_7: -3570999228567728793
+      Angel2_Effect_8: 1353743206076410839
+      Angel2_Effect_9: -2980813504631134697
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

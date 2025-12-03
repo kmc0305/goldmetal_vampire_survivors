@@ -1,5 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class RangedEnemy : MonoBehaviour
 {
@@ -9,25 +12,60 @@ public class RangedEnemy : MonoBehaviour
 
     [Header("기본 설정")]
     public float speed = 2.0f;
+    // [추가] 늪지대/외부 효과를 위한 속도 배율
+    public float speedMultiplier = 1f;
+
     public LayerMask targetLayer;
     public float detectionRadius = 15f;
+
+    [Header("AI 업데이트")]
+    public float aiUpdateFrequency = 0.5f;
+    private float aiUpdateRandomDelay = 0.1f;
 
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
     private Targetable currentTarget;
+    private Targetable myTargetable;
     private float lastAttackTime;
-    private Targetable myTargetable; // 내 자신의 Targetable
+
+    private Coroutine aiCoroutine;
+    private Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         myTargetable = GetComponent<Targetable>();
+        anim = GetComponent<Animator>(); // 애니메이션 추가
     }
 
     void OnEnable()
     {
         currentTarget = null;
+        // [수정] 활성화 시 속도 배율 초기화
+        speedMultiplier = 1f;
+
+        if (aiCoroutine == null)
+            aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
+    }
+
+    void OnDisable()
+    {
+        if (aiCoroutine != null)
+        {
+            StopCoroutine(aiCoroutine);
+            aiCoroutine = null;
+        }
+
+        currentTarget = null;
+        rigid.linearVelocity = Vector2.zero;
+    }
+
+    IEnumerator UpdateTargetCoroutineDelayed()
+    {
+        float initialDelay = Random.Range(0f, aiUpdateFrequency);
+        yield return new WaitForSeconds(initialDelay);
+
         StartCoroutine(UpdateTargetCoroutine());
     }
 
@@ -35,17 +73,26 @@ public class RangedEnemy : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
-            // 넉백 중이 아닐 때만 타겟 갱신 (선택사항)
-            currentTarget = FindClosestTarget();
-            yield return new WaitForSeconds(0.5f);
+            // 타겟이 죽었으면 해제
+            if (currentTarget != null && currentTarget.isDead)
+                currentTarget = null;
+
+            // 타겟 없으면 새로 탐색
+            if (currentTarget == null)
+                currentTarget = FindClosestTarget();
+
+            float wait = aiUpdateFrequency + Random.Range(-aiUpdateRandomDelay, aiUpdateRandomDelay);
+            if (wait < 0.1f) wait = 0.1f;
+
+            yield return new WaitForSeconds(wait);
         }
     }
 
-    // ... FindClosestTarget 함수는 기존과 동일 ...
     Targetable FindClosestTarget()
     {
-        float closestDist = float.MaxValue;
-        Targetable bestTarget = null;
+        float closest = float.MaxValue;
+        Targetable best = null;
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
 
         foreach (Collider2D col in hits)
@@ -53,51 +100,58 @@ public class RangedEnemy : MonoBehaviour
             Targetable t = col.GetComponent<Targetable>();
             if (t != null && !t.isDead)
             {
-                float dist = UnityEngine.Vector3.Distance(transform.position, t.transform.position);
-                if (dist < closestDist)
+                float d = Vector3.Distance(transform.position, t.transform.position);
+                if (d < closest)
                 {
-                    closestDist = dist;
-                    bestTarget = t;
+                    closest = d;
+                    best = t;
                 }
             }
         }
-        return bestTarget;
+
+        return best;
     }
 
     void FixedUpdate()
     {
-        // [중요] 넉백 중이면 이동 로직 건너뜀
-        if (myTargetable != null && myTargetable.IsKnockedBack) return;
+        if (myTargetable != null && myTargetable.IsKnockedBack)
+            return;
 
         if (currentTarget == null)
         {
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
+            rigid.linearVelocity = Vector2.zero;
             return;
         }
 
-        float distance = UnityEngine.Vector3.Distance(transform.position, currentTarget.transform.position);
-        UnityEngine.Vector2 dir = (currentTarget.transform.position - transform.position).normalized;
+        float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
 
-        if (distance > weaponData.attackRange)
+        // 공격 사거리 안 -> 멈춰서 공격 준비
+        if (weaponData != null && dist <= weaponData.attackRange)
         {
-            rigid.MovePosition(rigid.position + dir * speed * Time.fixedDeltaTime);
+            rigid.linearVelocity = Vector2.zero;
+            return;
         }
-        else
-        {
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
-        }
+
+        // 공격 사거리 밖 -> 이동하며 추적
+        Vector2 dir = (currentTarget.transform.position - transform.position).normalized;
+
+        // [수정] 이동 속도에 speedMultiplier 적용
+        float currentMoveSpeed = speed * speedMultiplier;
+        Vector2 step = dir * currentMoveSpeed * Time.fixedDeltaTime;
+
+        rigid.MovePosition(rigid.position + step);
     }
 
     void Update()
     {
-        // 넉백 중이면 회전/발사 안 함
-        if (myTargetable != null && myTargetable.IsKnockedBack) return;
-        if (currentTarget == null) return;
-        if (weaponData == null) return;
+        if (myTargetable != null && myTargetable.IsKnockedBack)
+            return;
+        if (currentTarget == null || weaponData == null)
+            return;
 
         spriter.flipX = currentTarget.transform.position.x < transform.position.x;
 
-        float dist = UnityEngine.Vector3.Distance(transform.position, currentTarget.transform.position);
+        float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
 
         if (dist <= weaponData.attackRange)
         {
@@ -111,21 +165,34 @@ public class RangedEnemy : MonoBehaviour
 
     void Fire()
     {
+        // 공격 애니메이션
+        if (anim != null)
+            anim.SetTrigger("Attack");
+
         GameObject bulletObj = GameManager.instance.Pool.Get(bulletPrefabId);
         if (bulletObj == null) return;
 
         bulletObj.transform.position = transform.position;
 
-        UnityEngine.Vector3 dir = (currentTarget.transform.position - transform.position).normalized;
+        Vector3 dir = (currentTarget.transform.position - transform.position).normalized;
 
-        EnemyBullet bulletScript = bulletObj.GetComponent<EnemyBullet>();
-        if (bulletScript != null)
+        EnemyBullet b = bulletObj.GetComponent<EnemyBullet>();
+        if (b != null)
         {
-            bulletScript.Init(weaponData, dir);
+            b.Init(weaponData, dir);
         }
     }
 
-    // [디버그용]
+    // [추가 시작] 늪지대에서 호출할 함수 (CS1061 오류 해결)
+    /// <summary>
+    /// 외부 요인에 의한 이동 속도 배율을 설정합니다.
+    /// </summary>
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
+    // [추가 끝]
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -137,5 +204,4 @@ public class RangedEnemy : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, weaponData.attackRange);
         }
     }
-
 }

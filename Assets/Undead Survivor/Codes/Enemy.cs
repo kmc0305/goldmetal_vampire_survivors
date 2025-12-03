@@ -1,342 +1,363 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+public enum AttackStyle
+{
+    Single,
+    Circle,
+    Fan
+}
+
+public enum EnemyType
+{
+    Normal, // 일반 몬스터 (Speed 연산 안 함)
+    Boss    // 보스 몬스터 (Speed 연산 함)
+}
 
 public class Enemy : MonoBehaviour
 {
-    // ... (기존 변수들 유지) ...
-    [Header("Friendly Tower Avoidance")]
+    [Header("적군 타입 설정")]
+    public EnemyType enemyType = EnemyType.Normal;
+
+    [Header("기본 능력치")]
+    public float speed = 2.5f;
+    public float attackDamage = 1f;
+    public float attackCooldown = 1f;
+    private float lastAttackTime;
+
+    [Header("외부 속도 제어")]
+    public float speedMultiplier = 1f;
+
+    [Header("공격 연출 설정")]
+    public float attackImpactDelay = 0.2f;
+    [Tooltip("보스가 단일 공격할 때만 나오는 이펙트")]
+    public GameObject hitEffectPrefab;
+
+    [Header("공격 범위 설정")]
+    public AttackStyle attackStyle = AttackStyle.Single;
+    public float areaAttackRadius = 3.0f;
+    [Range(0, 360)] public float fanAngle = 120f;
+    public GameObject areaAttackEffectPrefab;
+
+    [Header("AI 설정")]
+    public LayerMask targetLayer;
+    public float detectionRadius = 100f;
+    public float aiUpdateFrequency = 0.5f;
+    public float castlePriorityRadius = 15.0f;
+
+    private float aiUpdateRandomDelay = 0.1f;
+    private Collider2D[] targetBuffer = new Collider2D[30];
+    private ContactFilter2D contactFilter;
+    private Targetable cachedCastle;
+
+    [Header("회피 및 이동 설정")]
     public float avoidDuration = 0.6f;
     public float avoidSpeedMul = 1.2f;
-    [Header("Avoidance Filters")]
     public float avoidanceGrace = 0.35f;
     public float minSpeedToAvoid = 0.1f;
     public float minDotBlock = 0.25f;
 
     private float avoidUntil = 0f;
-    private UnityEngine.Vector2 avoidDir = UnityEngine.Vector2.zero;
+    private Vector2 avoidDir = Vector2.zero;
     private float spawnGraceUntil = 0f;
 
-    [Header("Boss HP Bar")]
-    public Transform hpBarRoot;
-    public Transform hpFill;
-    public float barWidth = 2.0f;
-    public float barHeight = 0.25f;
-    public UnityEngine.Vector3 barOffset = new UnityEngine.Vector3(0f, 1.5f, 0f);
-
-    [Header("범위공격 옵션")]
-    public bool isAreaAttack = false;
-    public float areaAttackRadius = 3.0f;
-
-    // ★★★ [추가] 광역 공격 시 생성할 이펙트 프리팹 ★★★
-    public GameObject areaAttackEffectPrefab;
-
-    [Header("기본 능력치")]
-    public float speed = 2.5f;
-    public float health;
-    public float maxHealth;
-    public RuntimeAnimatorController[] animCon;
-
-    [Header("AI 설정")]
-    public LayerMask targetLayer;
-    public float detectionRadius = 15f;
-    private float aiUpdateFrequency = 0.5f;
-
-    [Header("공격 설정")]
-    public float attackDamage = 5f;
-    public float attackCooldown = 1f;
-    private float lastAttackTime;
-
-    // 컴포넌트
-    private Rigidbody2D rigid;
+    private Rigidbody2D rb;
     private SpriteRenderer spriter;
-    private Coroutine aiCoroutine;
     private Animator anim;
     private Targetable currentTarget;
-    private Targetable myTargetable; // 내 자신의 Targetable 참조
+    private Targetable myTargetable;
+    private Coroutine aiCoroutine;
+    private bool isLive = false;
+
+    // 해시값 미리 저장 (최적화)
+    private static readonly int HashSpeed = Animator.StringToHash("Speed");
+    private static readonly int HashAttack = Animator.StringToHash("Attack");
+    private static readonly int HashDead = Animator.StringToHash("Dead");
+
+    private float lastSetSpeed = -1f;
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        myTargetable = GetComponent<Targetable>(); // Targetable 컴포넌트 가져오기
+        myTargetable = GetComponent<Targetable>();
     }
 
     void OnEnable()
     {
-        spawnGraceUntil = Time.time + avoidanceGrace;
-        avoidDir = UnityEngine.Vector2.zero;
-        avoidUntil = 0f;
-
-        if (aiCoroutine == null)
-            aiCoroutine = StartCoroutine(UpdateTargetCoroutine());
-
-        UpdateHPBar();
-    }
-
-    // ... (OnDisable, UpdateTargetCoroutine, FindClosestTarget, UpdateHPBar 등은 기존 유지) ...
-    void OnDisable()
-    {
-        if (aiCoroutine != null)
-        {
-            StopCoroutine(aiCoroutine);
-            aiCoroutine = null;
-        }
-        // 킬 수 증가는 Targetable에서 처리하므로 여기서는 제거해도 됨 (중복 방지)
-
         currentTarget = null;
-        if (rigid != null)
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
-        avoidDir = UnityEngine.Vector2.zero;
+        isLive = true;
+
+        spawnGraceUntil = Time.time + avoidanceGrace;
+        avoidDir = Vector2.zero;
         avoidUntil = 0f;
+        speedMultiplier = 1f;
+        lastSetSpeed = -1f;
+
+        enemyType = EnemyType.Normal;
+
+        if (aiCoroutine != null) StopCoroutine(aiCoroutine);
+        aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
     }
 
-    IEnumerator UpdateTargetCoroutine()
+    void Start()
     {
-        while (gameObject.activeSelf)
-        {
-            // 넉백 중에는 타겟 탐색도 잠시 쉴 수 있음 (선택사항)
-            currentTarget = FindClosestTarget();
-            yield return new WaitForSeconds(aiUpdateFrequency);
-        }
-    }
+        contactFilter = new ContactFilter2D();
+        contactFilter.SetLayerMask(targetLayer);
+        contactFilter.useTriggers = true;
 
-    Targetable FindClosestTarget()
-    {
-        float closestDistance = float.MaxValue;
-        Targetable bestTarget = null;
-        Collider2D[] targetsInView = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayer);
-
-        foreach (Collider2D col in targetsInView)
-        {
-            var t = col.GetComponent<Targetable>();
-            if (t != null && !t.isDead)
-            {
-                float d = UnityEngine.Vector3.Distance(transform.position, t.transform.position);
-                if (d < closestDistance)
-                {
-                    closestDistance = d;
-                    bestTarget = t;
-                }
-            }
-        }
-        return bestTarget;
-    }
-
-    void UpdateHPBar()
-    {
-        if (!hpBarRoot || !hpFill) return;
-        float cur = health;
-        float max = maxHealth;
-        if (myTargetable != null)
-        {
-            cur = myTargetable.currentHealth;
-            max = myTargetable.maxHealth;
-        }
-        float ratio = (max > 0f) ? Mathf.Clamp01(cur / max) : 0f;
-        hpBarRoot.localPosition = barOffset;
-        float w = barWidth * ratio;
-        hpFill.localScale = new UnityEngine.Vector3(w, barHeight, 1f);
-        hpFill.localPosition = new UnityEngine.Vector3(-(barWidth - w) * 0.5f, 0f, 0f);
-        var sr = hpFill.GetComponent<SpriteRenderer>();
-        if (sr) sr.color = Color.Lerp(Color.red, Color.green, ratio);
-        if (myTargetable != null) hpBarRoot.gameObject.SetActive(!myTargetable.isDead);
-    }
-
-    bool IsFriendlyTower(GameObject other)
-    {
-        if (other.layer != gameObject.layer) return false;
-        return other.GetComponent<SpawnPoint>() != null
-            || other.GetComponentInParent<SpawnPoint>() != null
-            || other.GetComponent<AllySpawner>() != null
-            || other.GetComponentInParent<AllySpawner>() != null;
-    }
-
-    void FixedUpdate()
-    {
-        // [중요] Targetable이 넉백 중이라면 이동 로직을 건너뜀
-        if (myTargetable != null && myTargetable.IsKnockedBack) return;
-
-        if (Time.time < avoidUntil && avoidDir.sqrMagnitude > 0.0001f)
-        {
-            UnityEngine.Vector2 step = avoidDir.normalized * speed * avoidSpeedMul * Time.fixedDeltaTime;
-            rigid.MovePosition(rigid.position + step);
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
-            return;
-        }
-
-        if (currentTarget == null)
-        {
-            rigid.linearVelocity = UnityEngine.Vector2.zero;
-            return;
-        }
-
-        UnityEngine.Vector2 dirVec = currentTarget.transform.position - transform.position;
-        UnityEngine.Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
-        rigid.linearVelocity = UnityEngine.Vector2.zero;
-    }
-
-    // ... (LateUpdate, OnCollisionEnter2D, OnCollisionStay2D 등은 기존 유지) ...
-    void LateUpdate()
-    {
-        if (myTargetable != null && myTargetable.IsKnockedBack) return;
-        if (currentTarget == null) return;
-        spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
-        UpdateHPBar();
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        TryStartAvoidance(collision);
-    }
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        TryStartAvoidance(collision);
-        if (Time.time < lastAttackTime + attackCooldown) return;
-        if (myTargetable != null && myTargetable.IsKnockedBack) return; // 넉백 중 공격 불가
-        if (currentTarget == null) return;
-        if (collision.gameObject != currentTarget.gameObject) return;
-
-        if (isAreaAttack) DoAreaAttack();
-        else currentTarget.TakeDamage(attackDamage, transform);
-
-        lastAttackTime = Time.time;
-    }
-
-    // ... (TryStartAvoidance, DoAreaAttack 등 유지) ...
-    void TryStartAvoidance(Collision2D collision)
-    {
-        if (Time.time < spawnGraceUntil) return;
-        if (!IsFriendlyTower(collision.gameObject) || collision.contactCount == 0) return;
-        if (rigid.linearVelocity.sqrMagnitude < minSpeedToAvoid * minSpeedToAvoid && currentTarget == null) return;
-
-        UnityEngine.Vector2 n = collision.GetContact(0).normal;
-        UnityEngine.Vector2 desired;
-        if (currentTarget != null)
-        {
-            UnityEngine.Vector2 toTarget = (UnityEngine.Vector2)(currentTarget.transform.position - transform.position);
-            desired = toTarget.sqrMagnitude > 0.0001f ? toTarget.normalized : rigid.linearVelocity.normalized;
-        }
-        else
-        {
-            desired = rigid.linearVelocity.sqrMagnitude > 0.0001f ? rigid.linearVelocity.normalized : UnityEngine.Vector2.zero;
-        }
-        if (desired == UnityEngine.Vector2.zero) return;
-
-        float intoWall = UnityEngine.Vector2.Dot(desired, -n);
-        if (intoWall < minDotBlock) return;
-
-        UnityEngine.Vector2 t1 = new UnityEngine.Vector2(-n.y, n.x);
-        UnityEngine.Vector2 t2 = new UnityEngine.Vector2(n.y, -n.x);
-        UnityEngine.Vector2 chosen = (UnityEngine.Vector2.Dot(t1, desired) >= UnityEngine.Vector2.Dot(t2, desired)) ? t1 : t2;
-
-        avoidDir = chosen.normalized;
-        avoidUntil = Time.time + avoidDuration;
-    }
-
-    void DoAreaAttack()
-    {
-
-        // ★★★ [추가] 공격 이펙트 생성 ★★★
-        if (areaAttackEffectPrefab != null)
-        {
-            // 보스 위치(transform.position)에 이펙트 생성
-            Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity);
-        }
-
-        // 반경 내 '타겟 레이어'에 해당하는 모든 대상 탐색
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, areaAttackRadius, targetLayer);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            var t = hits[i].GetComponent<Targetable>();
-            if (t == null || t.isDead) continue;
-            t.TakeDamage(attackDamage, transform);
-        }
-    }
-
-    // [삭제] 기존 ApplyKnockback, FlashRoutine 등은 Targetable이 대신하므로 삭제해도 됨
-
-    public void slowDown(float x, float dur)
-    {
-        StartCoroutine(SlowDownFor(x, dur));
-    }
-
-    private IEnumerator SlowDownFor(float x, float dur)
-    {
-        float og = speed;
-        speed = speed * x;
-        yield return new WaitForSeconds(dur);
-        speed = og;
+        GameObject castleObj = GameObject.FindGameObjectWithTag("Castle");
+        if (castleObj != null)
+            cachedCastle = castleObj.GetComponent<Targetable>();
     }
 
     public void init(SpawnData data)
     {
-        if (data == null) return;
-        if (animCon != null && data.spriteType >= 0 && data.spriteType < animCon.Length)
-            anim.runtimeAnimatorController = animCon[data.spriteType];
         speed = data.speed;
-        maxHealth = data.health;
-        health = data.health;
-        // Targetable 데이터도 동기화
         if (myTargetable != null)
         {
             myTargetable.maxHealth = data.health;
             myTargetable.currentHealth = data.health;
         }
+        isLive = true;
     }
 
-    // Enemy.cs 내부의 ApplyBossSpec 함수를 이걸로 교체하세요
+    public void slowDown(float rate, float duration)
+    {
+        if (!gameObject.activeInHierarchy) return;
+        StartCoroutine(SlowDownRoutine(rate, duration));
+    }
+    public void SetSpeedMultiplier(float multiplier) { speedMultiplier = multiplier; }
+    private IEnumerator SlowDownRoutine(float rate, float duration)
+    {
+        float originalSpeed = speed; speed *= rate; yield return new WaitForSeconds(duration); speed = originalSpeed;
+    }
+
+    IEnumerator UpdateTargetCoroutineDelayed()
+    {
+        float delay = Random.Range(0f, aiUpdateFrequency);
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(UpdateTargetCoroutine());
+    }
+    IEnumerator UpdateTargetCoroutine()
+    {
+        while (gameObject.activeSelf)
+        {
+            if (currentTarget != null && currentTarget.isDead) currentTarget = null;
+            currentTarget = FindClosestTarget();
+            float wait = aiUpdateFrequency + Random.Range(-aiUpdateRandomDelay, aiUpdateRandomDelay);
+            if (wait < 0.1f) wait = 0.1f;
+            yield return new WaitForSeconds(wait);
+        }
+    }
+    Targetable FindClosestTarget()
+    {
+        if (!isLive) return null;
+        Targetable bestUnit = null; float closestUnitDist = float.MaxValue;
+        int count = Physics2D.OverlapCircle(transform.position, detectionRadius, contactFilter, targetBuffer);
+        for (int i = 0; i < count; i++)
+        {
+            Collider2D col = targetBuffer[i];
+            if (col.CompareTag("Castle")) continue;
+            if (col.TryGetComponent(out Targetable t))
+            {
+                if (!t.isDead)
+                {
+                    float dist = Vector2.Distance(transform.position, col.ClosestPoint(transform.position));
+                    if (dist < closestUnitDist) { closestUnitDist = dist; bestUnit = t; }
+                }
+            }
+        }
+        float distToCastle = float.MaxValue;
+        bool castleAlive = (cachedCastle != null && !cachedCastle.isDead);
+        if (castleAlive) distToCastle = Vector2.Distance(transform.position, cachedCastle.GetComponent<Collider2D>().ClosestPoint(transform.position));
+        if (castleAlive && distToCastle <= castlePriorityRadius) return cachedCastle;
+        if (bestUnit != null && closestUnitDist < distToCastle) return bestUnit;
+        if (castleAlive) return cachedCastle;
+        return bestUnit;
+    }
+
+    void FixedUpdate()
+    {
+        if (!isLive || (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)))
+        {
+            if (myTargetable != null && !myTargetable.IsKnockedBack) rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (currentTarget == null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            UpdateMoveAnimation(0f);
+            return;
+        }
+
+        Vector2 targetPos = currentTarget.transform.position;
+        Vector2 currentPos = transform.position;
+        Vector2 dir = (targetPos - currentPos).normalized;
+
+        if (Time.time < avoidUntil) dir = Vector2.Lerp(dir, avoidDir, 0.7f).normalized * avoidSpeedMul;
+
+        float finalSpeed = speed * speedMultiplier;
+        Vector2 nextPos = currentPos + dir * finalSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(nextPos);
+
+        UpdateMoveAnimation(finalSpeed);
+    }
+
+    void UpdateMoveAnimation(float currentSpeed)
+    {
+        if (anim == null) return;
+        if (enemyType == EnemyType.Normal) return; // Normal은 연산 생략
+        if (Mathf.Abs(lastSetSpeed - currentSpeed) < 0.01f) return;
+
+        lastSetSpeed = currentSpeed;
+        anim.SetFloat(HashSpeed, currentSpeed);
+    }
+
+    void LateUpdate()
+    {
+        if (!isLive || (myTargetable != null && myTargetable.IsKnockedBack)) return;
+        if (currentTarget == null) return;
+        spriter.flipX = currentTarget.transform.position.x < transform.position.x;
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!isLive) return;
+        if (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)) return;
+        if (Time.time < lastAttackTime + attackCooldown) return;
+
+        Targetable t = collision.gameObject.GetComponent<Targetable>();
+        if (t != null && ((1 << collision.gameObject.layer) & targetLayer) != 0)
+        {
+            if (anim != null) anim.SetTrigger(HashAttack);
+
+            lastAttackTime = Time.time;
+            StartCoroutine(AttackRoutine(t));
+        }
+    }
+
+    IEnumerator AttackRoutine(Targetable target)
+    {
+        yield return new WaitForSeconds(attackImpactDelay);
+        if (!isLive || !gameObject.activeSelf) yield break;
+
+        // 범위 공격 이펙트 처리
+        if (attackStyle != AttackStyle.Single && areaAttackEffectPrefab != null)
+        {
+            // ★ [수정됨] 4번째 인자에 'transform'을 넣어서 보스의 자식으로 만듦 -> 같이 움직임
+            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity, transform);
+
+            if (spriter.flipX)
+            {
+                SpriteRenderer sr = effectInstance.GetComponent<SpriteRenderer>();
+                if (sr) sr.flipX = true;
+                else { Vector3 s = effectInstance.transform.localScale; s.x *= -1; effectInstance.transform.localScale = s; }
+            }
+        }
+
+        switch (attackStyle)
+        {
+            case AttackStyle.Single:
+                if (target != null && !target.isDead)
+                {
+                    if (enemyType == EnemyType.Boss && hitEffectPrefab != null)
+                        Instantiate(hitEffectPrefab, target.transform.position, Quaternion.identity);
+
+                    target.TakeDamage(attackDamage, transform);
+                }
+                break;
+
+            case AttackStyle.Circle:
+                PerformCircleAttack();
+                break;
+
+            case AttackStyle.Fan:
+                PerformFanAttack();
+                break;
+        }
+    }
+
+    void PerformCircleAttack()
+    {
+        int count = Physics2D.OverlapCircle(transform.position, areaAttackRadius, contactFilter, targetBuffer);
+        for (int i = 0; i < count; i++)
+        {
+            if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead) t.TakeDamage(attackDamage, transform);
+        }
+    }
+
+    void PerformFanAttack()
+    {
+        int count = Physics2D.OverlapCircle(transform.position, areaAttackRadius, contactFilter, targetBuffer);
+        Vector2 facingDir = spriter.flipX ? Vector2.left : Vector2.right;
+        for (int i = 0; i < count; i++)
+        {
+            if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead)
+            {
+                Vector2 targetDir = (t.transform.position - transform.position).normalized;
+                if (Vector2.Angle(facingDir, targetDir) <= fanAngle * 0.5f) t.TakeDamage(attackDamage, transform);
+            }
+        }
+    }
+
+    public void TryAvoid(Vector2 obstaclePos)
+    {
+        if (!isLive) return;
+        if (Time.time < spawnGraceUntil || Time.time < avoidUntil) return;
+        if (rb.linearVelocity.magnitude > minSpeedToAvoid) return;
+
+        Vector2 toObstacle = (obstaclePos - (Vector2)transform.position).normalized;
+        if (Vector2.Dot(rb.linearVelocity.normalized, toObstacle) > minDotBlock)
+        {
+            avoidDir = -(toObstacle + Random.insideUnitCircle * 0.5f).normalized;
+            avoidUntil = Time.time + avoidDuration;
+        }
+    }
+
     public void ApplyBossSpec(BossSpec spec)
     {
         if (spec == null) return;
 
-        // 1. 기본 스탯 적용
+        enemyType = EnemyType.Boss;
+
         attackDamage = spec.attackDamage;
         attackCooldown = spec.attackCooldown;
         detectionRadius = spec.detectionRadius;
         speed = spec.moveSpeed;
 
-        // 2. 체력 적용
-        maxHealth = spec.maxHP;
-        health = spec.maxHP;
         if (myTargetable != null)
         {
             myTargetable.maxHealth = spec.maxHP;
             myTargetable.currentHealth = spec.maxHP;
         }
 
-        // 3. 공격 설정 적용
-        isAreaAttack = spec.isAreaAttack;
+        attackStyle = spec.isAreaAttack ? AttackStyle.Circle : AttackStyle.Single;
         areaAttackRadius = spec.areaRadius;
+        if (spec.areaAttackEffect != null) areaAttackEffectPrefab = spec.areaAttackEffect;
 
-        // ★★★ [수정됨] 이펙트 안전하게 적용하기 ★★★
-        // BossSpec에 이펙트가 설정되어 있다면 그것으로 교체하고,
-        // 비어있다면(null) Enemy 인스펙터에 원래 세팅된 것을 그대로 사용함
-        if (spec.areaAttackEffect != null)
-        {
-            areaAttackEffectPrefab = spec.areaAttackEffect;
-        }
-
-        // 4. 외형(크기/색상) 적용
         transform.localScale = Vector3.one * spec.scaleMultiplier;
-
-        var sr = GetComponentInChildren<SpriteRenderer>();
-        if (sr) sr.color = spec.tint;
-
-        // HP바 등 추가 설정이 있다면 여기에 계속...
-        UpdateHPBar();
+        isLive = true;
     }
 
-    void OnDrawGizmosSelected()
+    public void OnEnemyDead()
     {
-        if (isAreaAttack)
-        {
-            Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
-            Gizmos.DrawWireSphere(transform.position, areaAttackRadius);
-        }
+        isLive = false;
+        rb.linearVelocity = Vector2.zero;
+        if (GetComponent<Collider2D>()) GetComponent<Collider2D>().enabled = false;
+
+        if (anim != null) anim.SetTrigger(HashDead);
+
+        StartCoroutine(DisableDelayed());
+    }
+
+    IEnumerator DisableDelayed()
+    {
+        yield return new WaitForSeconds(2.0f);
+        gameObject.SetActive(false);
     }
 }
