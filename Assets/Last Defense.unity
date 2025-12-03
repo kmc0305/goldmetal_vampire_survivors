@@ -183,10 +183,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150f92ad4c7a14f8eaa78a3de24f2f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampAreaSpawner
-  swampAreaPrefab: {fileID: 7621771572392213734, guid: e03893d1b257f4213b3cec67fdb23716, type: 3}
-  numberOfSwamps: 10
-  mapHalfSize: 50
-  minDistanceToPlayer: 15
+  castleTransform: {fileID: 0}
+  swampConfig:
+    prefab: {fileID: 7621771572392213734, guid: e03893d1b257f4213b3cec67fdb23716, type: 3}
+    count: 7
+    speedMultiplier: 0.5
+    tintColor: {r: 0.005527713, g: 0.23584908, b: 0, a: 0.80784315}
+  snowConfig:
+    prefab: {fileID: 7621771572392213734, guid: dbebce43ed1694ac5b9cf8dc3c498820, type: 3}
+    count: 7
+    speedMultiplier: 0.5
+    tintColor: {r: 0.5235849, g: 1, b: 0.9868164, a: 0.85882354}
+  healingConfig:
+    prefab: {fileID: 7621771572392213734, guid: dde327290a35a4ebab2adfe114a88f26, type: 3}
+    count: 7
+    speedMultiplier: 0.5
+    tintColor: {r: 0.990566, g: 0.94563836, b: 0.40650588, a: 0.79607844}
+  mapHalfSize: 100
+  minDistanceToCastle: 20
+  minDistanceBetweenAreas: 10
+  terrainRadius: 5
 --- !u!4 &5524716
 Transform:
   m_ObjectHideFlags: 0
@@ -278289,7 +278305,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 21.333334
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

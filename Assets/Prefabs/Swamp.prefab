@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -20.3, y: -11, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -143,4 +143,4 @@ MonoBehaviour:
   areaType: 0
   speedMultiplier: 0.5
   healPerSecond: 0
-  areaTintColor: {r: 0.5, g: 0.8, b: 0.5, a: 1}
+  areaTintColor: {r: 0, g: 0.4339623, b: 0, a: 1}
