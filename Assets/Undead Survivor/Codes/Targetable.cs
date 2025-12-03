@@ -51,10 +51,14 @@ public class Targetable : MonoBehaviour
     // 기존 변수들
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
+    private PoolManager poolManager;
     private bool isInvincible = false;
     private bool isKnockedBack = false;
     private Color originalColor;
     private bool isFlashing = false; // 플래싱 상태를 위한 변수
+
+    // ★ 타워 여부 확인용
+    private SpawnPoint mySpawnPoint;
 
     // 외부에서 넉백 상태를 확인할 수 있는 프로퍼티
     public bool IsKnockedBack => isKnockedBack;
@@ -70,6 +74,15 @@ public class Targetable : MonoBehaviour
         // 컴포넌트 초기화
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponentInChildren<SpriteRenderer>();
+
+        // 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워)
+        mySpawnPoint = GetComponent<SpawnPoint>();
+
+        if (GameManager.instance != null)
+        {
+            poolManager = GameManager.instance.Pool;
+        }
+
         if (spriter != null)
         {
             originalColor = spriter.color;
@@ -79,6 +92,31 @@ public class Targetable : MonoBehaviour
         // [최적화] 인스턴스별 WaitForSeconds 캐싱 (인스펙터 값 기반)
         cachedInvincibilityWait = new WaitForSeconds(invincibilityDuration);
         cachedKnockbackWait = new WaitForSeconds(knockbackDuration);
+    }
+
+    private void OnEnable()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
+        isInvincible = false;
+        isKnockedBack = false;
+
+        // 코루틴 변수 초기화 (중요)
+        healFlashCoroutine = null;
+        terrainTintCoroutine = null;
+
+        if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = true;
+        this.enabled = true;
+        if (rigid != null) rigid.simulated = true;
+
+        if (spriter != null)
+        {
+            spriter.color = originalColor;
+        }
+        if (rigid != null)
+        {
+            rigid.linearVelocity = Vector2.zero;
+        }
     }
 
     // 피격 처리 함수 (기존 로직 유지)
@@ -130,22 +168,59 @@ public class Targetable : MonoBehaviour
     private void Die()
     {
         if (isDead) return;
-
         isDead = true;
-        // 사망 이벤트 호출 및 오브젝트 비활성화/파괴 로직
+
+        // ★ 킬 수 증가 및 경험치 획득 (Enemy 진영일 때만)
+        if (GameManager.instance != null && faction == Faction.Enemy)
+        {
+            GameManager.instance.AddKill();
+            for (int i = 0; i < expReward; i++) GameManager.instance.getExp();
+        }
+
         onDie.Invoke();
 
-        // 오브젝트 풀링/파괴 로직 (임시 파괴)
-        // Destroy(gameObject);
+        // ★ 타워와 일반 유닛 구분
+        if (mySpawnPoint != null)
+        {
+            Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
+            mySpawnPoint.DeactivatePermanently();
 
-        // 아이템 드롭 로직 (기존 로직 유지)
+            if (rigid)
+            {
+                rigid.linearVelocity = Vector2.zero;
+                rigid.bodyType = RigidbodyType2D.Static;
+            }
+            this.enabled = false;
+        }
+        else
+        {
+            // ★ Enemy 스크립트가 있으면 "사망 연출해라" 시키기
+            Enemy enemyScript = GetComponent<Enemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.OnEnemyDead(); // Enemy.cs에 추가한 함수 호출
+            }
+            else
+            {
+                // Enemy 스크립트가 없는 잡동사니면 그냥 바로 끔
+                gameObject.SetActive(false);
+            }
+        }
+
+        // 아이템 드롭
         DropItem();
     }
 
     private void DropItem()
     {
-        // 아이템 드롭 로직 (기존 로직 유지)
-        // if (dropItemIndex != -1) { ... }
+        if (poolManager == null || dropItemIndex < 0)
+            return;
+
+        GameObject item = poolManager.Get(dropItemIndex);
+        if (item != null)
+        {
+            item.transform.position = transform.position;
+        }
     }
 
     // --- 코루틴들 ---

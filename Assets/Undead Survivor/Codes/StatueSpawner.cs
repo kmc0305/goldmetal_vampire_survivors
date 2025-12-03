@@ -1,111 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoldMetal.Survivors;
 
-namespace GoldMetal.Survivors
+/// <summary>
+/// 맵에 힐 장판(Statue + HealingArea)을 주기적으로 생성하는 스포너입니다.
+/// [수정됨]: 프리팹을 사용하여 오브젝트를 생성하며, 원점 주변 제약을 해제합니다.
+/// </summary>
+public class StatueSpawner : MonoBehaviour
 {
-    public class SwampAreaSpawner : MonoBehaviour
+    [Header("프리팹 설정")]
+    [Tooltip("HealingArea.cs와 Collider2D가 부착된 힐 장판 프리팹")]
+    public GameObject healingStatuePrefab;
+
+    [Header("생성 설정")]
+    public float spawnInterval = 45f; // 힐 장판 생성 주기 (초)
+    private float timer;
+
+    // [제거됨] public float minSpawnDistance = 30f; // 원점(0,0)으로부터 최소 거리
+
+    private void Start()
     {
-        public GameObject _SwampArea;
-        public GameObject _Castle; // 성 오브젝트를 참조하는 public 변수
-        public GameObject _SnowAreaPrefab;
-        public GameObject _HealingAreaPrefab;
+        SpawnHealingArea();
+    }
 
-        // 맵 크기 및 생성 관련 변수는 기존대로 유지한다고 가정합니다.
-        private float mapSizeX = 100f;
-        private float mapSizeY = 100f;
+    private void Update()
+    {
+        timer += Time.deltaTime;
 
-        private void Start()
+        if (timer >= spawnInterval)
         {
-            // 성 오브젝트 위치를 얻어옵니다.
-            UnityEngine.Vector3 castlePosition = _Castle.transform.position;
+            timer = 0f;
+            SpawnHealingArea();
+        }
+    }
 
-            // 늪 지형 스폰 코루틴을 시작합니다.
-            StartCoroutine(SpawnSwampArea(castlePosition));
+    /// <summary>
+    /// 힐 장판 프리팹을 무작위 위치에 생성합니다. (위치 제약 없음)
+    /// </summary>
+    void SpawnHealingArea()
+    {
+        if (healingStatuePrefab == null)
+        {
+            UnityEngine.Debug.LogError("StatueSpawner: healingStatuePrefab이 할당되지 않았습니다! 프리팹을 할당해주세요.");
+            return;
         }
 
-        IEnumerator SpawnSwampArea(UnityEngine.Vector3 castlePosition)
-        {
-            // 맵 크기에 맞게 주기적으로 지형을 생성합니다.
-            while (true)
-            {
-                // 맵 전체에서 랜덤 위치를 결정합니다.
-                float randomX = UnityEngine.Random.Range(-mapSizeX / 2f, mapSizeX / 2f);
-                float randomY = UnityEngine.Random.Range(-mapSizeY / 2f, mapSizeY / 2f);
-                UnityEngine.Vector3 randomPos = new UnityEngine.Vector3(randomX, randomY, 0f);
+        UnityEngine.Vector3 spawnPosition = UnityEngine.Vector3.zero;
 
-                // 성의 위치를 기준으로 맵의 4분면을 나눕니다.
-                float relativeX = randomPos.x - castlePosition.x;
-                float relativeY = randomPos.y - castlePosition.y;
+        // ★ 수정된 로직: 위치 제약 없이 맵 중앙 영역 내 무작위 위치 선정
+        // 맵 크기(-50f, 50f)를 가정하고, 그 안에 무작위 위치를 선정합니다.
+        float x = UnityEngine.Random.Range(-50f, 50f);
+        float y = UnityEngine.Random.Range(-50f, 50f);
+        spawnPosition = new UnityEngine.Vector3(x, y, 0);
 
-                GameObject areaToSpawn = null;
-                AreaType currentAreaType = AreaType.Swamp;
+        // 2. 프리팹 인스턴스화 (Instantiation) 및 생성
+        GameObject healingArea = Instantiate(healingStatuePrefab, spawnPosition, UnityEngine.Quaternion.identity);
 
-                // 1. 북쪽 지역 (Y > castleY) - 눈 지형 (Snow, 속도 증가)
-                if (relativeY > 0)
-                {
-                    areaToSpawn = _SnowAreaPrefab;
-                    currentAreaType = AreaType.Snow;
-                }
-                // 2. 남쪽 지역 (Y < castleY)
-                else
-                {
-                    // 남서쪽 (X < castleX) - 힐 지형 (Healing, 상대 유닛도 힐)
-                    if (relativeX < 0)
-                    {
-                        areaToSpawn = _HealingAreaPrefab;
-                        currentAreaType = AreaType.Healing;
-                    }
-                    // 남동쪽 (X >= castleX) - 늪 지형 (Swamp, 기존대로 유지)
-                    else
-                    {
-                        areaToSpawn = _SwampArea;
-                        currentAreaType = AreaType.Swamp;
-                    }
-                }
-
-                // 생성할 프리팹이 설정된 경우에만 생성합니다.
-                if (areaToSpawn != null)
-                {
-                    GameObject newArea = Instantiate(areaToSpawn, randomPos, UnityEngine.Quaternion.identity);
-
-                    // 생성된 오브젝트에 SwampAreaLogic 컴포넌트가 있다면 타입을 설정합니다.
-                    SwampAreaLogic logic = newArea.GetComponent<SwampAreaLogic>();
-                    if (logic != null)
-                    {
-                        logic.areaType = currentAreaType;
-                        // 타입에 따라 효과값 및 타겟 레이어를 설정합니다.
-                        if (currentAreaType == AreaType.Snow)
-                        {
-                            logic.effectValue = 0.3f;
-                            logic.targetLayer = LayerMask.GetMask("Ally"); // 아군에게 이속 증가
-                        }
-                        else if (currentAreaType == AreaType.Healing)
-                        {
-                            logic.effectValue = 10.0f;
-                            logic.targetLayer = LayerMask.GetMask("Enemy"); // 적에게 힐 적용
-                        }
-                        else if (currentAreaType == AreaType.Swamp)
-                        {
-                            logic.effectValue = 0.5f;
-                            logic.targetLayer = LayerMask.GetMask("Ally"); // 아군에게 이속 감소
-                        }
-                    }
-
-                    Reposition reposition = newArea.GetComponent<Reposition>();
-                    if (reposition != null)
-                    {
-                        // reposition.Init(); 
-                    }
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("Area to spawn is null for type: " + currentAreaType.ToString());
-                }
-
-                yield return new WaitForSeconds(5f);
-            }
-        }
+        UnityEngine.Debug.Log($"Healing Statue spawned at {spawnPosition}.");
     }
 }

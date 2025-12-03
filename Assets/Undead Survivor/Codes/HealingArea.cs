@@ -79,8 +79,15 @@ public class HealingArea : MonoBehaviour
     // --- 대상 진입 감지 (Enter Logic) ---
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // [디버그] 트리거 감지 확인
+        Debug.Log($"[HealingArea] OnTriggerEnter2D: {other.name}, Layer: {other.gameObject.layer}, targetLayer: {targetLayer.value}");
+
         // 1. 레이어 마스크 체크: 설정된 대상(Player/Ally)만 처리
-        if (((1 << other.gameObject.layer) & targetLayer) == 0) return;
+        if (((1 << other.gameObject.layer) & targetLayer) == 0)
+        {
+            Debug.Log($"[HealingArea] Layer mismatch - skipping {other.name}");
+            return;
+        }
 
         Targetable target = other.GetComponent<Targetable>();
 
@@ -88,6 +95,7 @@ public class HealingArea : MonoBehaviour
         if (target != null && !target.isDead && !targetsInArea.Contains(target))
         {
             targetsInArea.Add(target);
+            Debug.Log($"[HealingArea] Added {other.name} to healing list. Total: {targetsInArea.Count}");
         }
     }
 
@@ -124,6 +132,12 @@ public class HealingArea : MonoBehaviour
         // 1회당 회복량 계산
         float healAmount = healPerSecond * HEAL_INTERVAL;
 
+        // [디버그] 힐링 적용 확인
+        if (targetsInArea.Count > 0)
+        {
+            Debug.Log($"[HealingArea] ApplyHealing to {targetsInArea.Count} targets, amount: {healAmount}");
+        }
+
         // 역방향 순회: 대상이 리스트에 있는 동안만 힐을 적용
         for (int i = targetsInArea.Count - 1; i >= 0; i--)
         {
@@ -133,6 +147,7 @@ public class HealingArea : MonoBehaviour
             if (target != null && !target.isDead)
             {
                 target.Heal(healAmount);
+                Debug.Log($"[HealingArea] Healed {target.name}: {target.currentHealth}/{target.maxHealth}");
             }
             else
             {
