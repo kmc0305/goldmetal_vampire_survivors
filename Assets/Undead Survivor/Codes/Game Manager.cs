@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     // 플레이어 가용 경험치, 레벨업시 필요한 경험치
     public int exp = 0;
-    public int[] nextExp = { 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60 };
+    public int[] nextExp = { 0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180 };
     public int level = 1;
     public int points = 0;
 
