@@ -35,6 +35,10 @@ public class Enemy : MonoBehaviour
     [Tooltip("보스가 단일 공격할 때만 나오는 이펙트")]
     public GameObject hitEffectPrefab;
 
+    // [수정 반영] 이펙트 추적 On/Off 설정
+    [Tooltip("범위 공격 이펙트가 적 유닛(보스)을 따라다닐지 여부")]
+    public bool areaEffectFollows = true;
+
     [Header("공격 범위 설정")]
     public AttackStyle attackStyle = AttackStyle.Single;
     public float areaAttackRadius = 3.0f;
@@ -97,7 +101,9 @@ public class Enemy : MonoBehaviour
         speedMultiplier = 1f;
         lastSetSpeed = -1f;
 
-        enemyType = EnemyType.Normal;
+        // OnEnable 시 EnemyType이 Normal로 초기화되는 것은 버그일 가능성이 높습니다.
+        // Boss 타입 설정은 ApplyBossSpec에서 이루어져야 하므로 이 줄은 제거하거나 주석 처리하는 것이 좋습니다.
+        // enemyType = EnemyType.Normal; 
 
         if (aiCoroutine != null) StopCoroutine(aiCoroutine);
         aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
@@ -211,7 +217,7 @@ public class Enemy : MonoBehaviour
     void UpdateMoveAnimation(float currentSpeed)
     {
         if (anim == null) return;
-        if (enemyType == EnemyType.Normal) return; // Normal은 연산 생략
+        if (enemyType == EnemyType.Normal) return;
         if (Mathf.Abs(lastSetSpeed - currentSpeed) < 0.01f) return;
 
         lastSetSpeed = currentSpeed;
@@ -249,8 +255,11 @@ public class Enemy : MonoBehaviour
         // 범위 공격 이펙트 처리
         if (attackStyle != AttackStyle.Single && areaAttackEffectPrefab != null)
         {
-            // ★ [수정됨] 4번째 인자에 'transform'을 넣어서 보스의 자식으로 만듦 -> 같이 움직임
-            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity, transform);
+            // [수정] 이펙트 추적 설정에 따라 부모를 설정하거나 null로 설정
+            Transform parentTransform = areaEffectFollows ? transform : null;
+
+            // 4번째 인자에 'parentTransform'을 넣어 부모를 설정
+            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity, parentTransform);
 
             if (spriter.flipX)
             {
