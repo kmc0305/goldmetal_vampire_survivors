@@ -5,15 +5,14 @@ public class SpawnPoint : MonoBehaviour
 {
     [Header("Boss Spawn Settings")]
     public GameObject bossPrefab;
-    public Transform bossSpawnPoint;
+    // public Transform bossSpawnPoint; // ★ 사용하지 않으므로 제거하거나 주석 처리합니다.
     public bool spawnBossOnlyOnce = true;
     public float bossScaleMultiplier = 2f;
-    public BossSpec bossSpec;
+    // public BossSpec bossSpec; // ★ BossSpec 제거
 
     [Header("Spawn Settings")]
     [Tooltip("PoolManager에서 가져올 적군 유닛의 고정 ID 또는 인덱스")]
-    public int poolId = 0; // <--- 이 필드만 사용하도록 유지합니다.
-                           // public int rangedEnemyId = 1; // <--- 이 필드를 제거합니다.
+    public int poolId = 0;
 
     [Tooltip("적 생성 주기 (초 단위)")]
     public float spawnInterval = 3.0f;
@@ -38,7 +37,9 @@ public class SpawnPoint : MonoBehaviour
     private int spawnCount = 0;
     private Coroutine spawnCoroutine;
 
-    // [추가됨] 컴포넌트 제어를 위한 변수
+    // ★ 공통 스폰 위치 오프셋
+    private readonly Vector3 spawnOffset = new Vector3(0.5f, -1.4f, 0f);
+
     private Targetable myTargetable;
     private Collider2D myCollider;
 
@@ -52,9 +53,7 @@ public class SpawnPoint : MonoBehaviour
         if (hpBarRoot) hpBarRoot.localPosition = barOffset;
         if (hpFill) hpFill.localScale = new Vector3(barWidth, barHeight, 1f);
 
-        // 초기 상태: 게임 시작 시에는 꺼둠
         SetTargetableState(false);
-
         UpdateHPBar();
     }
 
@@ -102,31 +101,24 @@ public class SpawnPoint : MonoBehaviour
         spawnCoroutine = null;
     }
 
-    // ★★★ [SpawnEnemy 함수 수정됨: poolId만 사용하도록 단순화] ★★★
     void SpawnEnemy()
     {
         if (PermanentlyOff) return;
 
-        // 1. Spawner 인스턴스가 있어도 poolId를 덮어쓰지 않고, 
-        //    SpawnPoint의 poolId를 고정된 유닛 ID로 사용합니다.
         int currentPoolId = poolId;
         SpawnData dataToUse = null;
 
         if (Spawner.Instance != null && Spawner.Instance.CurrentSpawnData != null)
         {
-            // Spawner 데이터는 가져오지만, currentPoolId를 변경하지 않습니다.
             dataToUse = Spawner.Instance.CurrentSpawnData;
         }
 
-        // [제거됨] 기존의 짝수/홀수 로직이 제거되었습니다.
-        // if (spawnCount % 2 != 0) currentPoolId = rangedEnemyId; 
-
         if (GameManager.instance == null) return;
 
-        // 2. 고정된 poolId로 Pool에서 유닛 오브젝트를 가져옵니다.
         GameObject enemyObj = GameManager.instance.Pool.Get(currentPoolId);
 
-        enemyObj.transform.position = transform.position + new Vector3(0.5f, -1.4f, 0f);
+        // ★ 일반 유닛 스폰 위치 적용
+        enemyObj.transform.position = transform.position + spawnOffset;
         enemyObj.transform.rotation = Quaternion.identity;
 
         Enemy enemyScript = enemyObj.GetComponent<Enemy>();
@@ -151,7 +143,7 @@ public class SpawnPoint : MonoBehaviour
         spawnCount++;
     }
 
-    // ★★★ [DeactivatePermanently 함수는 그대로 유지] ★★★
+    // ★★★ [DeactivatePermanently 함수 수정 완료: 보스 스폰 위치 변경 및 BossSpec 제거] ★★★
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
@@ -160,7 +152,6 @@ public class SpawnPoint : MonoBehaviour
         PermanentlyOff = true;
         IsEnabled = false;
 
-        // [수정 코드] Targetable 스크립트만 꺼서 '더 이상 공격받지 않게' 만들고, 콜라이더는 놔둡니다.
         if (myTargetable != null)
             myTargetable.enabled = false;
 
@@ -170,12 +161,19 @@ public class SpawnPoint : MonoBehaviour
         if (bossPrefab != null && (!spawnBossOnlyOnce || !bossSpawned))
         {
             bossSpawned = true;
-            Vector3 spawnPos = bossSpawnPoint ? bossSpawnPoint.position : transform.position + Vector3.up * 1.5f;
+
+            // ★ 보스 스폰 위치를 일반 유닛과 동일하게 설정
+            Vector3 spawnPos = transform.position + spawnOffset;
             spawnPos.z = 0f;
+
             var boss = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+
             boss.transform.localScale *= bossScaleMultiplier;
-            var enemy = boss.GetComponent<Enemy>();
-            if (enemy != null && bossSpec != null) enemy.ApplyBossSpec(bossSpec);
+
+            // ★ ApplyBossSpec 로직 제거
+            // var enemy = boss.GetComponent<Enemy>();
+            // if (enemy != null && bossSpec != null) enemy.ApplyBossSpec(bossSpec); 
+
             if (!boss.activeSelf) boss.SetActive(true);
         }
     }
@@ -191,7 +189,6 @@ public class SpawnPoint : MonoBehaviour
         bossSpawned = false;
         spawnCount = 0;
 
-        // 리셋 시에는 콜라이더와 타겟팅 모두 끄는 것이 맞음 (게임 재시작 등)
         SetTargetableState(false);
 
         if (animator) animator.SetTrigger("DoReset");

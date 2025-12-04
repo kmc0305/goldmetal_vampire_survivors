@@ -40,6 +40,9 @@ public class SwampArea : MonoBehaviour
     private HashSet<Targetable> unitsInHealingArea = new HashSet<Targetable>();
     private float healTimer = 0f;
 
+    // ★ 컬렉션 수정 오류 방지를 위한 임시 리스트
+    private readonly List<Targetable> unitsToProcessBuffer = new List<Targetable>();
+
     private void Update()
     {
         // Healing 타입일 때만 지속적인 힐/데미지 적용
@@ -50,24 +53,37 @@ public class SwampArea : MonoBehaviour
         if (healTimer >= 1f)
         {
             healTimer = 0f;
-            // 영역 내 모든 유닛에게 힐/데미지 적용
-            unitsInHealingArea.RemoveWhere(t => t == null || !t.gameObject.activeInHierarchy);
-            foreach (var target in unitsInHealingArea)
+
+            // ★★★ [오류 해결] 안전하게 컬렉션 처리 시작 ★★★
+            // 1. 순회용 임시 버퍼에 복사
+            unitsToProcessBuffer.Clear();
+            unitsToProcessBuffer.AddRange(unitsInHealingArea); // HashSet 내용을 List로 복사
+
+            // 2. 복사된 리스트를 순회하면서 로직 적용 및 무효 유닛 제거
+            for (int i = unitsToProcessBuffer.Count - 1; i >= 0; i--)
             {
-                if (target != null && !target.isDead)
+                var target = unitsToProcessBuffer[i];
+
+                if (target == null || !target.gameObject.activeInHierarchy || target.isDead)
                 {
-                    if (hpChangePerSecond >= 0)
-                    {
-                        // 양수: 힐링
-                        target.Heal(hpChangePerSecond);
-                    }
-                    else
-                    {
-                        // 음수: 데미지 (절대값으로 변환), attacker는 지형 자체
-                        target.TakeDamage(-hpChangePerSecond, transform);
-                    }
+                    // 원본 컬렉션(HashSet)에서 무효 유닛을 제거 (수정 작업)
+                    unitsInHealingArea.Remove(target);
+                    continue; // 다음 유닛으로 이동
+                }
+
+                // 힐/데미지 적용 로직 (원래 foreach 내부의 로직)
+                if (hpChangePerSecond >= 0)
+                {
+                    // 양수: 힐링
+                    target.Heal(hpChangePerSecond);
+                }
+                else
+                {
+                    // 음수: 데미지 (절대값으로 변환), attacker는 지형 자체
+                    target.TakeDamage(-hpChangePerSecond, transform);
                 }
             }
+            // ★★★ [오류 해결] 안전하게 컬렉션 처리 완료 ★★★
         }
     }
 

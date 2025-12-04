@@ -407,5 +407,5 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  detectionRadius: 100
+  detectionRadius: 120
   aiUpdateFrequency: 0.5
