@@ -44,7 +44,6 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사
         else
         {
             // new Vector3를 new UnityEngine.Vector3로 명시적으로 지정
-            this.transform.localScale = new UnityEngine.Vector3(1, 1, 1);
             this.transform.localScale = new UnityEngine.Vector3(1.5f, 1.5f, 1.5f);
             SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
             if (sr != null) sr.color = GetComponent<SpriteRenderer>().color;
