@@ -198,7 +198,7 @@ MonoBehaviour:
     prefab: {fileID: 7621771572392213734, guid: dde327290a35a4ebab2adfe114a88f26, type: 3}
     count: 7
     speedMultiplier: 0.5
-    tintColor: {r: 0.46226418, g: 0.20714669, b: 0.21235645, a: 0.79607844}
+    tintColor: {r: 0.6886792, g: 0.048727296, b: 0.048727296, a: 0.79607844}
   mapHalfSize: 100
   minDistanceToCastle: 20
   minDistanceBetweenAreas: 10

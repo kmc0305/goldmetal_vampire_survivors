@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 892695782159499780}
   - component: {fileID: -1839272917506556930}
   m_Layer: 11
-  m_Name: engel_Zone
+  m_Name: LAva_area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,8 +117,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
-  m_Color: {r: 0.745283, g: 0.7254889, b: 0.2988163, a: 0.50980395}
+  m_Sprite: {fileID: 809244363410041401, guid: a09bae1ea67a547719de5ba62394437e, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampArea
   areaType: 2
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   speedMultiplier: 0.5
-  healPerSecond: 2
-  areaTintColor: {r: 0.5, g: 0.8, b: 0.5, a: 1}
+  hpChangePerSecond: -2
+  areaTintColor: {r: 0.8679245, g: 0.20879315, b: 0.20879315, a: 0.8352941}
