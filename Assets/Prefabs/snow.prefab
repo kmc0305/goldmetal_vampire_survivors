@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwampArea
   areaType: 1
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
   speedMultiplier: 0.5
-  healPerSecond: 0
+  hpChangePerSecond: -2
   areaTintColor: {r: 0.5, g: 0.8, b: 0.5, a: 1}

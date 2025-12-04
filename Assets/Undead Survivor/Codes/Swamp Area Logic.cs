@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// [지형 효과 영역] 이 영역에 진입한 플레이어나 유닛에게 다양한 효과를 적용합니다.
 /// - Swamp(늪): 이동 속도 감소
 /// - Snow(눈): 이동 속도 증가
-/// - Healing(힐): 지속적인 체력 회복
+/// - Healing(힐): 지속적인 체력 회복 (음수 시 데미지)
 /// 이 스크립트는 isTrigger가 활성화된 Collider2D에 부착되어야 합니다.
 /// </summary>
 public class SwampArea : MonoBehaviour
@@ -14,31 +14,35 @@ public class SwampArea : MonoBehaviour
     {
         Swamp,    // 늪지대 - 속도 감소
         Snow,     // 눈 지역 - 속도 증가
-        Healing   // 힐링 지역 - 체력 회복
+        Healing   // 힐링/데미지 지역 - 체력 회복 또는 감소
     }
 
     [Header("지형 타입 설정")]
     public AreaType areaType = AreaType.Swamp;
 
+    [Header("적용 대상 레이어 설정")]
+    [Tooltip("효과를 적용할 레이어 (아군: Layer 8, 적: Layer 9)")]
+    public LayerMask targetLayers = ~0; // 기본: 모든 레이어
+
     [Header("속도 효과 설정")]
     [Tooltip("원래 속도에 곱해지는 배율 (예: 0.5는 50% 속도, 1.3은 130% 속도)")]
     public float speedMultiplier = 0.5f;
 
-    [Header("힐링 효과 설정 (Healing 타입 전용)")]
-    [Tooltip("힐링 지역에서 초당 회복되는 체력량")]
-    public float healPerSecond = 2f;
+    [Header("힐링/데미지 효과 설정 (Healing 타입 전용)")]
+    [Tooltip("초당 체력 변화량 (양수: 회복, 음수: 데미지)")]
+    public float hpChangePerSecond = 2f;
 
     [Header("시각 효과 설정")]
     [Tooltip("지형 효과 색상 틴트")]
     public Color areaTintColor = new Color(0.5f, 0.8f, 0.5f, 1f); // 기본: 초록빛
 
-    // 힐링 영역 내 유닛 추적용 (Healing 타입 전용)
+    // 힐링/데미지 영역 내 유닛 추적용 (Healing 타입 전용)
     private HashSet<Targetable> unitsInHealingArea = new HashSet<Targetable>();
     private float healTimer = 0f;
 
     private void Update()
     {
-        // 힐링 타입일 때만 지속적인 힐 적용
+        // Healing 타입일 때만 지속적인 힐/데미지 적용
         if (areaType != AreaType.Healing) return;
         if (unitsInHealingArea.Count == 0) return;
 
@@ -46,13 +50,22 @@ public class SwampArea : MonoBehaviour
         if (healTimer >= 1f)
         {
             healTimer = 0f;
-            // 힐링 영역 내 모든 유닛에게 힐 적용
+            // 영역 내 모든 유닛에게 힐/데미지 적용
             unitsInHealingArea.RemoveWhere(t => t == null || !t.gameObject.activeInHierarchy);
             foreach (var target in unitsInHealingArea)
             {
                 if (target != null && !target.isDead)
                 {
-                    target.Heal(healPerSecond);
+                    if (hpChangePerSecond >= 0)
+                    {
+                        // 양수: 힐링
+                        target.Heal(hpChangePerSecond);
+                    }
+                    else
+                    {
+                        // 음수: 데미지 (절대값으로 변환), attacker는 지형 자체
+                        target.TakeDamage(-hpChangePerSecond, transform);
+                    }
                 }
             }
         }
@@ -73,6 +86,10 @@ public class SwampArea : MonoBehaviour
     /// </summary>
     void ApplyAreaEffect(Collider2D col, bool entering)
     {
+        // 레이어 필터 체크 - 대상 레이어에 포함되지 않으면 무시
+        if ((targetLayers.value & (1 << col.gameObject.layer)) == 0)
+            return;
+
         float multiplier = entering ? speedMultiplier : 1.0f;
 
         // Targetable 컴포넌트가 있으면 색상 틴트 적용/해제
@@ -82,7 +99,7 @@ public class SwampArea : MonoBehaviour
             if (entering)
             {
                 targetable.ApplyTerrainTint(areaTintColor);
-                // 힐링 영역이면 유닛 추적 목록에 추가
+                // Healing 영역이면 유닛 추적 목록에 추가
                 if (areaType == AreaType.Healing)
                 {
                     unitsInHealingArea.Add(targetable);
@@ -91,7 +108,7 @@ public class SwampArea : MonoBehaviour
             else
             {
                 targetable.RemoveTerrainTint();
-                // 힐링 영역이면 유닛 추적 목록에서 제거
+                // Healing 영역이면 유닛 추적 목록에서 제거
                 if (areaType == AreaType.Healing)
                 {
                     unitsInHealingArea.Remove(targetable);
