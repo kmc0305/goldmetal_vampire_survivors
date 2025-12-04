@@ -52,6 +52,9 @@ public class BombardWeapon : MonoBehaviour
         for (int i = 0; i < Mathf.Min(count,targetPosList.Length); i++)
         {
             Transform bullet = poolManager.Get(weaponPrefabIndex).transform;
+            
+            Animator anim = bullet.GetComponent<Animator>();
+            anim.SetTrigger("didBombard");
             bullet.position = targetPosList[i];
             bullet.GetComponent<BombardBullet>().Init(damage, targetPosList[i]);
             yield return new WaitForSeconds(0.2f);//TIME DIFF. for each bullet

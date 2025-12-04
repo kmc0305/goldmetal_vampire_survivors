@@ -11,8 +11,10 @@ public class SpawnPoint : MonoBehaviour
     public BossSpec bossSpec;
 
     [Header("Spawn Settings")]
-    public int poolId = 0;
-    public int rangedEnemyId = 1;
+    [Tooltip("PoolManager에서 가져올 적군 유닛의 고정 ID 또는 인덱스")]
+    public int poolId = 0; // <--- 이 필드만 사용하도록 유지합니다.
+                           // public int rangedEnemyId = 1; // <--- 이 필드를 제거합니다.
+
     [Tooltip("적 생성 주기 (초 단위)")]
     public float spawnInterval = 3.0f;
 
@@ -100,24 +102,30 @@ public class SpawnPoint : MonoBehaviour
         spawnCoroutine = null;
     }
 
+    // ★★★ [SpawnEnemy 함수 수정됨: poolId만 사용하도록 단순화] ★★★
     void SpawnEnemy()
     {
         if (PermanentlyOff) return;
 
+        // 1. Spawner 인스턴스가 있어도 poolId를 덮어쓰지 않고, 
+        //    SpawnPoint의 poolId를 고정된 유닛 ID로 사용합니다.
         int currentPoolId = poolId;
         SpawnData dataToUse = null;
 
         if (Spawner.Instance != null && Spawner.Instance.CurrentSpawnData != null)
         {
-            currentPoolId = Spawner.Instance.CurrentSpawnData.spriteType;
+            // Spawner 데이터는 가져오지만, currentPoolId를 변경하지 않습니다.
             dataToUse = Spawner.Instance.CurrentSpawnData;
         }
 
-        if (spawnCount % 2 != 0) currentPoolId = rangedEnemyId;
+        // [제거됨] 기존의 짝수/홀수 로직이 제거되었습니다.
+        // if (spawnCount % 2 != 0) currentPoolId = rangedEnemyId; 
 
         if (GameManager.instance == null) return;
 
+        // 2. 고정된 poolId로 Pool에서 유닛 오브젝트를 가져옵니다.
         GameObject enemyObj = GameManager.instance.Pool.Get(currentPoolId);
+
         enemyObj.transform.position = transform.position + new Vector3(0.5f, -1.4f, 0f);
         enemyObj.transform.rotation = Quaternion.identity;
 
@@ -143,7 +151,7 @@ public class SpawnPoint : MonoBehaviour
         spawnCount++;
     }
 
-    // ★★★ [수정된 부분] ★★★
+    // ★★★ [DeactivatePermanently 함수는 그대로 유지] ★★★
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
@@ -152,14 +160,9 @@ public class SpawnPoint : MonoBehaviour
         PermanentlyOff = true;
         IsEnabled = false;
 
-        // [이전 코드] SetTargetableState(false); -> 이 함수가 콜라이더까지 꺼버림
-
         // [수정 코드] Targetable 스크립트만 꺼서 '더 이상 공격받지 않게' 만들고, 콜라이더는 놔둡니다.
         if (myTargetable != null)
             myTargetable.enabled = false;
-
-        // 참고: Targetable.cs의 Die()에서 이미 Rigidbody를 Static으로 바꾸므로
-        // 콜라이더가 켜져 있으면 움직이지 않는 벽(장애물)이 됩니다.
 
         if (animator) animator.SetTrigger("DoDestroy");
         UpdateHPBar();

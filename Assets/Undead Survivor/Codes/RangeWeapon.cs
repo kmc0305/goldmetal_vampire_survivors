@@ -77,7 +77,7 @@ public class RangeWeapon : MonoBehaviour
     Transform GetNearest()
     {
         Transform result = null;
-        float diff = scanRange+5f;
+        float diff = scanRange+1f;
 
         foreach (RaycastHit2D target in targets)
         {
@@ -124,5 +124,6 @@ public class RangeWeapon : MonoBehaviour
         level = lvl;
         per = UpgradePer[lvl];
         damage = UpgradeDMG[lvl];
+        scanRange += 2;
     }
 }

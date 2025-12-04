@@ -164,7 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5524716}
   - component: {fileID: 5524715}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SwampAreaSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8949,7 +8949,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16452161}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8957,11 +8957,11 @@ RectTransform:
   - {fileID: 1759708911}
   - {fileID: 2013140850}
   - {fileID: 394642066}
-  m_Father: {fileID: 483525607}
+  m_Father: {fileID: 1395559208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 707, y: -393.8}
+  m_AnchoredPosition: {x: -200.27002, y: -167.32996}
   m_SizeDelta: {x: 290.5, y: 275.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &16452163
@@ -70194,7 +70194,7 @@ GameObject:
   - component: {fileID: 281990026}
   - component: {fileID: 281990028}
   - component: {fileID: 281990027}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251543,6 +251543,7 @@ RectTransform:
   m_Children:
   - {fileID: 977061749}
   - {fileID: 290633556}
+  - {fileID: 1204222715}
   m_Father: {fileID: 1601140621}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -261025,7 +261026,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465498930}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -261033,11 +261034,11 @@ RectTransform:
   - {fileID: 1702110879}
   - {fileID: 1531266231}
   - {fileID: 180481092}
-  m_Father: {fileID: 483525607}
+  m_Father: {fileID: 598971615}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 707, y: -393.8}
+  m_AnchoredPosition: {x: -200.27002, y: 81.78998}
   m_SizeDelta: {x: 290.5, y: 275.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &465498932
@@ -261132,9 +261133,6 @@ RectTransform:
   m_Children:
   - {fileID: 606331127}
   - {fileID: 1601140621}
-  - {fileID: 16452162}
-  - {fileID: 1204222715}
-  - {fileID: 465498931}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -295910,6 +295908,7 @@ RectTransform:
   m_Children:
   - {fileID: 294064394}
   - {fileID: 1761109947}
+  - {fileID: 465498931}
   m_Father: {fileID: 1601140621}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -295931,7 +295930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Button_lvlup
   wpn: {fileID: 200001618}
   w_level: 0
-  iconimg: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
+  iconimg: {fileID: 5147114614322543148, guid: de493f1fa07d4490e83f302469ff8311, type: 3}
   connectedPanel: {fileID: 465498930}
 --- !u!114 &598971617
 MonoBehaviour:
@@ -335182,7 +335181,7 @@ MonoBehaviour:
   rotationSpeed: -350
   orbitRadius: 1.6
   weaponPrefabIndex: 4
-  UpgradeDMG: 000000000200000004000000040000000600000008000000
+  UpgradeDMG: 640000006400000064000000640000006400000001000000
 --- !u!1 &769905354
 GameObject:
   m_ObjectHideFlags: 0
@@ -335221,6 +335220,7 @@ MonoBehaviour:
   - {fileID: 3203970407810320476, guid: 5530ac1c1f1f4f34c9295cd05e78d5f7, type: 3}
   - {fileID: 4204018482358998013, guid: 987ce1c94a0caf5438e28da8204886ec, type: 3}
   - {fileID: 7245370837217419868, guid: 4e4be3ba2196245f1a0ca01a9e7ed7c0, type: 3}
+  - {fileID: 7743973790584016687, guid: 72ac908e8b6b20f4daea6dedf3bebfba, type: 3}
 --- !u!4 &769905356
 Transform:
   m_ObjectHideFlags: 0
@@ -339737,6 +339737,7 @@ GameObject:
   - component: {fileID: 837754362}
   - component: {fileID: 837754361}
   - component: {fileID: 837754363}
+  - component: {fileID: 837754364}
   m_Layer: 8
   m_Name: CircleSector
   m_TagString: Untagged
@@ -339842,15 +339843,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4475792, g: 0.6762107, b: 0.8867924, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &837754363
@@ -339865,6 +339866,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c429ff6dc97cf4981600a5b219c24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleSector
+--- !u!95 &837754364
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837754359}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f6d39abac50084956b6529a3826e88d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &854125948
 GameObject:
   m_ObjectHideFlags: 0
@@ -418446,8 +418469,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.1, y: 0}
-  m_Size: {x: 3.7, y: 2}
+  m_Offset: {x: -0.034, y: -0.02}
+  m_Size: {x: 3.2, y: 1.65}
   m_Direction: 1
 --- !u!1 &1182889885
 GameObject:
@@ -422960,7 +422983,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204222714}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -422968,11 +422991,11 @@ RectTransform:
   - {fileID: 730708955}
   - {fileID: 1871257700}
   - {fileID: 513325043}
-  m_Father: {fileID: 483525607}
+  m_Father: {fileID: 328894052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 707, y: -393.8}
+  m_AnchoredPosition: {x: -200.27002, y: -42.76996}
   m_SizeDelta: {x: 290.5, y: 275.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1204222716
@@ -440652,13 +440675,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
+  bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
   bossSpawnPoint: {fileID: 1279112653}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
+  bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
-  rangedEnemyId: 1
   spawnInterval: 1
   animator: {fileID: 1279112661}
   burningThreshold: 0.4
@@ -440925,13 +440947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 4111436743865639527, guid: 9906a6faf329f85498e131a9f47534ff, type: 3}
+  bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
   bossSpawnPoint: {fileID: 1324853767}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
-  poolId: 0
-  rangedEnemyId: 1
+  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
+  poolId: 1
   spawnInterval: 1
   animator: {fileID: 1324853775}
   burningThreshold: 0.4
@@ -445676,6 +445697,7 @@ RectTransform:
   m_Children:
   - {fileID: 1062360662}
   - {fileID: 1403130527}
+  - {fileID: 16452162}
   m_Father: {fileID: 1601140621}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -450336,8 +450358,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1583324420}
   - {fileID: 382783308}
@@ -454804,8 +454826,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.8}
-  m_Size: {x: 11, y: 5}
+  m_Offset: {x: -0.5, y: 0.8}
+  m_Size: {x: 9.5, y: 5}
   m_Direction: 1
 --- !u!1 &1461080389
 GameObject:
@@ -485394,6 +485416,7 @@ MonoBehaviour:
   speed: 5
   speedMultiplier: 1
   runSpeedMultiplier: 2
+  formationRadius: 3
 --- !u!114 &1569412826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520572,8 +520595,7 @@ MonoBehaviour:
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
-  poolId: 0
-  rangedEnemyId: 1
+  poolId: 8
   spawnInterval: 1
   animator: {fileID: 1738603053}
   burningThreshold: 0.4
@@ -529394,14 +529416,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.41037738, b: 0.41037738, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
+  m_Sprite: {fileID: 5147114614322543148, guid: de493f1fa07d4490e83f302469ff8311, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
