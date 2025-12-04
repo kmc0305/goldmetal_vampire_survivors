@@ -22,7 +22,7 @@ public class Weapon : MonoBehaviour
     public float orbitRadius = 1.6f;
 
     private float timer = 0f;
-    private float duration = 4.5f;
+    private float duration = 6.5f;
     
 
 
@@ -55,12 +55,19 @@ public class Weapon : MonoBehaviour
     /// <summary>
     /// [Unity 이벤트] Update() - 매 프레임 호출
     /// </summary>
+    /// 
+
+
+    CircleSector csctr;
     void Update()
     {
         // 이 오브젝트(중심축) 자체를 Z축(Vector3.forward) 기준으로 회전시킵니다.
         // (Time.deltaTime을 곱해 프레임 속도에 관계없이 일정한 속도로 회전)
         // -> 자식으로 붙어있는 무기(MeleeWeapon)도 함께 '공전'하게 됩니다.
+        csctr=GetComponentInChildren<CircleSector>();
+
         transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+        csctr.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime * (-1));
         timer += Time.deltaTime;
         if(timer > duration && level >= 5)
         {
@@ -116,6 +123,7 @@ public class Weapon : MonoBehaviour
         if (x != 1) { 
             weaponObj.transform.localPosition = new Vector3(-1 * orbitRadius, 0, 0); 
             weaponObj.transform.localRotation = Quaternion.Euler(0, 0, 90);
+
         }
         return weaponObj;
     }

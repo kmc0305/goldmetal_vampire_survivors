@@ -295931,7 +295931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Button_lvlup
   wpn: {fileID: 200001618}
   w_level: 0
-  iconimg: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
+  iconimg: {fileID: 5147114614322543148, guid: de493f1fa07d4490e83f302469ff8311, type: 3}
   connectedPanel: {fileID: 465498930}
 --- !u!114 &598971617
 MonoBehaviour:
@@ -335182,7 +335182,7 @@ MonoBehaviour:
   rotationSpeed: -350
   orbitRadius: 1.6
   weaponPrefabIndex: 4
-  UpgradeDMG: 000000000200000004000000040000000600000008000000
+  UpgradeDMG: 640000006400000064000000640000006400000001000000
 --- !u!1 &769905354
 GameObject:
   m_ObjectHideFlags: 0
@@ -339737,6 +339737,7 @@ GameObject:
   - component: {fileID: 837754362}
   - component: {fileID: 837754361}
   - component: {fileID: 837754363}
+  - component: {fileID: 837754364}
   m_Layer: 8
   m_Name: CircleSector
   m_TagString: Untagged
@@ -339842,15 +339843,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4475792, g: 0.6762107, b: 0.8867924, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &837754363
@@ -339865,6 +339866,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c429ff6dc97cf4981600a5b219c24b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CircleSector
+--- !u!95 &837754364
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837754359}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f6d39abac50084956b6529a3826e88d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &854125948
 GameObject:
   m_ObjectHideFlags: 0
@@ -529394,14 +529417,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.41037738, b: 0.41037738, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2413806693520163455, guid: e98b7b0faf3dd674e8914666277dae16, type: 3}
+  m_Sprite: {fileID: 5147114614322543148, guid: de493f1fa07d4490e83f302469ff8311, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
