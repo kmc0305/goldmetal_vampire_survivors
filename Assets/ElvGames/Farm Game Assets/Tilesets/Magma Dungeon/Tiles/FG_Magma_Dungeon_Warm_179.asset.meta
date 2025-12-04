@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4549091f67e135b45a095e69ecbb69ac
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 245757
+  packageName: 2D TopDown Magma Dungeon 16x16 Tileset
+  packageVersion: 1.0.0
+  assetPath: Assets/ElvGames/Farm Game Assets/Tilesets/Magma Dungeon/Tiles/FG_Magma_Dungeon_Warm_179.asset
+  uploadId: 630116

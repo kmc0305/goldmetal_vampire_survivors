@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0d22628363a46f04798d986583a0e24b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 245757
+  packageName: 2D TopDown Magma Dungeon 16x16 Tileset
+  packageVersion: 1.0.0
+  assetPath: Assets/ElvGames/Farm Game Assets/Tilesets/Extras/Tiles/FG_Grounds_269.asset
+  uploadId: 630116

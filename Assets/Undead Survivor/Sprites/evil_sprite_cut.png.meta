@@ -1,0 +1,3218 @@
+fileFormatVersion: 2
+guid: 127ca7d9bee01ba4896192aac7d69c1e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6646296419722936567
+    second: evil_sprite_cut_0
+  - first:
+      213: 137999181793404640
+    second: evil_sprite_cut_1
+  - first:
+      213: 2842328640591142820
+    second: evil_sprite_cut_2
+  - first:
+      213: 4201755043217164377
+    second: evil_sprite_cut_3
+  - first:
+      213: -8199454125609277153
+    second: evil_sprite_cut_4
+  - first:
+      213: 5271350503955189313
+    second: evil_sprite_cut_5
+  - first:
+      213: -651403947473322200
+    second: evil_sprite_cut_6
+  - first:
+      213: 5714174856564220889
+    second: evil_sprite_cut_7
+  - first:
+      213: 2975912125378371236
+    second: evil_sprite_cut_8
+  - first:
+      213: -8938096578960234185
+    second: evil_sprite_cut_9
+  - first:
+      213: -8992484569909740262
+    second: evil_sprite_cut_10
+  - first:
+      213: 4179983458065390123
+    second: evil_sprite_cut_11
+  - first:
+      213: 8788473204370456027
+    second: evil_sprite_cut_12
+  - first:
+      213: 4826726141655764166
+    second: evil_sprite_cut_13
+  - first:
+      213: 1783316182564277292
+    second: evil_sprite_cut_14
+  - first:
+      213: 138322925342842357
+    second: evil_sprite_cut_15
+  - first:
+      213: 9073619484242959231
+    second: evil_sprite_cut_16
+  - first:
+      213: -4079972822904526382
+    second: evil_sprite_cut_17
+  - first:
+      213: 7834487480678314605
+    second: evil_sprite_cut_18
+  - first:
+      213: -2262764758343327829
+    second: evil_sprite_cut_19
+  - first:
+      213: 3520567553974418843
+    second: evil_sprite_cut_20
+  - first:
+      213: 15974878067932182
+    second: evil_sprite_cut_21
+  - first:
+      213: -5131489542411772630
+    second: evil_sprite_cut_22
+  - first:
+      213: -2861815080350284648
+    second: evil_sprite_cut_23
+  - first:
+      213: 8890882916384877206
+    second: evil_sprite_cut_24
+  - first:
+      213: -5753181802122831071
+    second: evil_sprite_cut_25
+  - first:
+      213: 4139849199559900635
+    second: evil_sprite_cut_26
+  - first:
+      213: -8082128065865151049
+    second: evil_sprite_cut_27
+  - first:
+      213: -2878132393946143555
+    second: evil_sprite_cut_28
+  - first:
+      213: -2009414252025102453
+    second: evil_sprite_cut_29
+  - first:
+      213: 4007918685320462384
+    second: evil_sprite_cut_30
+  - first:
+      213: -3579475890370400640
+    second: evil_sprite_cut_31
+  - first:
+      213: 3254444107980031701
+    second: evil_sprite_cut_32
+  - first:
+      213: -3102594402618349
+    second: evil_sprite_cut_33
+  - first:
+      213: -3923797712690328279
+    second: evil_sprite_cut_34
+  - first:
+      213: 6876679600521863307
+    second: evil_sprite_cut_35
+  - first:
+      213: 4243449137741347981
+    second: evil_sprite_cut_36
+  - first:
+      213: 5762302962792037027
+    second: evil_sprite_cut_37
+  - first:
+      213: -3685776492956817477
+    second: evil_sprite_cut_38
+  - first:
+      213: 2368451851665929796
+    second: evil_sprite_cut_39
+  - first:
+      213: -7670400173403456525
+    second: evil_sprite_cut_40
+  - first:
+      213: 6030485473126489485
+    second: evil_sprite_cut_41
+  - first:
+      213: -6892040772683212816
+    second: evil_sprite_cut_42
+  - first:
+      213: 3788626965966979441
+    second: evil_sprite_cut_43
+  - first:
+      213: -164525016114774209
+    second: evil_sprite_cut_44
+  - first:
+      213: -5380553619938203709
+    second: evil_sprite_cut_45
+  - first:
+      213: 639455763881879217
+    second: evil_sprite_cut_46
+  - first:
+      213: 4868548554486539377
+    second: evil_sprite_cut_47
+  - first:
+      213: -1812092404304574756
+    second: evil_sprite_cut_48
+  - first:
+      213: 5255527583053817359
+    second: evil_sprite_cut_49
+  - first:
+      213: 439746886150396523
+    second: evil_sprite_cut_50
+  - first:
+      213: -7784267845555272382
+    second: evil_sprite_cut_51
+  - first:
+      213: 5361938828964382783
+    second: evil_sprite_cut_52
+  - first:
+      213: 1418932775743153722
+    second: evil_sprite_cut_53
+  - first:
+      213: 1695503449110595117
+    second: evil_sprite_cut_54
+  - first:
+      213: -1879404729065979903
+    second: evil_sprite_cut_55
+  - first:
+      213: -4571814631770923755
+    second: evil_sprite_cut_56
+  - first:
+      213: 8054186320510576944
+    second: evil_sprite_cut_57
+  - first:
+      213: 5897484822610012280
+    second: evil_sprite_cut_58
+  - first:
+      213: -3755832887926599334
+    second: evil_sprite_cut_59
+  - first:
+      213: -8141209963038821720
+    second: evil_sprite_cut_60
+  - first:
+      213: -2832490236677288495
+    second: evil_sprite_cut_61
+  - first:
+      213: -294592544029780154
+    second: evil_sprite_cut_62
+  - first:
+      213: -3905892848963607653
+    second: evil_sprite_cut_63
+  - first:
+      213: 7739321155434970393
+    second: evil_sprite_cut_64
+  - first:
+      213: 2001471418910072750
+    second: evil_sprite_cut_65
+  - first:
+      213: -5549352240908677132
+    second: evil_sprite_cut_66
+  - first:
+      213: 1305526168125730554
+    second: evil_sprite_cut_67
+  - first:
+      213: 7477766132966126606
+    second: evil_sprite_cut_68
+  - first:
+      213: 789111444947994860
+    second: evil_sprite_cut_69
+  - first:
+      213: -757416934492141699
+    second: evil_sprite_cut_70
+  - first:
+      213: -5565815284596769103
+    second: evil_sprite_cut_71
+  - first:
+      213: -3012621309294590178
+    second: evil_sprite_cut_72
+  - first:
+      213: 217132685090656066
+    second: evil_sprite_cut_73
+  - first:
+      213: -6519769976015695994
+    second: evil_sprite_cut_74
+  - first:
+      213: 4901263973230614961
+    second: evil_sprite_cut_75
+  - first:
+      213: -1946130692438002147
+    second: evil_sprite_cut_76
+  - first:
+      213: -7630977556273349100
+    second: evil_sprite_cut_77
+  - first:
+      213: -6188321344713458002
+    second: evil_sprite_cut_78
+  - first:
+      213: 7053633805943467857
+    second: evil_sprite_cut_79
+  - first:
+      213: -5664348190420146870
+    second: evil_sprite_cut_80
+  - first:
+      213: -2162313162248585678
+    second: evil_sprite_cut_81
+  - first:
+      213: 8577957650333547028
+    second: evil_sprite_cut_82
+  - first:
+      213: 3276277755656268146
+    second: evil_sprite_cut_83
+  - first:
+      213: 9108198930599253088
+    second: evil_sprite_cut_84
+  - first:
+      213: 625793483809921133
+    second: evil_sprite_cut_85
+  - first:
+      213: 8937716915838151359
+    second: evil_sprite_cut_86
+  - first:
+      213: 4658728268040160641
+    second: evil_sprite_cut_87
+  - first:
+      213: 5704206611267833552
+    second: evil_sprite_cut_88
+  - first:
+      213: 5699737875655206290
+    second: evil_sprite_cut_89
+  - first:
+      213: 2135564600294918731
+    second: evil_sprite_cut_90
+  - first:
+      213: 129825149345265623
+    second: evil_sprite_cut_91
+  - first:
+      213: 2454234045290545932
+    second: evil_sprite_cut_92
+  - first:
+      213: -1549435587885865086
+    second: evil_sprite_cut_93
+  - first:
+      213: -801993846209471081
+    second: evil_sprite_cut_94
+  - first:
+      213: 532092919665534066
+    second: evil_sprite_cut_95
+  - first:
+      213: 6367942102362685860
+    second: evil_sprite_cut_96
+  - first:
+      213: 6209600129340029209
+    second: evil_sprite_cut_97
+  - first:
+      213: 4645508568065859459
+    second: evil_sprite_cut_98
+  - first:
+      213: -3598601386086195074
+    second: evil_sprite_cut_99
+  - first:
+      213: -1347569092489637849
+    second: evil_sprite_cut_100
+  - first:
+      213: 1597928959485738293
+    second: evil_sprite_cut_101
+  - first:
+      213: -2168935963604372712
+    second: evil_sprite_cut_102
+  - first:
+      213: -365792199210620000
+    second: evil_sprite_cut_103
+  - first:
+      213: -3024649621637421411
+    second: evil_sprite_cut_104
+  - first:
+      213: 5326317537679229138
+    second: evil_sprite_cut_105
+  - first:
+      213: 4484246868790906714
+    second: evil_sprite_cut_106
+  - first:
+      213: -8107821084753151622
+    second: evil_sprite_cut_107
+  - first:
+      213: -7989481399653024208
+    second: evil_sprite_cut_108
+  - first:
+      213: -5978395030802634919
+    second: evil_sprite_cut_109
+  - first:
+      213: 703372460116050415
+    second: evil_sprite_cut_110
+  - first:
+      213: 1422044823203627695
+    second: evil_sprite_cut_111
+  - first:
+      213: -8770436837749960658
+    second: evil_sprite_cut_112
+  - first:
+      213: 3514527090109396437
+    second: evil_sprite_cut_113
+  - first:
+      213: -1159104134329218676
+    second: evil_sprite_cut_114
+  - first:
+      213: -8837408611298909532
+    second: evil_sprite_cut_115
+  - first:
+      213: 4031457089995813642
+    second: evil_sprite_cut_116
+  - first:
+      213: -1377534580128393334
+    second: evil_sprite_cut_117
+  - first:
+      213: -4283278672546807884
+    second: evil_sprite_cut_118
+  - first:
+      213: 7755569971060887125
+    second: evil_sprite_cut_119
+  - first:
+      213: 659082920531916851
+    second: evil_sprite_cut_120
+  - first:
+      213: -8680893881860797574
+    second: evil_sprite_cut_121
+  - first:
+      213: 5148288392882502251
+    second: evil_sprite_cut_122
+  - first:
+      213: -6091413817655232740
+    second: evil_sprite_cut_123
+  - first:
+      213: -3562593913034698731
+    second: evil_sprite_cut_124
+  - first:
+      213: -722301431985948883
+    second: evil_sprite_cut_125
+  - first:
+      213: -583045458331991545
+    second: evil_sprite_cut_126
+  - first:
+      213: 4075461511930602532
+    second: evil_sprite_cut_127
+  - first:
+      213: -7263362792760713622
+    second: evil_sprite_cut_128
+  - first:
+      213: 8085041806761753821
+    second: evil_sprite_cut_129
+  - first:
+      213: -8851049084166564514
+    second: evil_sprite_cut_130
+  - first:
+      213: -8299493588004647020
+    second: evil_sprite_cut_131
+  - first:
+      213: -1174732526382576573
+    second: evil_sprite_cut_132
+  - first:
+      213: -5772341905492273675
+    second: evil_sprite_cut_133
+  - first:
+      213: -8172100715559535182
+    second: evil_sprite_cut_134
+  - first:
+      213: -5084160654608433988
+    second: evil_sprite_cut_135
+  - first:
+      213: -7852091440538966302
+    second: evil_sprite_cut_136
+  - first:
+      213: 8773650369666145684
+    second: evil_sprite_cut_137
+  - first:
+      213: 9126368513877647202
+    second: evil_sprite_cut_138
+  - first:
+      213: -7631886266830301249
+    second: evil_sprite_cut_139
+  - first:
+      213: 547249447431052837
+    second: evil_sprite_cut_140
+  - first:
+      213: -32336770906194270
+    second: evil_sprite_cut_141
+  - first:
+      213: -4488799201811027831
+    second: evil_sprite_cut_142
+  - first:
+      213: -6713565449887327497
+    second: evil_sprite_cut_143
+  - first:
+      213: 5721861001994013797
+    second: evil_sprite_cut_144
+  - first:
+      213: -5430593382167816421
+    second: evil_sprite_cut_145
+  - first:
+      213: -7872975809652309253
+    second: evil_sprite_cut_146
+  - first:
+      213: -4683371417832359381
+    second: evil_sprite_cut_147
+  - first:
+      213: 3064548698427966945
+    second: evil_sprite_cut_148
+  - first:
+      213: -7856261891268605986
+    second: evil_sprite_cut_149
+  - first:
+      213: 6046586264291621429
+    second: evil_sprite_cut_150
+  - first:
+      213: 3652805900868876529
+    second: evil_sprite_cut_151
+  - first:
+      213: -8461974726778933752
+    second: evil_sprite_cut_152
+  - first:
+      213: 6763716595818104193
+    second: evil_sprite_cut_153
+  - first:
+      213: -7265679065379028171
+    second: evil_sprite_cut_154
+  - first:
+      213: 9117743601810750276
+    second: evil_sprite_cut_155
+  - first:
+      213: 8738757234626588958
+    second: evil_sprite_cut_156
+  - first:
+      213: -5920212451983005264
+    second: evil_sprite_cut_157
+  - first:
+      213: -4306146879853512737
+    second: evil_sprite_cut_158
+  - first:
+      213: 3095831369440322833
+    second: evil_sprite_cut_159
+  - first:
+      213: -863058728382001327
+    second: evil_sprite_cut_160
+  - first:
+      213: 4507741487844720703
+    second: evil_sprite_cut_161
+  - first:
+      213: 1586803453416575406
+    second: evil_sprite_cut_162
+  - first:
+      213: 3873918480458647963
+    second: evil_sprite_cut_163
+  - first:
+      213: -7460257030398890200
+    second: evil_sprite_cut_164
+  - first:
+      213: -2265225247639149893
+    second: evil_sprite_cut_165
+  - first:
+      213: -7342500065123283643
+    second: evil_sprite_cut_166
+  - first:
+      213: -3844389910491448881
+    second: evil_sprite_cut_167
+  - first:
+      213: -2152876780739359606
+    second: evil_sprite_cut_168
+  - first:
+      213: 9049291448495029165
+    second: evil_sprite_cut_169
+  - first:
+      213: 3854198769602352767
+    second: evil_sprite_cut_170
+  - first:
+      213: 273045001171459626
+    second: evil_sprite_cut_171
+  - first:
+      213: -4573992443290266424
+    second: evil_sprite_cut_172
+  - first:
+      213: 6276053961817911279
+    second: evil_sprite_cut_173
+  - first:
+      213: 5219313490193950252
+    second: evil_sprite_cut_174
+  - first:
+      213: -8046616279433640293
+    second: evil_sprite_cut_175
+  - first:
+      213: 3846228551380680772
+    second: evil_sprite_cut_176
+  - first:
+      213: 7217336670061086376
+    second: evil_sprite_cut_177
+  - first:
+      213: 5079128171788215938
+    second: evil_sprite_cut_178
+  - first:
+      213: 1365081123092048472
+    second: evil_sprite_cut_179
+  - first:
+      213: -6086560404979149048
+    second: evil_sprite_cut_180
+  - first:
+      213: -63548234245274589
+    second: evil_sprite_cut_181
+  - first:
+      213: 1442362665024185581
+    second: evil_sprite_cut_182
+  - first:
+      213: 9127254804892594845
+    second: evil_sprite_cut_183
+  - first:
+      213: 5994024095825462238
+    second: evil_sprite_cut_184
+  - first:
+      213: -5743782196623779388
+    second: evil_sprite_cut_185
+  - first:
+      213: 6336430968532571934
+    second: evil_sprite_cut_186
+  - first:
+      213: 8680063907023892973
+    second: evil_sprite_cut_187
+  - first:
+      213: -4598424469906372154
+    second: evil_sprite_cut_188
+  - first:
+      213: -7292977582761763031
+    second: evil_sprite_cut_189
+  - first:
+      213: 9198793274870131692
+    second: evil_sprite_cut_190
+  - first:
+      213: -8510323234746250270
+    second: evil_sprite_cut_191
+  - first:
+      213: -1222711680525732741
+    second: evil_sprite_cut_192
+  - first:
+      213: -5031323932829924759
+    second: evil_sprite_cut_193
+  - first:
+      213: -1982300102199166946
+    second: evil_sprite_cut_194
+  - first:
+      213: -8577095410181387439
+    second: evil_sprite_cut_195
+  - first:
+      213: -6932318504834979949
+    second: evil_sprite_cut_196
+  - first:
+      213: -4607579369337749145
+    second: evil_sprite_cut_197
+  - first:
+      213: -5486972868628823815
+    second: evil_sprite_cut_198
+  - first:
+      213: -3943601280715835965
+    second: evil_sprite_cut_199
+  - first:
+      213: -2129486061921979880
+    second: evil_sprite_cut_200
+  - first:
+      213: 4507653535586866982
+    second: evil_sprite_cut_201
+  - first:
+      213: 1072128272824000805
+    second: evil_sprite_cut_202
+  - first:
+      213: 8859288476493288393
+    second: evil_sprite_cut_203
+  - first:
+      213: 8202809873840283515
+    second: evil_sprite_cut_204
+  - first:
+      213: 5514714168332086448
+    second: evil_sprite_cut_205
+  - first:
+      213: 1825241227763731338
+    second: evil_sprite_cut_206
+  - first:
+      213: 4472152719006488747
+    second: evil_sprite_cut_207
+  - first:
+      213: -1449061826405201502
+    second: evil_sprite_cut_208
+  - first:
+      213: -3608421089030819438
+    second: evil_sprite_cut_209
+  - first:
+      213: 7898397978768792558
+    second: evil_sprite_cut_210
+  - first:
+      213: -3350859003810267003
+    second: evil_sprite_cut_211
+  - first:
+      213: -1210996741924775518
+    second: evil_sprite_cut_212
+  - first:
+      213: 8999500371769173087
+    second: evil_sprite_cut_213
+  - first:
+      213: -2412565634524893744
+    second: evil_sprite_cut_214
+  - first:
+      213: -4098111822901646163
+    second: evil_sprite_cut_215
+  - first:
+      213: 9118706451344184809
+    second: evil_sprite_cut_216
+  - first:
+      213: -1057490088338205604
+    second: evil_sprite_cut_217
+  - first:
+      213: -2704203848296069137
+    second: evil_sprite_cut_218
+  - first:
+      213: -6447705179389322623
+    second: evil_sprite_cut_219
+  - first:
+      213: -1262984683364746636
+    second: evil_sprite_cut_220
+  - first:
+      213: 2238316170461483398
+    second: evil_sprite_cut_221
+  - first:
+      213: 6034315447577138157
+    second: evil_sprite_cut_222
+  - first:
+      213: -1325980385610183492
+    second: evil_sprite_cut_223
+  - first:
+      213: 3762838909590992257
+    second: evil_sprite_cut_224
+  - first:
+      213: 3883189526884880594
+    second: evil_sprite_cut_225
+  - first:
+      213: -3369255674748199701
+    second: evil_sprite_cut_226
+  - first:
+      213: 5521094778641168561
+    second: evil_sprite_cut_227
+  - first:
+      213: 6569249664914423892
+    second: evil_sprite_cut_228
+  - first:
+      213: 7513392021973264349
+    second: evil_sprite_cut_229
+  - first:
+      213: 2446937076636946829
+    second: evil_sprite_cut_230
+  - first:
+      213: -678298929825777347
+    second: evil_sprite_cut_231
+  - first:
+      213: -2490050456698044107
+    second: evil_sprite_cut_232
+  - first:
+      213: -5401359389001462950
+    second: evil_sprite_cut_233
+  - first:
+      213: 1599150894639972481
+    second: evil_sprite_cut_234
+  - first:
+      213: 2177272655332900088
+    second: evil_sprite_cut_235
+  - first:
+      213: -5375777500801197980
+    second: evil_sprite_cut_236
+  - first:
+      213: 5305578008871625405
+    second: evil_sprite_cut_237
+  - first:
+      213: -4335331089177306849
+    second: evil_sprite_cut_238
+  - first:
+      213: -1104213848679706028
+    second: evil_sprite_cut_239
+  - first:
+      213: -1105285582191257502
+    second: evil_sprite_cut_240
+  - first:
+      213: -7009278376768833203
+    second: evil_sprite_cut_241
+  - first:
+      213: 8281408468554366281
+    second: evil_sprite_cut_242
+  - first:
+      213: -7350764893945963215
+    second: evil_sprite_cut_243
+  - first:
+      213: -4053276840016949153
+    second: evil_sprite_cut_244
+  - first:
+      213: -1704137312368943050
+    second: evil_sprite_cut_245
+  - first:
+      213: -1597917133948517600
+    second: evil_sprite_cut_246
+  - first:
+      213: -1214309388510758532
+    second: evil_sprite_cut_247
+  - first:
+      213: -6273973743072519951
+    second: evil_sprite_cut_248
+  - first:
+      213: 7897258439269486231
+    second: evil_sprite_cut_249
+  - first:
+      213: -8215804041778463139
+    second: evil_sprite_cut_250
+  - first:
+      213: 230744257257291838
+    second: evil_sprite_cut_251
+  - first:
+      213: 300838766210553889
+    second: evil_sprite_cut_252
+  - first:
+      213: 895130568971930609
+    second: evil_sprite_cut_253
+  - first:
+      213: 7387188049132489638
+    second: evil_sprite_cut_254
+  - first:
+      213: -5980859550001265096
+    second: evil_sprite_cut_255
+  - first:
+      213: 7674269518141246495
+    second: evil_sprite_cut_256
+  - first:
+      213: 7822503679531342828
+    second: evil_sprite_cut_257
+  - first:
+      213: -4769738076179799891
+    second: evil_sprite_cut_258
+  - first:
+      213: 3409152636731823569
+    second: evil_sprite_cut_259
+  - first:
+      213: -8264920519319396850
+    second: evil_sprite_cut_260
+  - first:
+      213: 5357984435717038634
+    second: evil_sprite_cut_261
+  - first:
+      213: 774292891913028143
+    second: evil_sprite_cut_262
+  - first:
+      213: -2195861455309770004
+    second: evil_sprite_cut_263
+  - first:
+      213: -8973752341383932743
+    second: evil_sprite_cut_264
+  - first:
+      213: 4307621814829697265
+    second: evil_sprite_cut_265
+  - first:
+      213: 2488387059495636572
+    second: evil_sprite_cut_266
+  - first:
+      213: -6179006480742428271
+    second: evil_sprite_cut_267
+  - first:
+      213: 1921467144677541938
+    second: evil_sprite_cut_268
+  - first:
+      213: 2680272500153336070
+    second: evil_sprite_cut_269
+  - first:
+      213: -1578017257304146120
+    second: evil_sprite_cut_270
+  - first:
+      213: 2721620852789141005
+    second: evil_sprite_cut_271
+  - first:
+      213: 9223365020068733392
+    second: evil_sprite_cut_272
+  - first:
+      213: 7728661151960457254
+    second: evil_sprite_cut_273
+  - first:
+      213: 7328135852639277373
+    second: evil_sprite_cut_274
+  - first:
+      213: 7040367589530088900
+    second: evil_sprite_cut_275
+  - first:
+      213: -2443696594216781192
+    second: evil_sprite_cut_276
+  - first:
+      213: 5370192121686285617
+    second: evil_sprite_cut_277
+  - first:
+      213: -2264329131362065282
+    second: evil_sprite_cut_278
+  - first:
+      213: 2872299522706125234
+    second: evil_sprite_cut_279
+  - first:
+      213: 2187103400868345464
+    second: evil_sprite_cut_280
+  - first:
+      213: 5868430339628792298
+    second: evil_sprite_cut_281
+  - first:
+      213: 2777762275703591073
+    second: evil_sprite_cut_282
+  - first:
+      213: -4837017697962982086
+    second: evil_sprite_cut_283
+  - first:
+      213: -3016741666059284485
+    second: evil_sprite_cut_284
+  - first:
+      213: -3199713254330152371
+    second: evil_sprite_cut_285
+  - first:
+      213: 6972791207887593679
+    second: evil_sprite_cut_286
+  - first:
+      213: -1776056593212282932
+    second: evil_sprite_cut_287
+  - first:
+      213: -1085584509728308286
+    second: evil_sprite_cut_288
+  - first:
+      213: 7315184178567620903
+    second: evil_sprite_cut_289
+  - first:
+      213: -2358360636335458855
+    second: evil_sprite_cut_290
+  - first:
+      213: -4020505120275521247
+    second: evil_sprite_cut_291
+  - first:
+      213: 6819915109117194203
+    second: evil_sprite_cut_292
+  - first:
+      213: 9130462535731376452
+    second: evil_sprite_cut_293
+  - first:
+      213: 3636368678049784570
+    second: evil_sprite_cut_294
+  - first:
+      213: 3423070332028696805
+    second: evil_sprite_cut_295
+  - first:
+      213: 6029870269374070080
+    second: evil_sprite_cut_296
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 35
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: evil_sprite_cut_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f0498151636c3c50800000000000000
+      internalID: 6646296419722936567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6271256854ae100800000000000000
+      internalID: 137999181793404640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4af9a5dd6daf17720800000000000000
+      internalID: 2842328640591142820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9584a2033f1af4a30800000000000000
+      internalID: 4201755043217164377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f19a2f25aefa53e80800000000000000
+      internalID: -8199454125609277153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_5
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14e43d2ca59972940800000000000000
+      internalID: 5271350503955189313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_6
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82fb091af8fb5f6f0800000000000000
+      internalID: -651403947473322200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_7
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 1408
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d3aafdc1c3dc4f40800000000000000
+      internalID: 5714174856564220889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ae94fb9f409c4920800000000000000
+      internalID: 2975912125378371236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_9
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 739e0fa748085f380800000000000000
+      internalID: -8938096578960234185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_10
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1d395a8de6443380800000000000000
+      internalID: -8992484569909740262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2a1ff00fc8420a30800000000000000
+      internalID: 4179983458065390123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_12
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdd3a88e0dde6f970800000000000000
+      internalID: 8788473204370456027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_13
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cccb7d4ad9fbf240800000000000000
+      internalID: 4826726141655764166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_14
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2c03ff9e9c9fb810800000000000000
+      internalID: 1783316182564277292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_15
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 1280
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fd5a5db7fb6be100800000000000000
+      internalID: 138322925342842357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7b5d59c8d8fbed70800000000000000
+      internalID: 9073619484242959231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_17
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d9278d85560167c0800000000000000
+      internalID: -4079972822904526382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_18
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d627313dad0b9bc60800000000000000
+      internalID: 7834487480678314605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_19
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: baf5ca0e07b0990e0800000000000000
+      internalID: -2262764758343327829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_20
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9d396e99819bd030800000000000000
+      internalID: 3520567553974418843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_21
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61cb1942111c83000800000000000000
+      internalID: 15974878067932182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_22
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2d1aefe27949c8b0800000000000000
+      internalID: -5131489542411772630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_23
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 1152
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8948dd2d85ac848d0800000000000000
+      internalID: -2861815080350284648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69aa5b218e2c26b70800000000000000
+      internalID: 8890882916384877206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_25
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12b1a34f1a79820b0800000000000000
+      internalID: -5753181802122831071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_26
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bddf373c9e2b37930800000000000000
+      internalID: 4139849199559900635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_27
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bd84e4585386df80800000000000000
+      internalID: -8082128065865151049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_28
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db4ab4236d1de08d0800000000000000
+      internalID: -2878132393946143555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_29
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8fbf6552602d14e0800000000000000
+      internalID: -2009414252025102453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_30
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0304d273fccfe9730800000000000000
+      internalID: 4007918685320462384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_31
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 1024
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08ea56084a5235ec0800000000000000
+      internalID: -3579475890370400640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d643856cab1a2d20800000000000000
+      internalID: 3254444107980031701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_33
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 314ffb2f43af4fff0800000000000000
+      internalID: -3102594402618349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_34
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92d4a9cf4cedb89c0800000000000000
+      internalID: -3923797712690328279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_35
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b80e74799afde6f50800000000000000
+      internalID: 6876679600521863307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_36
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8cb28d0282c3ea30800000000000000
+      internalID: 4243449137741347981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_37
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aa7661c300d7ff40800000000000000
+      internalID: 5762302962792037027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_38
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb7e2d7cecd79dcc0800000000000000
+      internalID: -3685776492956817477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_39
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 896
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 446f926196e6ed020800000000000000
+      internalID: 2368451851665929796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fb313b8ea34d8590800000000000000
+      internalID: -7670400173403456525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_41
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8d9bd0469690b350800000000000000
+      internalID: 6030485473126489485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_42
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f755bece6d8a50a0800000000000000
+      internalID: -6892040772683212816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_43
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1718dec0728e39430800000000000000
+      internalID: 3788626965966979441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_44
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3f30d99e5d77bdf0800000000000000
+      internalID: -164525016114774209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_45
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c724a47dfe6455b0800000000000000
+      internalID: -5380553619938203709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_46
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b661c711adcfd800800000000000000
+      internalID: 639455763881879217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_47
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 768
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17469e99d1f809340800000000000000
+      internalID: 4868548554486539377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd60e352f872ad6e0800000000000000
+      internalID: -1812092404304574756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_49
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f06a037ed726fe840800000000000000
+      internalID: 5255527583053817359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_50
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6a141c867b4a1600800000000000000
+      internalID: 439746886150396523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_51
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 245ce2523a9b8f390800000000000000
+      internalID: -7784267845555272382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_52
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f38cbc7c4fe696a40800000000000000
+      internalID: 5361938828964382783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_53
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a36645a77df01b310800000000000000
+      internalID: 1418932775743153722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_54
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d26cfaf5763a78710800000000000000
+      internalID: 1695503449110595117
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_55
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 640
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10045de3b530be5e0800000000000000
+      internalID: -1879404729065979903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51d5c5e90d6ad80c0800000000000000
+      internalID: -4571814631770923755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_57
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 039e7dc19c736cf60800000000000000
+      internalID: 8054186320510576944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_58
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8786def233318d150800000000000000
+      internalID: 5897484822610012280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_59
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a51d76f33e990ebc0800000000000000
+      internalID: -3755832887926599334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_60
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a2333f2cac940f80800000000000000
+      internalID: -8141209963038821720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_61
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dd861d0329f0b8d0800000000000000
+      internalID: -2832490236677288495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_62
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64750ab54a569ebf0800000000000000
+      internalID: -294592544029780154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_63
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 512
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9329cee52b7bc9c0800000000000000
+      internalID: -3905892848963607653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91dfd501697976b60800000000000000
+      internalID: 7739321155434970393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_65
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaf5b38b6a7a6cb10800000000000000
+      internalID: 2001471418910072750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_66
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ffce13e98dbcf2b0800000000000000
+      internalID: -5549352240908677132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_67
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afe6c1802292e1210800000000000000
+      internalID: 1305526168125730554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_68
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0474e4ddac56c760800000000000000
+      internalID: 7477766132966126606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_69
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce80254adac73fa00800000000000000
+      internalID: 789111444947994860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_70
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d770bb0af4d1d75f0800000000000000
+      internalID: -757416934492141699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_71
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 384
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1be7b24dc7042c2b0800000000000000
+      internalID: -5565815284596769103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_72
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1749b871e40136d0800000000000000
+      internalID: -3012621309294590178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_73
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24f84f3d609630300800000000000000
+      internalID: 217132685090656066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_74
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68fc35200cf1585a0800000000000000
+      internalID: -6519769976015695994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_75
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b994da9d99c40440800000000000000
+      internalID: 4901263973230614961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_76
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d167fbe3274fdf4e0800000000000000
+      internalID: -1946130692438002147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_77
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41e395dd752591690800000000000000
+      internalID: -7630977556273349100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_78
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eaef26c268aae1aa0800000000000000
+      internalID: -6188321344713458002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_79
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f62f2239a83e160800000000000000
+      internalID: 7053633805943467857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_80
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4561e1f4513461b0800000000000000
+      internalID: -5664348190420146870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_81
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23e7507a2abedf1e0800000000000000
+      internalID: -2162313162248585678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_82
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ab976f8070b0770800000000000000
+      internalID: 8577957650333547028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_83
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 279e763a24da77d20800000000000000
+      internalID: 3276277755656268146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_84
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06416f98ba2d66e70800000000000000
+      internalID: 9108198930599253088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_85
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d689e31abd34fa800800000000000000
+      internalID: 625793483809921133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_86
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fba688f4e26290c70800000000000000
+      internalID: 8937716915838151359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_87
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 185ca914da027a040800000000000000
+      internalID: 4658728268040160641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_88
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0decd06d0b9692f40800000000000000
+      internalID: 5704206611267833552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_89
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 295a44f3669891f40800000000000000
+      internalID: 5699737875655206290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_90
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4a4a7370bc03ad10800000000000000
+      internalID: 2135564600294918731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_91
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d7f2a5194b3dc100800000000000000
+      internalID: 129825149345265623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_92
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0386317cd03f0220800000000000000
+      internalID: 2454234045290545932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_93
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 287e6b5ca8c4f7ae0800000000000000
+      internalID: -1549435587885865086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_94
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79d92a498debed4f0800000000000000
+      internalID: -801993846209471081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: evil_sprite_cut_95
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2742a28f0bf526700800000000000000
+      internalID: 532092919665534066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: b8447cf7efc30dc49845df6574e5ff76
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      evil_sprite_cut_0: 6646296419722936567
+      evil_sprite_cut_1: 137999181793404640
+      evil_sprite_cut_10: -8992484569909740262
+      evil_sprite_cut_11: 4179983458065390123
+      evil_sprite_cut_12: 8788473204370456027
+      evil_sprite_cut_13: 4826726141655764166
+      evil_sprite_cut_14: 1783316182564277292
+      evil_sprite_cut_15: 138322925342842357
+      evil_sprite_cut_16: 9073619484242959231
+      evil_sprite_cut_17: -4079972822904526382
+      evil_sprite_cut_18: 7834487480678314605
+      evil_sprite_cut_19: -2262764758343327829
+      evil_sprite_cut_2: 2842328640591142820
+      evil_sprite_cut_20: 3520567553974418843
+      evil_sprite_cut_21: 15974878067932182
+      evil_sprite_cut_22: -5131489542411772630
+      evil_sprite_cut_23: -2861815080350284648
+      evil_sprite_cut_24: 8890882916384877206
+      evil_sprite_cut_25: -5753181802122831071
+      evil_sprite_cut_26: 4139849199559900635
+      evil_sprite_cut_27: -8082128065865151049
+      evil_sprite_cut_28: -2878132393946143555
+      evil_sprite_cut_29: -2009414252025102453
+      evil_sprite_cut_3: 4201755043217164377
+      evil_sprite_cut_30: 4007918685320462384
+      evil_sprite_cut_31: -3579475890370400640
+      evil_sprite_cut_32: 3254444107980031701
+      evil_sprite_cut_33: -3102594402618349
+      evil_sprite_cut_34: -3923797712690328279
+      evil_sprite_cut_35: 6876679600521863307
+      evil_sprite_cut_36: 4243449137741347981
+      evil_sprite_cut_37: 5762302962792037027
+      evil_sprite_cut_38: -3685776492956817477
+      evil_sprite_cut_39: 2368451851665929796
+      evil_sprite_cut_4: -8199454125609277153
+      evil_sprite_cut_40: -7670400173403456525
+      evil_sprite_cut_41: 6030485473126489485
+      evil_sprite_cut_42: -6892040772683212816
+      evil_sprite_cut_43: 3788626965966979441
+      evil_sprite_cut_44: -164525016114774209
+      evil_sprite_cut_45: -5380553619938203709
+      evil_sprite_cut_46: 639455763881879217
+      evil_sprite_cut_47: 4868548554486539377
+      evil_sprite_cut_48: -1812092404304574756
+      evil_sprite_cut_49: 5255527583053817359
+      evil_sprite_cut_5: 5271350503955189313
+      evil_sprite_cut_50: 439746886150396523
+      evil_sprite_cut_51: -7784267845555272382
+      evil_sprite_cut_52: 5361938828964382783
+      evil_sprite_cut_53: 1418932775743153722
+      evil_sprite_cut_54: 1695503449110595117
+      evil_sprite_cut_55: -1879404729065979903
+      evil_sprite_cut_56: -4571814631770923755
+      evil_sprite_cut_57: 8054186320510576944
+      evil_sprite_cut_58: 5897484822610012280
+      evil_sprite_cut_59: -3755832887926599334
+      evil_sprite_cut_6: -651403947473322200
+      evil_sprite_cut_60: -8141209963038821720
+      evil_sprite_cut_61: -2832490236677288495
+      evil_sprite_cut_62: -294592544029780154
+      evil_sprite_cut_63: -3905892848963607653
+      evil_sprite_cut_64: 7739321155434970393
+      evil_sprite_cut_65: 2001471418910072750
+      evil_sprite_cut_66: -5549352240908677132
+      evil_sprite_cut_67: 1305526168125730554
+      evil_sprite_cut_68: 7477766132966126606
+      evil_sprite_cut_69: 789111444947994860
+      evil_sprite_cut_7: 5714174856564220889
+      evil_sprite_cut_70: -757416934492141699
+      evil_sprite_cut_71: -5565815284596769103
+      evil_sprite_cut_72: -3012621309294590178
+      evil_sprite_cut_73: 217132685090656066
+      evil_sprite_cut_74: -6519769976015695994
+      evil_sprite_cut_75: 4901263973230614961
+      evil_sprite_cut_76: -1946130692438002147
+      evil_sprite_cut_77: -7630977556273349100
+      evil_sprite_cut_78: -6188321344713458002
+      evil_sprite_cut_79: 7053633805943467857
+      evil_sprite_cut_8: 2975912125378371236
+      evil_sprite_cut_80: -5664348190420146870
+      evil_sprite_cut_81: -2162313162248585678
+      evil_sprite_cut_82: 8577957650333547028
+      evil_sprite_cut_83: 3276277755656268146
+      evil_sprite_cut_84: 9108198930599253088
+      evil_sprite_cut_85: 625793483809921133
+      evil_sprite_cut_86: 8937716915838151359
+      evil_sprite_cut_87: 4658728268040160641
+      evil_sprite_cut_88: 5704206611267833552
+      evil_sprite_cut_89: 5699737875655206290
+      evil_sprite_cut_9: -8938096578960234185
+      evil_sprite_cut_90: 2135564600294918731
+      evil_sprite_cut_91: 129825149345265623
+      evil_sprite_cut_92: 2454234045290545932
+      evil_sprite_cut_93: -1549435587885865086
+      evil_sprite_cut_94: -801993846209471081
+      evil_sprite_cut_95: 532092919665534066
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

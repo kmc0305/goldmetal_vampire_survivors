@@ -287,7 +287,7 @@ Animator:
   m_GameObject: {fileID: 7743973790584016687}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 050556270436d4f4288557291a1a99c0, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4b471a9e444fb5d46a31ba8f125bc14f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -382,6 +382,7 @@ MonoBehaviour:
   speedMultiplier: 1
   attackImpactDelay: 0.2
   hitEffectPrefab: {fileID: 0}
+  areaEffectFollows: 1
   attackStyle: 0
   areaAttackRadius: 3
   fanAngle: 120
