@@ -335220,6 +335220,7 @@ MonoBehaviour:
   - {fileID: 3203970407810320476, guid: 5530ac1c1f1f4f34c9295cd05e78d5f7, type: 3}
   - {fileID: 4204018482358998013, guid: 987ce1c94a0caf5438e28da8204886ec, type: 3}
   - {fileID: 7245370837217419868, guid: 4e4be3ba2196245f1a0ca01a9e7ed7c0, type: 3}
+  - {fileID: 7743973790584016687, guid: 72ac908e8b6b20f4daea6dedf3bebfba, type: 3}
 --- !u!4 &769905356
 Transform:
   m_ObjectHideFlags: 0
@@ -440674,13 +440675,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
+  bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
   bossSpawnPoint: {fileID: 1279112653}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
+  bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
-  rangedEnemyId: 1
   spawnInterval: 1
   animator: {fileID: 1279112661}
   burningThreshold: 0.4
@@ -440947,13 +440947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f476ca1569a349be395d3bbd44787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  bossPrefab: {fileID: 4111436743865639527, guid: 9906a6faf329f85498e131a9f47534ff, type: 3}
+  bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
   bossSpawnPoint: {fileID: 1324853767}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 49e5bd12f87635449bc3cb5f10f63d3f, type: 2}
-  poolId: 0
-  rangedEnemyId: 1
+  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
+  poolId: 1
   spawnInterval: 1
   animator: {fileID: 1324853775}
   burningThreshold: 0.4
@@ -520596,8 +520595,7 @@ MonoBehaviour:
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
-  poolId: 0
-  rangedEnemyId: 1
+  poolId: 8
   spawnInterval: 1
   animator: {fileID: 1738603053}
   burningThreshold: 0.4
