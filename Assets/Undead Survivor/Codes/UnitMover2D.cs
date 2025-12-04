@@ -23,6 +23,11 @@ public class UnitMover2D : MonoBehaviour
     public float ignoreRadius = 1.0f;     // 주변 팀원 탐색 반경
     public float refreshInterval = 0.15f; // 갱신 주기
 
+    // [추가] 도착 후 충돌 복원 지연 설정
+    [Header("도착 후 충돌 복원 지연")]
+    public float restoreDelay = 0.5f; // 0.5초 동안 충돌 무시 유지
+    private float restoreTime;         // 충돌 무시를 해제할 시간 (Time.time)
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
 
@@ -57,6 +62,8 @@ public class UnitMover2D : MonoBehaviour
 
     void OnDisable()
     {
+        // 비활성화 시 즉시 복원
+        restoreTime = 0;
         RestoreAllIgnores();
         finalTarget = null;
         pathCount = 0;
@@ -69,7 +76,12 @@ public class UnitMover2D : MonoBehaviour
         if (pathCount == 0)
         {
             rb.linearVelocity = Vector2.zero;
-            RestoreAllIgnores(); // 명령 없을 땐 항상 복원 상태
+
+            // [수정] restoreDelay가 만료되었을 때만 충돌 복원
+            if (Time.time >= restoreTime)
+            {
+                RestoreAllIgnores();
+            }
             return;
         }
 
@@ -88,7 +100,9 @@ public class UnitMover2D : MonoBehaviour
                 // 최종 목적지 도착
                 finalTarget = null;
                 pathCount = 0;
-                RestoreAllIgnores();
+
+                // [수정] 즉시 복원 대신 타이머 설정
+                restoreTime = Time.time + restoreDelay;
                 return;
             }
             else
@@ -147,6 +161,9 @@ public class UnitMover2D : MonoBehaviour
         finalTarget = null;
         pathCount = 0;
         rb.linearVelocity = Vector2.zero;
+
+        // [수정] 명령 취소 시 즉시 복원
+        restoreTime = 0;
         RestoreAllIgnores();
     }
 
@@ -216,8 +233,6 @@ public class UnitMover2D : MonoBehaviour
         if (sr == null) return;
         if (finalTarget == null) return;   // 이동 중이 아니면 그대로
 
-        // Enemy:
-        // spriter.flipX = currentTarget.transform.position.x < rigid.position.x;
         // Ally(수동 이동): 목표 위치 기준으로 좌/우만 판단
         Vector2 pos = rb.position;
         sr.flipX = finalTarget.Value.x > pos.x;
@@ -271,6 +286,7 @@ public class UnitMover2D : MonoBehaviour
         foreach (var kv in ignoredByRoot)
         {
             var root = kv.Key;
+            // 유닛이 파괴되었거나, 무시 반경의 2배(이탈 감지)를 벗어났다면 복원
             if (!root) { toRestoreBuffer.Add(root); continue; }
 
             float sqr = (root.position - rb.position).sqrMagnitude;

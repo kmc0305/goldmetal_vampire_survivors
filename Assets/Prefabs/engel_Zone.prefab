@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6203458377608984110}
   - component: {fileID: 892695782159499780}
   - component: {fileID: -1839272917506556930}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: engel_Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

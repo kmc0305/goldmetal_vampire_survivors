@@ -164,7 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5524716}
   - component: {fileID: 5524715}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SwampAreaSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70194,7 +70194,7 @@ GameObject:
   - component: {fileID: 281990026}
   - component: {fileID: 281990028}
   - component: {fileID: 281990027}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Snow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278418,7 +278418,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 55.603848
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
