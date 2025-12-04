@@ -55,6 +55,12 @@ public class Targetable : MonoBehaviour
     // ★ 힐 효과 코루틴
     private Coroutine healFlashCoroutine;
 
+    // --- 지형 효과 관련 변수 추가 ---
+    private Coroutine terrainTintCoroutine;
+    private Color currentTerrainTint = Color.white;
+    private bool isInTerrainEffect = false;
+    // ----------------------------
+
     // 외부에서 넉백 상태 확인용 프로퍼티
     public bool IsKnockedBack => isKnockedBack;
 
@@ -219,10 +225,10 @@ public class Targetable : MonoBehaviour
         yield return new WaitForSeconds(invincibilityDuration);
 
         isInvincible = false;
-        // 힐 중이 아닐 때만 원래 색으로 복구 (충돌 방지 로직)
+        // 힐 중이 아닐 때만 색상 복구 (지형 효과 고려)
         if (spriter != null && healFlashCoroutine == null)
         {
-            spriter.color = originalColor;
+            spriter.color = isInTerrainEffect ? currentTerrainTint : originalColor;
         }
     }
 
@@ -231,7 +237,8 @@ public class Targetable : MonoBehaviour
         if (spriter != null) spriter.color = Color.green;
         yield return new WaitForSeconds(0.2f);
 
-        if (spriter != null) spriter.color = originalColor;
+        // 지형 효과 고려한 색상 복구
+        if (spriter != null) spriter.color = isInTerrainEffect ? currentTerrainTint : originalColor;
         healFlashCoroutine = null; // 종료 시 변수 비우기
     }
 
@@ -255,5 +262,51 @@ public class Targetable : MonoBehaviour
 
         rigid.linearVelocity = Vector2.zero;
         isKnockedBack = false;
+    }
+
+    // --- 지형 효과 색상 틴트 메서드 (Terrain Effect Tint Methods) ---
+
+    /// <summary>
+    /// 지형 효과로 인한 색상 틴트를 적용합니다.
+    /// </summary>
+    public void ApplyTerrainTint(Color tintColor)
+    {
+        if (isDead || spriter == null) return;
+
+        isInTerrainEffect = true;
+        currentTerrainTint = tintColor;
+
+        // 기존 틴트 코루틴이 있으면 중지
+        if (terrainTintCoroutine != null)
+        {
+            StopCoroutine(terrainTintCoroutine);
+        }
+
+        // 피격/힐 효과가 없을 때만 틴트 적용
+        if (!isInvincible && healFlashCoroutine == null)
+        {
+            spriter.color = tintColor;
+        }
+    }
+
+    /// <summary>
+    /// 지형 효과 색상 틴트를 제거하고 원래 색으로 되돌립니다.
+    /// </summary>
+    public void RemoveTerrainTint()
+    {
+        isInTerrainEffect = false;
+        currentTerrainTint = Color.white;
+
+        if (terrainTintCoroutine != null)
+        {
+            StopCoroutine(terrainTintCoroutine);
+            terrainTintCoroutine = null;
+        }
+
+        // 피격/힐 효과가 없을 때만 원래 색으로 복구
+        if (spriter != null && !isInvincible && healFlashCoroutine == null)
+        {
+            spriter.color = originalColor;
+        }
     }
 }

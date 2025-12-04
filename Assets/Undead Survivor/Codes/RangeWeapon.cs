@@ -40,7 +40,7 @@ public class RangeWeapon : MonoBehaviour
             doFire();   ///쿨타임 찰 때마다 발사 실행
         }
         timer2+= Time.deltaTime;
-        if (level >= 5 && timer2 >= 6.0f) { timer2 = 0f; UltRange();  }
+        if (level >= 5 && timer2 >= 5.0f) { timer2 = 0f; UltRange();  }
     }
 
     void doFire()   ///발사를 실행하는 함수
@@ -100,16 +100,21 @@ public class RangeWeapon : MonoBehaviour
     }
 
     public Transform AuraMaster;
+    public Animator[] AuraAnims;
     void UltRange()
     {
-        if (nearestTarget == null) { timer2 = 5f; return; }  
-        Vector3 dir= nearestTarget.transform.position - AuraMaster.position;
-        float angle=Mathf.Atan2(dir.y,dir.x)*Mathf.Rad2Deg;
+        if (nearestTarget == null) { timer2 = 4f; return; }
+        Vector3 dir = nearestTarget.transform.position - AuraMaster.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         AuraMaster.rotation = Quaternion.Euler(0, 0, angle);
         Aura[] a = GetComponentsInChildren<Aura>();
         a[0].doAura(nearestTarget);
         a[1].doAura(nearestTarget);
         a[2].doAura(nearestTarget);
+
+        AuraAnims[0].SetTrigger("doAura");
+        AuraAnims[1].SetTrigger("doAura");
+        AuraAnims[2].SetTrigger("doAura");
     }
 
     public int[] UpgradePer = { 0, 1, 1, 2, 2, 3 };

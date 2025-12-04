@@ -411,7 +411,7 @@ MonoBehaviour:
   wideDetectionRadius: 100
   castleSafeDistance: 20
   aiUpdateFrequency: 0.5
-  attackDamage: 1
+  attackDamage: 2
   attackCooldown: 1
 --- !u!114 &7317495491686954744
 MonoBehaviour:

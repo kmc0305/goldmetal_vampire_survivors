@@ -9,6 +9,11 @@ public class UnitMover2D : MonoBehaviour
     public float stopDistance = 0.15f;
     public bool faceMoveDirection = true;
 
+    // --- 지형 효과 관련 변수 (Terrain Effect Variables) ---
+    // UnitMover2D가 기본 속도 외에 지형 효과로 인해 최종적으로 곱해지는 배율
+    private float speedMultiplier = 1.0f;
+    // ----------------------------------------------------
+
     [Header("Tower Obstacle Avoidance (예측 경로 회피)")]
     public LayerMask towerObstacleMask; // TowerObstacle 레이어만 체크
     public float colliderRadius = 0.3f; // 유닛 반지름(캡슐 크기에 맞게)
@@ -35,6 +40,10 @@ public class UnitMover2D : MonoBehaviour
     private readonly Dictionary<Rigidbody2D, List<Collider2D>> ignoredByRoot = new();
 
     private float nextRefresh;
+
+    // [최적화] Physics2D 버퍼 및 재사용 리스트 (GC 방지)
+    private static readonly Collider2D[] overlapBuffer = new Collider2D[50];
+    private readonly List<Rigidbody2D> toRestoreBuffer = new();
 
     void Awake()
     {
@@ -93,8 +102,11 @@ public class UnitMover2D : MonoBehaviour
 
         Vector2 dir = to / Mathf.Max(dist, 0.0001f);
 
+        // 지형 효과 반영한 속도
+        float finalSpeed = moveSpeed * speedMultiplier;
+
         // Enemy 와 비슷하게: MovePosition 사용, velocity 는 0 처리
-        rb.MovePosition(pos + dir * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(pos + dir * finalSpeed * Time.fixedDeltaTime);
         rb.linearVelocity = Vector2.zero;
 
         if (Time.time >= nextRefresh)
@@ -115,6 +127,20 @@ public class UnitMover2D : MonoBehaviour
     }
 
     public bool HasCommand() => pathCount > 0;
+
+    // --- 지형 효과 관련 메서드 (Terrain Effect Methods) ---
+
+    // 속도 보정 배율을 적용하는 함수 (Swamp Area Logic에서 호출됨)
+    public void ApplySpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
+
+    // 속도 보정 배율을 기본값으로 되돌리는 함수 (Swamp Area Logic에서 호출됨)
+    public void ResetSpeedMultiplier()
+    {
+        speedMultiplier = 1.0f;
+    }
 
     public void ClearCommand()
     {
@@ -199,19 +225,20 @@ public class UnitMover2D : MonoBehaviour
 
     // ------------------------------------------------------------------
     // 같은 진영(루트 Rigidbody 기준) 충돌 무시/복원
+    // [최적화] 정적 버퍼 재사용으로 GC 방지
     // ------------------------------------------------------------------
     void RefreshIgnoreSameTeam()
     {
         if (myCols.Count == 0) return;
 
-        // 반경 내 모든 콜라이더(레이어 제한 없이) 조회
-        var hits = Physics2D.OverlapCircleAll(transform.position, ignoreRadius);
+        // [최적화] 정적 버퍼 사용
+        int hitCount = Physics2D.OverlapCircleNonAlloc(transform.position, ignoreRadius, overlapBuffer);
         int myLayer = gameObject.layer;
 
         // 새로 발견된 팀원에게 Ignore Collision 적용
-        for (int i = 0; i < hits.Length; i++)
+        for (int i = 0; i < hitCount; i++)
         {
-            var col = hits[i];
+            var col = overlapBuffer[i];
             if (!col) continue;
 
             var otherRoot = col.attachedRigidbody;
@@ -239,20 +266,20 @@ public class UnitMover2D : MonoBehaviour
             ignoredByRoot.Add(otherRoot, others);
         }
 
-        // 너무 멀어진 팀원은 복원(성능 위해 조금 넓은 반경으로 해제)
-        var toRestore = new List<Rigidbody2D>();
+        // [최적화] 재사용 버퍼로 GC 방지
+        toRestoreBuffer.Clear();
         foreach (var kv in ignoredByRoot)
         {
             var root = kv.Key;
-            if (!root) { toRestore.Add(root); continue; }
+            if (!root) { toRestoreBuffer.Add(root); continue; }
 
             float sqr = (root.position - rb.position).sqrMagnitude;
             if (sqr > ignoreRadius * ignoreRadius * 4f)
-                toRestore.Add(root);
+                toRestoreBuffer.Add(root);
         }
 
-        for (int i = 0; i < toRestore.Count; i++)
-            RestoreByRoot(toRestore[i]);
+        for (int i = 0; i < toRestoreBuffer.Count; i++)
+            RestoreByRoot(toRestoreBuffer[i]);
     }
 
     void RestoreByRoot(Rigidbody2D root)
