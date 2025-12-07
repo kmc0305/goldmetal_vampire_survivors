@@ -5,10 +5,8 @@ public class SpawnPoint : MonoBehaviour
 {
     [Header("Boss Spawn Settings")]
     public GameObject bossPrefab;
-    // public Transform bossSpawnPoint; // ★ 사용하지 않으므로 제거하거나 주석 처리합니다.
     public bool spawnBossOnlyOnce = true;
     public float bossScaleMultiplier = 2f;
-    // public BossSpec bossSpec; // ★ BossSpec 제거
 
     [Header("Spawn Settings")]
     [Tooltip("PoolManager에서 가져올 적군 유닛의 고정 ID 또는 인덱스")]
@@ -16,6 +14,10 @@ public class SpawnPoint : MonoBehaviour
 
     [Tooltip("적 생성 주기 (초 단위)")]
     public float spawnInterval = 3.0f;
+
+    // ★ [추가됨] 커스텀 스폰 위치 지정용 변수
+    [Tooltip("여기에 빈 오브젝트를 넣으면 적들이 그 위치에서 생성됩니다. (비워두면 기본 위치 사용)")]
+    public Transform customSpawnPoint;
 
     [Header("Visuals (애니메이션)")]
     public Animator animator;
@@ -37,7 +39,7 @@ public class SpawnPoint : MonoBehaviour
     private int spawnCount = 0;
     private Coroutine spawnCoroutine;
 
-    // ★ 공통 스폰 위치 오프셋
+    // 공통 스폰 위치 오프셋 (커스텀 포인트 없을 때 사용)
     private readonly Vector3 spawnOffset = new Vector3(0.5f, -1.4f, 0f);
 
     private Targetable myTargetable;
@@ -117,8 +119,18 @@ public class SpawnPoint : MonoBehaviour
 
         GameObject enemyObj = GameManager.instance.Pool.Get(currentPoolId);
 
-        // ★ 일반 유닛 스폰 위치 적용
-        enemyObj.transform.position = transform.position + spawnOffset;
+        // ★ [수정됨] 커스텀 포인트가 있으면 거기서, 없으면 원래대로
+        Vector3 finalPos;
+        if (customSpawnPoint != null)
+        {
+            finalPos = customSpawnPoint.position;
+        }
+        else
+        {
+            finalPos = transform.position + spawnOffset;
+        }
+
+        enemyObj.transform.position = finalPos;
         enemyObj.transform.rotation = Quaternion.identity;
 
         Enemy enemyScript = enemyObj.GetComponent<Enemy>();
@@ -143,7 +155,6 @@ public class SpawnPoint : MonoBehaviour
         spawnCount++;
     }
 
-    // ★★★ [DeactivatePermanently 함수 수정 완료: 보스 스폰 위치 변경 및 BossSpec 제거] ★★★
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
@@ -162,17 +173,22 @@ public class SpawnPoint : MonoBehaviour
         {
             bossSpawned = true;
 
-            // ★ 보스 스폰 위치를 일반 유닛과 동일하게 설정
-            Vector3 spawnPos = transform.position + spawnOffset;
+            // ★ [수정됨] 보스도 커스텀 포인트 위치 적용
+            Vector3 spawnPos;
+            if (customSpawnPoint != null)
+            {
+                spawnPos = customSpawnPoint.position;
+            }
+            else
+            {
+                spawnPos = transform.position + spawnOffset;
+            }
+
             spawnPos.z = 0f;
 
             var boss = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
 
             boss.transform.localScale *= bossScaleMultiplier;
-
-            // ★ ApplyBossSpec 로직 제거
-            // var enemy = boss.GetComponent<Enemy>();
-            // if (enemy != null && bossSpec != null) enemy.ApplyBossSpec(bossSpec); 
 
             if (!boss.activeSelf) boss.SetActive(true);
         }
@@ -227,6 +243,23 @@ public class SpawnPoint : MonoBehaviour
         {
             bool isBurning = ratio <= burningThreshold;
             animator.SetBool("IsBurning", isBurning);
+        }
+    }
+
+    // ★ [추가됨] 에디터에서 어디서 스폰되는지 눈으로 보기 쉽게 선 그려줌
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        if (customSpawnPoint != null)
+        {
+            // 커스텀 포인트가 있으면 그 위치에 원을 그림
+            Gizmos.DrawWireSphere(customSpawnPoint.position, 0.5f);
+            Gizmos.DrawLine(transform.position, customSpawnPoint.position); // 본체랑 연결선
+        }
+        else
+        {
+            // 없으면 기본 오프셋 위치에 원을 그림
+            Gizmos.DrawWireSphere(transform.position + spawnOffset, 0.5f);
         }
     }
 }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public enum AttackStyle
 {
     Single,
@@ -32,10 +36,13 @@ public class Enemy : MonoBehaviour
 
     [Header("공격 연출 설정")]
     public float attackImpactDelay = 0.2f;
+
+    [Tooltip("범위 공격 이펙트가 캐릭터 중심에서 얼마나 앞에서 생성될지 거리 (기본값 0)")]
+    public float areaEffectOffset = 0f;
+
     [Tooltip("보스가 단일 공격할 때만 나오는 이펙트")]
     public GameObject hitEffectPrefab;
 
-    // [수정 반영] 이펙트 추적 On/Off 설정
     [Tooltip("범위 공격 이펙트가 적 유닛(보스)을 따라다닐지 여부")]
     public bool areaEffectFollows = true;
 
@@ -81,6 +88,10 @@ public class Enemy : MonoBehaviour
     private static readonly int HashDead = Animator.StringToHash("Dead");
 
     private float lastSetSpeed = -1f;
+    private bool isAttacking = false;
+
+    // ★ [추가] 마지막 공격 방향 (Gizmo 그리기용)
+    private Vector3 lastAttackDir = Vector3.right;
 
     void Awake()
     {
@@ -94,16 +105,13 @@ public class Enemy : MonoBehaviour
     {
         currentTarget = null;
         isLive = true;
+        isAttacking = false;
 
         spawnGraceUntil = Time.time + avoidanceGrace;
         avoidDir = Vector2.zero;
         avoidUntil = 0f;
         speedMultiplier = 1f;
         lastSetSpeed = -1f;
-
-        // OnEnable 시 EnemyType이 Normal로 초기화되는 것은 버그일 가능성이 높습니다.
-        // Boss 타입 설정은 ApplyBossSpec에서 이루어져야 하므로 이 줄은 제거하거나 주석 처리하는 것이 좋습니다.
-        // enemyType = EnemyType.Normal; 
 
         if (aiCoroutine != null) StopCoroutine(aiCoroutine);
         aiCoroutine = StartCoroutine(UpdateTargetCoroutineDelayed());
@@ -188,12 +196,22 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 1. 죽었거나 넉백 중이면 패스
         if (!isLive || (myTargetable != null && (myTargetable.IsKnockedBack || myTargetable.isDead)))
         {
             if (myTargetable != null && !myTargetable.IsKnockedBack) rb.linearVelocity = Vector2.zero;
             return;
         }
 
+        // 2. 보스 공격 중 정지 로직 (기존 유지)
+        if (isAttacking && enemyType == EnemyType.Boss)
+        {
+            rb.linearVelocity = Vector2.zero;
+            UpdateMoveAnimation(0f);
+            return;
+        }
+
+        // 3. 타겟 없으면 정지
         if (currentTarget == null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -201,6 +219,37 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        // =================================================================================
+        // ★ [추가된 부분] 범위 공격(Circle, Fan)일 때 사거리 체크 후 공격
+        // =================================================================================
+        if (attackStyle != AttackStyle.Single)
+        {
+            // 타겟과의 거리 계산
+            float distToTarget = Vector2.Distance(transform.position, currentTarget.transform.position);
+
+            // 타겟이 내 공격 범위(areaAttackRadius) 안에 들어왔다면?
+            if (distToTarget <= areaAttackRadius)
+            {
+                // 1. 이동 멈춤
+                rb.linearVelocity = Vector2.zero;
+                UpdateMoveAnimation(0f);
+
+                // 2. 쿨타임 됐고, 공격 중이 아니라면 -> 공격 시작!
+                if (Time.time >= lastAttackTime + attackCooldown && !isAttacking)
+                {
+                    if (anim != null) anim.SetTrigger(HashAttack);
+                    lastAttackTime = Time.time;
+                    StartCoroutine(AttackRoutine(currentTarget));
+                }
+
+                // 3. 공격 범위 안이니까 더 이상 이동하지 않고 여기서 끝냄
+                return;
+            }
+        }
+        // =================================================================================
+
+
+        // 4. 이동 로직 (범위 밖이거나 Single 공격일 때는 계속 추적)
         Vector2 targetPos = currentTarget.transform.position;
         Vector2 currentPos = transform.position;
         Vector2 dir = (targetPos - currentPos).normalized;
@@ -249,18 +298,42 @@ public class Enemy : MonoBehaviour
 
     IEnumerator AttackRoutine(Targetable target)
     {
+        isAttacking = true;
+
         yield return new WaitForSeconds(attackImpactDelay);
-        if (!isLive || !gameObject.activeSelf) yield break;
+        if (!isLive || !gameObject.activeSelf)
+        {
+            isAttacking = false;
+            yield break;
+        }
 
         // 범위 공격 이펙트 처리
         if (attackStyle != AttackStyle.Single && areaAttackEffectPrefab != null)
         {
-            // [수정] 이펙트 추적 설정에 따라 부모를 설정하거나 null로 설정
             Transform parentTransform = areaEffectFollows ? transform : null;
+            Vector3 spawnPos = transform.position;
 
-            // 4번째 인자에 'parentTransform'을 넣어 부모를 설정
-            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, transform.position, Quaternion.identity, parentTransform);
+            if (areaEffectOffset != 0f)
+            {
+                // 여기서는 flipX 기준으로 계산하지만, 필요하다면 target 방향으로 계산할 수도 있음
+                // 지금은 기존 유지
+                Vector3 forwardDir = spriter.flipX ? Vector3.left : Vector3.right;
+                spawnPos += forwardDir * areaEffectOffset;
+            }
 
+            GameObject effectInstance = Instantiate(areaAttackEffectPrefab, spawnPos, Quaternion.identity, parentTransform);
+
+            // 이펙트 회전: 타겟을 향하도록 (선택 사항 - 부채꼴 방향과 맞추려면 아래 주석 해제)
+            /*
+            if (target != null) {
+                 Vector3 dir = (target.transform.position - transform.position).normalized;
+                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                 effectInstance.transform.rotation = Quaternion.Euler(0, 0, angle);
+                 // 회전을 직접 시키므로 flipX 처리는 상황에 따라 다를 수 있음
+            }
+            */
+
+            // 기존 flipX 반전 로직
             if (spriter.flipX)
             {
                 SpriteRenderer sr = effectInstance.GetComponent<SpriteRenderer>();
@@ -286,9 +359,12 @@ public class Enemy : MonoBehaviour
                 break;
 
             case AttackStyle.Fan:
-                PerformFanAttack();
+                // ★ [수정됨] 타겟 정보를 넘겨줌
+                PerformFanAttack(target);
                 break;
         }
+
+        isAttacking = false;
     }
 
     void PerformCircleAttack()
@@ -300,16 +376,41 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void PerformFanAttack()
+    // ★ [수정됨] 타겟(centerTarget)을 인자로 받아서 그쪽으로 부채꼴을 쏨
+    void PerformFanAttack(Targetable centerTarget)
     {
+        // 1. 공격 방향(aimDir) 결정
+        Vector2 aimDir;
+
+        if (centerTarget != null)
+        {
+            // 타겟이 있으면 타겟 방향이 중심!
+            aimDir = (centerTarget.transform.position - transform.position).normalized;
+        }
+        else
+        {
+            // 타겟이 없으면(예외 상황) 그냥 보는 방향
+            aimDir = spriter.flipX ? Vector2.left : Vector2.right;
+        }
+
+        // Gizmos 그리기를 위해 마지막 공격 방향 저장
+        lastAttackDir = aimDir;
+
+        // 2. 주변 적 탐지
         int count = Physics2D.OverlapCircle(transform.position, areaAttackRadius, contactFilter, targetBuffer);
-        Vector2 facingDir = spriter.flipX ? Vector2.left : Vector2.right;
+
+        // 3. 부채꼴 판정
         for (int i = 0; i < count; i++)
         {
             if (targetBuffer[i].TryGetComponent(out Targetable t) && !t.isDead)
             {
                 Vector2 targetDir = (t.transform.position - transform.position).normalized;
-                if (Vector2.Angle(facingDir, targetDir) <= fanAngle * 0.5f) t.TakeDamage(attackDamage, transform);
+
+                // ★ aimDir(타겟 방향)과 적(targetDir) 사이의 각도를 잼
+                if (Vector2.Angle(aimDir, targetDir) <= fanAngle * 0.5f)
+                {
+                    t.TakeDamage(attackDamage, transform);
+                }
             }
         }
     }
@@ -368,5 +469,57 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
         gameObject.SetActive(false);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // 1. 탐지 범위
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+
+        // 2. 공격 범위
+        Gizmos.color = Color.red;
+        if (attackStyle == AttackStyle.Circle)
+        {
+            Gizmos.DrawWireSphere(transform.position, areaAttackRadius);
+        }
+        else if (attackStyle == AttackStyle.Fan)
+        {
+            // ★ [수정됨] 현재 타겟이 있으면 그쪽으로 부채꼴을 그림
+            Vector3 facing = Vector3.right;
+
+            if (currentTarget != null)
+            {
+                // 타겟이 있으면 타겟 방향이 중심
+                facing = (currentTarget.transform.position - transform.position).normalized;
+            }
+            else
+            {
+                // 타겟이 없으면 flipX 기준 (기본)
+                facing = (spriter != null && spriter.flipX) ? Vector3.left : Vector3.right;
+            }
+
+            Vector3 leftRay = Quaternion.AngleAxis(-fanAngle * 0.5f, Vector3.forward) * facing;
+            Vector3 rightRay = Quaternion.AngleAxis(fanAngle * 0.5f, Vector3.forward) * facing;
+
+            Gizmos.DrawRay(transform.position, leftRay * areaAttackRadius);
+            Gizmos.DrawRay(transform.position, rightRay * areaAttackRadius);
+
+            // 중심선 표시 (점선 느낌으로 짧게)
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawRay(transform.position, facing * areaAttackRadius);
+        }
+        else if (attackStyle == AttackStyle.Single)
+        {
+            Gizmos.DrawWireSphere(transform.position, 1.5f);
+        }
+
+        // 3. 타겟 연결선
+        if (currentTarget != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, currentTarget.transform.position);
+            Gizmos.DrawWireSphere(currentTarget.transform.position, 0.5f);
+        }
     }
 }
