@@ -278416,7 +278416,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 55.603848
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -335177,11 +335177,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
   level: 1
-  damage: 2
   rotationSpeed: -350
   orbitRadius: 1.6
   weaponPrefabIndex: 4
-  UpgradeDMG: 640000006400000064000000640000006400000001000000
+  UpgradeDMG: 020000000200000002000000040000000600000008000000
 --- !u!1 &769905354
 GameObject:
   m_ObjectHideFlags: 0
@@ -335221,6 +335220,7 @@ MonoBehaviour:
   - {fileID: 4204018482358998013, guid: 987ce1c94a0caf5438e28da8204886ec, type: 3}
   - {fileID: 7245370837217419868, guid: 4e4be3ba2196245f1a0ca01a9e7ed7c0, type: 3}
   - {fileID: 7743973790584016687, guid: 72ac908e8b6b20f4daea6dedf3bebfba, type: 3}
+  - {fileID: 4367022693993868251, guid: 1d9487b36e90749409fa45e0a19ae6a4, type: 3}
 --- !u!4 &769905356
 Transform:
   m_ObjectHideFlags: 0
@@ -348624,6 +348624,7 @@ GameObject:
   - component: {fileID: 893045085}
   - component: {fileID: 893045084}
   - component: {fileID: 893045086}
+  - component: {fileID: 893045087}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -348684,6 +348685,18 @@ MonoBehaviour:
   virtualCamera: {fileID: 1213585757}
   cameraMoveSpeed: 40
   edgeScrollSize: 40
+--- !u!114 &893045087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893045083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e702c1db0d5af204cb1be8fdbbe9747c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Critical
 --- !u!1 &897784349
 GameObject:
   m_ObjectHideFlags: 0
@@ -440678,10 +440691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
-  bossSpawnPoint: {fileID: 1279112653}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 0
   spawnInterval: 1
   animator: {fileID: 1279112661}
@@ -441188,10 +441199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
-  bossSpawnPoint: {fileID: 1324853767}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 5725aee95da10e8449da54b4656630bb, type: 2}
   poolId: 1
   spawnInterval: 1
   animator: {fileID: 1324853775}
@@ -521074,10 +521083,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
-  bossSpawnPoint: {fileID: 1738603044}
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
-  bossSpec: {fileID: 11400000, guid: 736acaf35d2d3d0429ea7f09cfa6c1f8, type: 2}
   poolId: 8
   spawnInterval: 1
   animator: {fileID: 1738603053}

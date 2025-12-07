@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
     [Header("무기 능력치")]
     public int level = 0;
     /// <summary>이 무기가 MeleeWeapon에게 전달할 기본 공격력</summary>
-    public float damage = 2f;
+    private float damage;
     /// <summary>중심축의 회전 속도 (이것이 곧 '공전' 속도가 됨)</summary>
     public float rotationSpeed = -200f;
     /// <summary>공전 반경 (중심축으로부터 무기(자식)가 떨어져 있을 거리)</summary>
@@ -160,7 +160,7 @@ public class Weapon : MonoBehaviour
     }
 
 
-    public int[] UpgradeDMG = { 0, 2, 4, 6, 6, 8 };
+    public int[] UpgradeDMG;
     public void LevelUp(int lvl)
     {
         level = lvl;

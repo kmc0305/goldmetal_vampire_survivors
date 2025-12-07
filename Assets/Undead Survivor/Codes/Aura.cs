@@ -4,7 +4,7 @@ using UnityEngine;
 public class Aura : MonoBehaviour
 {
     Transform pivot;
-    public float AuraDMG = 10f;
+    public float AuraDMG = 7f;
     private float AuraScale = 20f;      //20f in 0.3s 
     private float scale = 0f;
 
@@ -45,7 +45,7 @@ public class Aura : MonoBehaviour
 
         if (target.faction == Targetable.Faction.Enemy)
         {
-            if(target.maxHealth>=50)target.TakeDamage(AuraDMG*2, transform);
+            if (target.maxHealth >= 49) { target.TakeDamage(AuraDMG * 2, transform); GameManager.instance.launchCrit(target.transform.position); }
             else target.TakeDamage(AuraDMG, transform);
         }
     }

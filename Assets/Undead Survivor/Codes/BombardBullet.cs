@@ -10,7 +10,9 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사
     private float timer = 0f;
     private float duration = 2f;        ///필드의 장판이 잔류하는 시간
     private Collider2D coll;
+    private SpriteRenderer sr;
     Rigidbody2D rigid;
+    Animator thisanim;
 
     ///잔류하는 Bullet에 의해 한 번 데미지를 입은 적이 다시 데미지를 입는 것을 방지함
     private HashSet<GameObject> damagedEnemies = new();
@@ -18,7 +20,10 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사
     ///이 무기의 수명, 비활성화 로직은 Bullet 본인이 담당(Melee와의 차이)
     private void Awake()
     {
+        thisanim=GetComponent<Animator>();
+        thisanim.enabled = true;
         rigid = GetComponent<Rigidbody2D>();
+        sr=GetComponent<SpriteRenderer>();
         ///rigidbody2d 써야 성 공격 가능
     }
     // Vector3를 UnityEngine.Vector3로 명시적으로 지정
@@ -38,14 +43,15 @@ public class BombardBullet : MonoBehaviour      ///BombardWeapon으로 발사
         {
             // new Vector3를 new UnityEngine.Vector3로 명시적으로 지정
             this.transform.localScale = new UnityEngine.Vector3(2f, 2f, 2f);
-            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
             if (sr != null) sr.color = Color.green;
+            thisanim.enabled = true;
+
         }
         else
-        {
+        {   
+            thisanim.enabled = true;
             // new Vector3를 new UnityEngine.Vector3로 명시적으로 지정
             this.transform.localScale = new UnityEngine.Vector3(1.5f, 1.5f, 1.5f);
-            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
             if (sr != null) sr.color = GetComponent<SpriteRenderer>().color;
         }
         if (coll != null) coll.enabled = true;

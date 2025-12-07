@@ -47,13 +47,15 @@ public class BombardWeapon : MonoBehaviour
     }
 
 
+    private Animator anim;
     IEnumerator BombardRoutine(Vector3[] targetPosList)
     {
         for (int i = 0; i < Mathf.Min(count,targetPosList.Length); i++)
         {
             Transform bullet = poolManager.Get(weaponPrefabIndex).transform;
             
-            Animator anim = bullet.GetComponent<Animator>();
+            anim = bullet.GetComponent<Animator>();
+            anim.enabled = true;
             anim.SetTrigger("didBombard");
             bullet.position = targetPosList[i];
             bullet.GetComponent<BombardBullet>().Init(damage, targetPosList[i]);
@@ -74,6 +76,9 @@ public class BombardWeapon : MonoBehaviour
         if (count >= 6)
         {
             Transform specialbullet = poolManager.Get(weaponPrefabIndex).transform;
+            Animator sanim = specialbullet.GetComponent<Animator>();
+            sanim.enabled = true;
+            sanim.SetTrigger("didBombard");
             specialbullet.position = transform.parent.position;
             specialbullet.GetComponent<BombardBullet>().Init(0, specialbullet.position);
             return;

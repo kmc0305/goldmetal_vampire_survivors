@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     /// <summary>오브젝트 풀링(Pooling) 매니저 참조 (인스펙터에서 할당)</summary>
     public PoolManager Pool;
+    private Critical crit_scr;
 
     // 플레이어 가용 경험치, 레벨업시 필요한 경험치
     public int exp = 0;
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviour
             // 새로 생긴 '나 자신(gameObject)'을 파괴합니다.
             Destroy(gameObject);
         }
+
     }
 
     private void Start()
@@ -105,5 +107,13 @@ public class GameManager : MonoBehaviour
     public void AddKill()
     {
         kill++;
+    }
+
+    public void launchCrit(Vector3 pos)
+    {
+
+        if (crit_scr == null || crit_scr.enabled == false) { crit_scr = GetComponent<Critical>(); crit_scr.enabled = true; }
+        //Debug.Log("launchcrit on GM");
+        crit_scr.onCrit(pos);
     }
 }
