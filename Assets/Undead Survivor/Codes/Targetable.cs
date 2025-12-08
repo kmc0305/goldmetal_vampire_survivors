@@ -87,7 +87,10 @@ public class Targetable : MonoBehaviour
         if (rigid != null) rigid.simulated = true;
 
         if (spriter != null) spriter.color = originalColor;
-        if (rigid != null) rigid.linearVelocity = Vector2.zero; // Unity 6에서는 linearVelocity로 자동 변환됨
+        if (rigid != null) rigid.linearVelocity = UnityEngine.Vector2.zero; // Unity 6에서는 linearVelocity로 자동 변환됨
+        
+        // ★ [추가] 재활용 시 자식 오브젝트도 활성화 (AllyAI.cs에서 이 로직을 처리하는 경우 주석 처리 가능)
+        // SetChildrenActive(true);
     }
 
     /// <summary>
@@ -95,6 +98,7 @@ public class Targetable : MonoBehaviour
     /// </summary>
     public void TakeDamage(float damage, Transform attacker)
     {
+        // 이미 죽었거나 무적 상태면 무시
         if (isDead || isInvincible) return;
 
         currentHealth -= damage;
@@ -111,6 +115,7 @@ public class Targetable : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0; // 체력이 0 이하로 내려가지 않도록 고정
             Die();
         }
     }
@@ -142,48 +147,61 @@ public class Targetable : MonoBehaviour
     /// </summary>
     public void Die()
     {
-        if (isDead) return;
+        if (isDead) return; // 중복 사망 처리 방지
         isDead = true;
 
-        // 적 처치 시 보상
-        if (GameManager.instance != null && faction == Faction.Enemy)
+        // 물리 시뮬레이션 및 충돌 즉시 중지
+        if (rigid != null)
         {
-            GameManager.instance.AddKill();
-            for (int i = 0; i < expReward; i++) GameManager.instance.getExp();
+            rigid.linearVelocity = UnityEngine.Vector2.zero;
+            rigid.simulated = false; // 물리 엔진에서 제외 (충돌/움직임 즉시 정지)
         }
+        if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = false; // 충돌체 비활성화
 
+        // ★ [핵심 수정] 풀로 반환하기 전에 자식 오브젝트들을 모두 비활성화하여 정리
+        SetChildrenActive(false);
+
+        // 사망 이벤트 호출
         onDie.Invoke();
 
         // 1. 플레이어 사망 (게임 오버)
         if (faction == Faction.Player)
         {
-            Debug.Log("📢 플레이어 사망! 게임 오버!");
+            UnityEngine.Debug.Log("📢 플레이어 사망! 게임 오버!"); // Debug 명시적 사용
 
-            // Player 스크립트에게 UI 띄우라고 명령
             Player playerScript = GetComponent<Player>();
             if (playerScript != null)
             {
                 playerScript.TriggerGameOver();
             }
-            // 플레이어 오브젝트는 끄지 않음 (UI 보여야 함)
+            
+            // 시각적 요소 정리 (플레이어 스프라이트만)
+            if (spriter != null) spriter.enabled = false;
+            
             return;
         }
-
+        
         // 2. 타워 사망
         if (mySpawnPoint != null)
         {
-            Debug.Log("📢 타워 파괴됨!");
+            UnityEngine.Debug.Log("📢 타워 파괴됨!"); // Debug 명시적 사용
             mySpawnPoint.DeactivatePermanently();
-            if (rigid)
+            
+            // PoolManager를 통해 풀로 반환
+            if (poolManager != null)
             {
-                rigid.linearVelocity = Vector2.zero;
-                rigid.bodyType = RigidbodyType2D.Static;
+                poolManager.Return(gameObject);
             }
-            this.enabled = false;
+            else
+            {
+                // PoolManager가 없으면 일반 비활성화
+                gameObject.SetActive(false); 
+            }
         }
-        // 3. 일반 적 사망
+        // 3. 일반 적 및 기타 유닛 사망
         else
         {
+            // 적은 Enemy.cs의 OnEnemyDead()에서 지연 비활성화를 처리합니다.
             Enemy enemyScript = GetComponent<Enemy>();
             if (enemyScript != null)
             {
@@ -191,10 +209,40 @@ public class Targetable : MonoBehaviour
             }
             else
             {
-                gameObject.SetActive(false);
+                // Enemy 스크립트가 없는 일반 Targetable 유닛 (아군 소환수 등)은 풀로 즉시 반환
+                // PoolManager를 통해 풀로 반환
+                if (poolManager != null)
+                {
+                    poolManager.Return(gameObject);
+                }
+                else
+                {
+                    // PoolManager가 없으면 일반 비활성화
+                    gameObject.SetActive(false);
+                }
             }
         }
+
+        // 적 처치 시 보상 (Enemy faction에서만 실행됨)
+        if (GameManager.instance != null && faction == Faction.Enemy)
+        {
+            GameManager.instance.AddKill();
+            for (int i = 0; i < expReward; i++) GameManager.instance.getExp();
+        }
     }
+
+    // ★ [추가] 모든 자식 오브젝트의 활성화 상태를 제어하는 헬퍼 함수
+    // 유닛 오브젝트가 비활성화될 때 자식 오브젝트(MiniMap Icon, Shadow 등)를 정리하는 데 사용됩니다.
+    private void SetChildrenActive(bool state)
+    {
+        // 유닛의 자식 오브젝트들을 순회하며 활성화/비활성화합니다.
+        foreach (Transform child in transform)
+        {
+            // SetActive()를 사용하여 자식 오브젝트를 명시적으로 정리합니다.
+            child.gameObject.SetActive(state);
+        }
+    }
+
 
     void DropItem()
     {
@@ -237,21 +285,21 @@ public class Targetable : MonoBehaviour
     {
         if (rigid == null) return;
 
-        Vector2 knockbackDir = (transform.position - attacker.position).normalized;
+        UnityEngine.Vector2 knockbackDir = (transform.position - attacker.position).normalized;
 
         if (isKnockedBack) StopCoroutine("PhysicsKnockback");
         StartCoroutine(PhysicsKnockback(knockbackDir));
     }
 
-    private IEnumerator PhysicsKnockback(Vector2 dir)
+    private IEnumerator PhysicsKnockback(UnityEngine.Vector2 dir)
     {
         isKnockedBack = true;
-        rigid.linearVelocity = Vector2.zero;
+        rigid.linearVelocity = UnityEngine.Vector2.zero;
         rigid.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(knockbackDuration);
 
-        rigid.linearVelocity = Vector2.zero;
+        rigid.linearVelocity = UnityEngine.Vector2.zero;
         isKnockedBack = false;
     }
 

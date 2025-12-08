@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeaponData
   bulletSprite: {fileID: 0}
   bulletColor: {r: 1, g: 1, b: 1, a: 1}
-  attackRange: 25
-  damage: 2
+  attackRange: 20
+  damage: 3
   cooldown: 2
-  bulletSpeed: 5
+  bulletSpeed: 8

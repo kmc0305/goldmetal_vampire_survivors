@@ -24,6 +24,11 @@ public class PoolManager : MonoBehaviour
     /// </summary>
     List<GameObject>[] pools;
 
+    // ★ [추가] 오브젝트와 그 오브젝트가 속한 풀의 인덱스를 매핑하는 딕셔너리
+    // 이 딕셔너리를 사용해서 어떤 오브젝트가 어떤 인덱스에 속하는지 추적하여 반환합니다.
+    private Dictionary<GameObject, int> objectToIndexMap = new Dictionary<GameObject, int>();
+
+
     /// <summary>
     /// [Unity 이벤트] Awake() - 스크립트가 로드될 때 1회 호출
     /// </summary>
@@ -79,12 +84,46 @@ public class PoolManager : MonoBehaviour
             select = Instantiate(prefabs[index], transform);
 
             // [중요] 새로 생성한 오브젝트를 해당 풀(Pool) 리스트에 추가(Add)합니다.
-            // (이렇게 해야 다음번에 이 오브젝트를 재활용할 수 있습니다.)
             pools[index].Add(select);
+
+            // ★ [추가] 새로 생성된 오브젝트와 인덱스를 매핑합니다.
+            objectToIndexMap.Add(select, index);
         }
 
         // 3. 선택된 오브젝트(select)를 반환합니다. (재활용했든, 새로 만들었든)
         return select;
+    }
+
+    /// <summary>
+    /// ★ [추가] 사용이 끝난 오브젝트를 풀로 반환하여 비활성화하는 함수
+    /// </summary>
+    /// <param name="obj">반환할 게임 오브젝트</param>
+    public void Return(GameObject obj)
+    {
+        // 1. 이미 비활성화되어 있는 오브젝트를 실수로 반환할 경우 중복 처리 방지
+        if (!obj.activeSelf)
+        {
+            // UnityEngine.Debug.LogWarning("Already inactive object returned to pool: " + obj.name);
+            return;
+        }
+
+        // 2. 이 오브젝트가 딕셔너리에 등록되어 있는지 (즉, 풀링을 통해 생성된 오브젝트인지) 확인합니다.
+        if (objectToIndexMap.ContainsKey(obj))
+        {
+            // PoolManager의 통제 하에 비활성화합니다.
+            // (이때 오브젝트에 붙어있는 스크립트들의 OnDisable() 함수가 호출됩니다.)
+            obj.SetActive(false);
+
+            // 만약 PoolManager가 부모(Parent)로 설정되어 있지 않다면, 
+            // 여기서 부모를 PoolManager로 설정하여 Hierarchy를 정리할 수 있습니다.
+            // obj.transform.parent = transform; 
+        }
+        else
+        {
+            // 풀링으로 생성되지 않은 오브젝트라면? (예외 상황)
+            // 풀로 반환할 수 없으므로, 메모리 낭비를 막기 위해 파괴(Destroy)합니다.
+            Destroy(obj);
+        }
     }
 
 
