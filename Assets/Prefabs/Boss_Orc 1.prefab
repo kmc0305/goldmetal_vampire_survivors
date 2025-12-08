@@ -203,6 +203,7 @@ MonoBehaviour:
   attackCooldown: 1
   speedMultiplier: 1
   attackImpactDelay: 0.2
+  areaEffectOffset: 0
   hitEffectPrefab: {fileID: 0}
   areaEffectFollows: 1
   attackStyle: 0

@@ -402,10 +402,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RangedEnemy
   weaponData: {fileID: 11400000, guid: 003dc3350b78b483da49799d178ba116, type: 2}
   bulletPrefabId: 7
-  speed: 2
+  speed: 7
   speedMultiplier: 1
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  detectionRadius: 120
+  detectionRadius: 500
   aiUpdateFrequency: 0.5
