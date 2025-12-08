@@ -212,7 +212,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.51, y: 0.9, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5299135082230160753}
@@ -376,11 +376,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyType: 0
-  speed: 2.5
-  attackDamage: 3
-  attackCooldown: 1
+  speed: 1
+  attackDamage: 20
+  attackCooldown: 2
   speedMultiplier: 1
   attackImpactDelay: 0.2
+  areaEffectOffset: 0
   hitEffectPrefab: {fileID: 0}
   areaEffectFollows: 1
   attackStyle: 0
@@ -411,11 +412,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 1
-  maxHealth: 10
-  currentHealth: 10
+  maxHealth: 60
+  currentHealth: 60
   isDead: 0
   dropItemIndex: 3
-  expReward: 1
+  expReward: 3
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3

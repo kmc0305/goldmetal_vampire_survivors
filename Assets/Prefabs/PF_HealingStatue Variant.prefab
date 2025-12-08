@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4688d11453714bb49c8bd1629569562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealingArea
-  healPerSecond: 3
+  healPerSecond: 10
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
