@@ -31471,7 +31471,7 @@ Transform:
   m_GameObject: {fileID: 85744349}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06, y: -0.12, z: 0}
+  m_LocalPosition: {x: -0.03, y: -0.26, z: 0}
   m_LocalScale: {x: 0.16666667, y: 0.16666667, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -353290,7 +353290,7 @@ MonoBehaviour:
   player: {fileID: 1569412825}
   Pool: {fileID: 769905355}
   exp: 0
-  nextExp: 0000000004000000080000000c0000001000000014000000180000001c0000002000000024000000280000002c0000003000000034000000380000003c000000
+  nextExp: 3200000032000000320000003200000032000000640000009600000096000000960000009600000096000000c8000000c8000000c8000000c8000000c8000000
   level: 0
   points: 0
   kill: 0
@@ -449217,7 +449217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 1
-  maxHealth: 200
+  maxHealth: 300
   currentHealth: 0
   isDead: 0
   dropItemIndex: -1
@@ -449303,7 +449303,7 @@ MonoBehaviour:
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   poolId: 1
-  spawnInterval: 1
+  spawnInterval: 1.5
   customSpawnPoint: {fileID: 1438499218}
   animator: {fileID: 1324853775}
   burningThreshold: 0.4
@@ -532478,7 +532478,7 @@ MonoBehaviour:
   spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   poolId: 8
-  spawnInterval: 1
+  spawnInterval: 5
   customSpawnPoint: {fileID: 85744350}
   animator: {fileID: 1738603053}
   burningThreshold: 0.4
@@ -532598,6 +532598,8 @@ CompositeCollider2D:
         Y: 63782844
       - X: 32445650
         Y: 69782840
+      - X: 23399996
+        Y: 71999952
       - X: 23400000
         Y: 72000000
       - X: 18691450
@@ -532710,7 +532712,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -532775,6 +532777,7 @@ PolygonCollider2D:
       - {x: 1.0915242, y: 0.95152384}
       - {x: 0.6807621, y: 1.0630474}
       - {x: 0.5407608, y: 1.1630473}
+      - {x: 0.38999996, y: 1.1999992}
       - {x: 0.39, y: 1.1999999}
       - {x: 0.31152415, y: 1.2230473}
       - {x: 0.17, y: 1.3299999}

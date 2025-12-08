@@ -416,7 +416,7 @@ MonoBehaviour:
   currentHealth: 60
   isDead: 0
   dropItemIndex: 3
-  expReward: 1
+  expReward: 3
   knockbackPower: 4
   knockbackDuration: 0.2
   invincibilityDuration: 0.3

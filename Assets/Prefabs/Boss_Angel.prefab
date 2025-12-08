@@ -288,24 +288,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyType: 1
-  speed: 2.5
-  attackDamage: 40
-  attackCooldown: 1
+  speed: 10
+  attackDamage: 20
+  attackCooldown: 0.5
   speedMultiplier: 1
   attackImpactDelay: 0.2
   areaEffectOffset: 0
   hitEffectPrefab: {fileID: 0}
   areaEffectFollows: 1
   attackStyle: 2
-  areaAttackRadius: 6
+  areaAttackRadius: 3
   fanAngle: 120
   areaAttackEffectPrefab: {fileID: 1567309622737931416, guid: 4ee4c510ef36dea48866dc2a35c99132, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  detectionRadius: 15
+  detectionRadius: 150
   aiUpdateFrequency: 0.5
-  castlePriorityRadius: 15
+  castlePriorityRadius: 10
   avoidDuration: 0.6
   avoidSpeedMul: 1.2
   avoidanceGrace: 0.35
@@ -324,8 +324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Targetable
   faction: 1
-  maxHealth: 50
-  currentHealth: 50
+  maxHealth: 400
+  currentHealth: 400
   isDead: 0
   dropItemIndex: 3
   expReward: 1
