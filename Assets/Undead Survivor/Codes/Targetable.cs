@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Vector2 = UnityEngine.Vector2; // ✅ 혹시 모를 모호함 방지 (네 원본 코드 반영)
 
 /// <summary>
-/// 유닛의 생명력, 피격, 사망 처리를 담당하는 핵심 컴포넌트입니다.
-/// [최종 검수 완료]: 보스 소환 + 힐/경험치 + HealingArea 연동 + 코루틴 초기화 로직 보완
+/// 유닛의 생명력, 피격, 사망 처리를 담당하는 핵심 컴포넌트
 /// </summary>
 public class Targetable : MonoBehaviour
 {
@@ -26,16 +24,13 @@ public class Targetable : MonoBehaviour
 
     [Header("레벨/드롭 아이템 설정")]
     public int dropItemIndex = -1;
-
-    // ★ 적 처치 시 획득할 경험치 양
     public int expReward = 1;
 
     [Header("넉백 설정")]
     public float knockbackPower = 20f;
     public float knockbackDuration = 0.2f;
 
-    [Header("피격 피드백 (무적/색상)")]
-    [Tooltip("피격 후 무적 시간(초).")]
+    [Header("피격 피드백")]
     public float invincibilityDuration = 0.2f;
     public Color invincibilityColor = new Color(1f, 0.5f, 0.5f, 0.5f);
 
@@ -49,27 +44,23 @@ public class Targetable : MonoBehaviour
     private Color originalColor;
     private bool isKnockedBack = false;
 
-    // ★ 타워 여부 확인용
+    // 타워 여부 확인용
     private SpawnPoint mySpawnPoint;
 
-    // ★ 힐 효과 코루틴
+    // 힐 효과 코루틴
     private Coroutine healFlashCoroutine;
 
-    // --- 지형 효과 관련 변수 추가 ---
+    // 지형 효과 관련 변수
     private Coroutine terrainTintCoroutine;
     private Color currentTerrainTint = Color.white;
     private bool isInTerrainEffect = false;
-    // ----------------------------
 
-    // 외부에서 넉백 상태 확인용 프로퍼티
     public bool IsKnockedBack => isKnockedBack;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
-
-        // 나한테 SpawnPoint가 붙어있는지 확인 (있으면 타워)
         mySpawnPoint = GetComponent<SpawnPoint>();
 
         if (GameManager.instance != null)
@@ -89,22 +80,14 @@ public class Targetable : MonoBehaviour
         isDead = false;
         isInvincible = false;
         isKnockedBack = false;
-
-        // 코루틴 변수 초기화 (중요)
         healFlashCoroutine = null;
 
         if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = true;
         this.enabled = true;
         if (rigid != null) rigid.simulated = true;
 
-        if (spriter != null)
-        {
-            spriter.color = originalColor;
-        }
-        if (rigid != null)
-        {
-            rigid.linearVelocity = Vector2.zero;
-        }
+        if (spriter != null) spriter.color = originalColor;
+        if (rigid != null) rigid.linearVelocity = Vector2.zero; // Unity 6에서는 linearVelocity로 자동 변환됨
     }
 
     /// <summary>
@@ -132,7 +115,6 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    // ★ [힐 함수]
     public void Heal(float amount)
     {
         if (isDead) return;
@@ -140,31 +122,30 @@ public class Targetable : MonoBehaviour
         currentHealth += amount;
         if (currentHealth > maxHealth) currentHealth = maxHealth;
 
-        // 힐 이펙트 (초록색 깜빡임)
         if (healFlashCoroutine != null) StopCoroutine(healFlashCoroutine);
         healFlashCoroutine = StartCoroutine(HealFlashRoutine());
     }
 
-    // ★ [추가] HealingArea.cs에서 호출하는 함수
     public void StopHealFlashAndResetColor()
     {
         if (healFlashCoroutine != null)
         {
             StopCoroutine(healFlashCoroutine);
-            healFlashCoroutine = null; // ★ [중요] 변수를 비워줘야 다른 색상 로직이 꼬이지 않음
+            healFlashCoroutine = null;
         }
 
         if (spriter != null) spriter.color = originalColor;
     }
 
-    // Targetable.cs의 Die() 함수 수정
-
+    /// <summary>
+    /// 사망 처리 로직 (플레이어/적/타워 구분)
+    /// </summary>
     public void Die()
     {
         if (isDead) return;
         isDead = true;
 
-        // 킬 수 증가 및 경험치 획득
+        // 적 처치 시 보상
         if (GameManager.instance != null && faction == Faction.Enemy)
         {
             GameManager.instance.AddKill();
@@ -173,12 +154,26 @@ public class Targetable : MonoBehaviour
 
         onDie.Invoke();
 
-        // ★ 타워와 일반 유닛 구분
+        // 1. 플레이어 사망 (게임 오버)
+        if (faction == Faction.Player)
+        {
+            Debug.Log("📢 플레이어 사망! 게임 오버!");
+
+            // Player 스크립트에게 UI 띄우라고 명령
+            Player playerScript = GetComponent<Player>();
+            if (playerScript != null)
+            {
+                playerScript.TriggerGameOver();
+            }
+            // 플레이어 오브젝트는 끄지 않음 (UI 보여야 함)
+            return;
+        }
+
+        // 2. 타워 사망
         if (mySpawnPoint != null)
         {
-            Debug.Log("📢 타워 사망! SpawnPoint에게 파괴 명령 보냄!");
+            Debug.Log("📢 타워 파괴됨!");
             mySpawnPoint.DeactivatePermanently();
-
             if (rigid)
             {
                 rigid.linearVelocity = Vector2.zero;
@@ -186,18 +181,16 @@ public class Targetable : MonoBehaviour
             }
             this.enabled = false;
         }
+        // 3. 일반 적 사망
         else
         {
-            // ★★★ [수정됨] ★★★
-            // 바로 끄지 말고, Enemy 스크립트가 있으면 "사망 연출해라" 시키기
             Enemy enemyScript = GetComponent<Enemy>();
             if (enemyScript != null)
             {
-                enemyScript.OnEnemyDead(); // Enemy.cs에 추가한 함수 호출
+                enemyScript.OnEnemyDead();
             }
             else
             {
-                // Enemy 스크립트가 없는 잡동사니면 그냥 바로 끔
                 gameObject.SetActive(false);
             }
         }
@@ -205,8 +198,7 @@ public class Targetable : MonoBehaviour
 
     void DropItem()
     {
-        if (poolManager == null || dropItemIndex < 0)
-            return;
+        if (poolManager == null || dropItemIndex < 0) return;
 
         GameObject item = poolManager.Get(dropItemIndex);
         if (item != null)
@@ -215,7 +207,7 @@ public class Targetable : MonoBehaviour
         }
     }
 
-    // --- 코루틴들 ---
+    // --- 코루틴 및 이펙트 처리 ---
 
     private IEnumerator InvincibilityBlinkRoutine()
     {
@@ -225,7 +217,7 @@ public class Targetable : MonoBehaviour
         yield return new WaitForSeconds(invincibilityDuration);
 
         isInvincible = false;
-        // 힐 중이 아닐 때만 색상 복구 (지형 효과 고려)
+        // 힐 중이나 지형 효과 중이면 색상 유지
         if (spriter != null && healFlashCoroutine == null)
         {
             spriter.color = isInTerrainEffect ? currentTerrainTint : originalColor;
@@ -237,9 +229,8 @@ public class Targetable : MonoBehaviour
         if (spriter != null) spriter.color = Color.green;
         yield return new WaitForSeconds(0.2f);
 
-        // 지형 효과 고려한 색상 복구
         if (spriter != null) spriter.color = isInTerrainEffect ? currentTerrainTint : originalColor;
-        healFlashCoroutine = null; // 종료 시 변수 비우기
+        healFlashCoroutine = null;
     }
 
     private void ApplyKnockback(Transform attacker)
@@ -264,11 +255,8 @@ public class Targetable : MonoBehaviour
         isKnockedBack = false;
     }
 
-    // --- 지형 효과 색상 틴트 메서드 (Terrain Effect Tint Methods) ---
+    // --- 지형 효과 틴트 ---
 
-    /// <summary>
-    /// 지형 효과로 인한 색상 틴트를 적용합니다.
-    /// </summary>
     public void ApplyTerrainTint(Color tintColor)
     {
         if (isDead || spriter == null) return;
@@ -276,22 +264,14 @@ public class Targetable : MonoBehaviour
         isInTerrainEffect = true;
         currentTerrainTint = tintColor;
 
-        // 기존 틴트 코루틴이 있으면 중지
-        if (terrainTintCoroutine != null)
-        {
-            StopCoroutine(terrainTintCoroutine);
-        }
+        if (terrainTintCoroutine != null) StopCoroutine(terrainTintCoroutine);
 
-        // 피격/힐 효과가 없을 때만 틴트 적용
         if (!isInvincible && healFlashCoroutine == null)
         {
             spriter.color = tintColor;
         }
     }
 
-    /// <summary>
-    /// 지형 효과 색상 틴트를 제거하고 원래 색으로 되돌립니다.
-    /// </summary>
     public void RemoveTerrainTint()
     {
         isInTerrainEffect = false;
@@ -303,7 +283,6 @@ public class Targetable : MonoBehaviour
             terrainTintCoroutine = null;
         }
 
-        // 피격/힐 효과가 없을 때만 원래 색으로 복구
         if (spriter != null && !isInvincible && healFlashCoroutine == null)
         {
             spriter.color = originalColor;
