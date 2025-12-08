@@ -414,8 +414,8 @@ MonoBehaviour:
   attackDamage: 40
   attackCooldown: 2
   speedMultiplier: 1
-  attackImpactDelay: 0.4
-  areaEffectOffset: 2
+  attackImpactDelay: 0.2
+  areaEffectOffset: 3
   hitEffectPrefab: {fileID: 0}
   areaEffectFollows: 0
   attackStyle: 2
