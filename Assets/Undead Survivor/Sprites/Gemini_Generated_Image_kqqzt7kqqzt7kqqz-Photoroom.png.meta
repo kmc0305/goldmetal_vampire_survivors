@@ -174,7 +174,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_0
+      name: ef1
       rect:
         serializedVersion: 2
         x: 189
@@ -196,7 +196,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_1
+      name: ef4
       rect:
         serializedVersion: 2
         x: 565
@@ -218,7 +218,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_2
+      name: ef5
       rect:
         serializedVersion: 2
         x: 718
@@ -240,11 +240,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_3
+      name: ef11
       rect:
         serializedVersion: 2
-        x: 600
-        y: 155
+        x: 599
+        y: 163
         width: 104
         height: 125
       alignment: 9
@@ -262,11 +262,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_4
+      name: ef9
       rect:
         serializedVersion: 2
-        x: 264
-        y: 161
+        x: 266
+        y: 164
         width: 164
         height: 163
       alignment: 7
@@ -284,11 +284,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_5
+      name: ef10
       rect:
         serializedVersion: 2
         x: 432
-        y: 160
+        y: 165
         width: 143
         height: 109
       alignment: 9
@@ -306,7 +306,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_8
+      name: ef3
       rect:
         serializedVersion: 2
         x: 400
@@ -328,11 +328,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_12
+      name: ef2
       rect:
         serializedVersion: 2
-        x: 302
-        y: 367
+        x: 301
+        y: 368
         width: 73
         height: 58
       alignment: 7
@@ -350,11 +350,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_14
+      name: ef7
       rect:
         serializedVersion: 2
         x: 997
-        y: 360
+        y: 363
         width: 181
         height: 183
       alignment: 9
@@ -372,11 +372,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_15
+      name: ef8
       rect:
         serializedVersion: 2
-        x: 107
-        y: 155
+        x: 109
+        y: 162
         width: 155
         height: 170
       alignment: 9
@@ -394,11 +394,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_16
+      name: ef6
       rect:
         serializedVersion: 2
-        x: 862
-        y: 360
+        x: 861
+        y: 365
         width: 134
         height: 183
       alignment: 7
@@ -429,23 +429,23 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_0: -5879676367500458705
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_1: 2420455565334794271
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_10: -6161694509816002050
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_11: -6616342390330433121
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_12: 3302973798778130244
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_13: 4484612567019948804
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_14: 8579961542569289521
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_15: -4620980867016367644
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_16: -9083860904038905812
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_2: -135217157644284377
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_3: -5893142142587352675
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_4: 6965254130682103526
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_5: 4755053711777635455
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_6: 4835829576978484189
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_7: -6834915919077321633
-      Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_8: 9068639303782479793
       Gemini_Generated_Image_kqqzt7kqqzt7kqqz-Photoroom_9: 8362231390542854591
+      ef1: -5879676367500458705
+      ef10: 4755053711777635455
+      ef11: -5893142142587352675
+      ef2: 3302973798778130244
+      ef3: 9068639303782479793
+      ef4: 2420455565334794271
+      ef5: -135217157644284377
+      ef6: -9083860904038905812
+      ef7: 8579961542569289521
+      ef8: -4620980867016367644
+      ef9: 6965254130682103526
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
