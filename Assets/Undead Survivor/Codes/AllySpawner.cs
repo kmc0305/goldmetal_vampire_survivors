@@ -17,6 +17,7 @@ public class AllySpawner : MonoBehaviour
     /// (예: 0=적A, 1=적B, 2=아군A 라면, 이 값은 2가 되어야 함)
     /// </summary>
     public int allyPrefabIndex = 2;
+
     /// <summary>아군 유닛 스폰 주기 (초)</summary>
     public float spawnInterval = 5f;
 
@@ -35,7 +36,6 @@ public class AllySpawner : MonoBehaviour
     /// [Unity 이벤트] Start() - 모든 Awake()가 실행된 후 호출
     /// </summary>
     void Start()
-
     {
         // (중요) GameManager.instance는 Awake()에서 설정됩니다.
         // 혹시 모를 실행 순서 오류를 방지하기 위해,
@@ -59,6 +59,9 @@ public class AllySpawner : MonoBehaviour
     {
         // Start()에서 poolManager를 찾지 못했다면 Update 로직을 실행하지 않습니다. (에러 방지)
         if (poolManager == null) return;
+
+        // ★ 추가됨 : 게임 시작 전이면 아군 스폰 중지
+        if (!GameManager.instance.isGameLive) return;
 
         // 1. 'Time.deltaTime' (이전 프레임부터 현재까지 걸린 시간)을 타이머에 계속 더합니다.
         timer += Time.deltaTime;
