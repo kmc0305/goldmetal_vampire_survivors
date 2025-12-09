@@ -1,5 +1,5 @@
 using UnityEngine;
-using Cinemachine; // Cinemachine(시네머신) 네임스페이스 추가 (필수)
+using Unity.Cinemachine; // Cinemachine(시네머신) 네임스페이스 추가 (필수)
 
 /// <summary>
 /// 'Y' 키로 카메라 잠금(Locked) / 잠금 해제(Unlocked)를 토글(Toggle)합니다.

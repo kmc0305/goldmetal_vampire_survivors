@@ -1,29 +1,33 @@
+using Unity.Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
-using TMPro; // TextMeshPro 필수
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [Header("게임 오버 UI")]
     public CanvasGroup gameOverUI;
-
-    // [기존] 킬 수 텍스트
     public TextMeshProUGUI resultText;
-
-    // [추가] 생존 시간 텍스트 변수
     public TextMeshProUGUI timeResultText;
+
+    [Header("게임 오버 연출 설정")]
+    public Camera mainCamera;
+    public GameObject virtualCamera;
+    public float slowMotionScale = 0.2f;
+    public float zoomSize = 3.5f;
+    public float deathSequenceDuration = 2.0f;
 
     [Header("입력 및 속도")]
     public Vector2 inputVec;
     public float speed;
     public float speedMultiplier = 1f;
     public float runSpeedMultiplier = 1.5f;
-
-    [Header("아군 소집 대형 설정")]
     public float formationRadius = 3.0f;
 
     Rigidbody2D rigid;
@@ -39,8 +43,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         targetable = GetComponent<Targetable>();
 
+        if (mainCamera == null) mainCamera = Camera.main;
         if (speed == 0) speed = 8;
-
         if (gameOverUI != null)
         {
             gameOverUI.alpha = 0f;
@@ -53,7 +57,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (targetable != null && targetable.isDead) return;
-
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             if (callAlliesCoroutine != null) StopCoroutine(callAlliesCoroutine);
@@ -63,37 +66,88 @@ public class Player : MonoBehaviour
 
     public void TriggerGameOver()
     {
-        Debug.Log("=== GAME OVER ===");
+        if (gameOverUI.gameObject.activeSelf) return;
+        Debug.Log("=== GAME OVER SEQUENCE START ===");
+        StartCoroutine(GameOverSequence());
+    }
 
+    IEnumerator GameOverSequence()
+    {
+        // 1. 물리 정지
         if (rigid != null) rigid.linearVelocity = Vector2.zero;
 
+        // 2. 방해꾼 끄기 (시네머신, 픽셀 퍼펙트 등)
+        if (virtualCamera != null) virtualCamera.SetActive(false);
+        if (mainCamera != null)
+        {
+            var pixelCam = mainCamera.GetComponent<PixelPerfectCamera>();
+            if (pixelCam != null) pixelCam.enabled = false;
+            var cineBrain = mainCamera.GetComponent<CinemachineBrain>();
+            if (cineBrain != null) cineBrain.enabled = false;
+        }
+
+        // ====================================================
+        // ★ [핵심] 사망 애니메이션 실행 코드
+        // ====================================================
+        if (anim != null)
+        {
+            // 아까 1단계에서 만든 Trigger 이름이 "Dead"여야 합니다.
+            anim.SetTrigger("Dead");
+            Debug.Log("💀 사망 애니메이션 실행 명령 보냄!");
+        }
+        // ====================================================
+
+        // 3. 슬로우 모션 시작
+        Time.timeScale = slowMotionScale;
+
+        float timer = 0f;
+        float startSize = 5f;
+        if (mainCamera != null) startSize = mainCamera.orthographicSize;
+
+        // 4. 줌인 연출
+        while (timer < deathSequenceDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+            float t = timer / deathSequenceDuration;
+
+            if (mainCamera != null)
+            {
+                mainCamera.orthographicSize = Mathf.Lerp(startSize, zoomSize, t);
+                Vector3 targetPos = transform.position;
+                targetPos.z = -10f;
+                mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPos, t * 0.1f);
+            }
+            yield return null;
+        }
+
+        // 5. 완전 정지
         Time.timeScale = 0f;
+        if (mainCamera != null) mainCamera.orthographicSize = zoomSize;
 
-        // [1] 킬 수 표시 (기존 코드)
-        if (GameManager.instance != null && resultText != null)
-        {
-            // GameManager 변수명이 kill이 맞는지 확인하세요!
-            resultText.text = "Score : " + GameManager.instance.kill;
-        }
+        UpdateGameOverTexts();
 
-        // [2] 생존 시간 표시 (추가된 코드)
-        if (GameManager.instance != null && timeResultText != null)
-        {
-            // GameManager에 시간이 'gameTime'이라는 변수로 있다고 가정합니다.
-            float finalTime = GameManager.instance.gameTime;
-
-            // 시간을 분:초로 계산
-            int min = Mathf.FloorToInt(finalTime / 60);
-            int sec = Mathf.FloorToInt(finalTime % 60);
-
-            // "00:00" 형태로 텍스트 갱신
-            timeResultText.text = $"Survive : {min:D2}:{sec:D2}";
-        }
-
+        // 6. UI 등장
         if (gameOverUI != null)
         {
             gameOverUI.gameObject.SetActive(true);
-            StartCoroutine(GameOverFadeEffect());
+            yield return StartCoroutine(GameOverFadeEffect());
+        }
+    }
+
+    void UpdateGameOverTexts()
+    {
+        if (GameManager.instance != null)
+        {
+            if (resultText != null)
+                resultText.text = "Score : " + GameManager.instance.kill;
+
+            if (timeResultText != null)
+            {
+                float finalTime = GameManager.instance.gameTime;
+                int min = Mathf.FloorToInt(finalTime / 60);
+                int sec = Mathf.FloorToInt(finalTime % 60);
+                timeResultText.text = $"Survive Time : {min:D2}:{sec:D2}";
+            }
         }
     }
 
@@ -105,7 +159,7 @@ public class Player : MonoBehaviour
 
     IEnumerator GameOverFadeEffect()
     {
-        float duration = 2.0f;
+        float duration = 1.0f;
         float timer = 0f;
 
         while (timer < duration)
@@ -120,15 +174,11 @@ public class Player : MonoBehaviour
         gameOverUI.blocksRaycasts = true;
     }
 
-    // --- 아래는 기존 이동/소집 코드와 동일 (생략 없음) ---
+    // --- 이동 및 물리 로직 ---
 
     void OnMove(InputValue value)
     {
-        if (targetable != null && targetable.isDead)
-        {
-            inputVec = Vector2.zero;
-            return;
-        }
+        if (targetable != null && targetable.isDead) { inputVec = Vector2.zero; return; }
         inputVec = value.Get<Vector2>();
     }
 
@@ -158,6 +208,8 @@ public class Player : MonoBehaviour
     {
         speedMultiplier = multiplier;
     }
+
+    // --- 아군 소집 로직 (CallAllies) ---
 
     Vector2 CalculateCircularPosition(int index, int totalCount, Vector2 center, float radius)
     {

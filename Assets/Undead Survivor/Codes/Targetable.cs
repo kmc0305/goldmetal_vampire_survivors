@@ -87,7 +87,15 @@ public class Targetable : MonoBehaviour
         if (rigid != null) rigid.simulated = true;
 
         if (spriter != null) spriter.color = originalColor;
+<<<<<<< Updated upstream
         if (rigid != null) rigid.linearVelocity = Vector2.zero; // Unity 6에서는 linearVelocity로 자동 변환됨
+=======
+        // Unity 6 호환성 (velocity -> linearVelocity)
+        if (rigid != null) rigid.linearVelocity = Vector2.zero;
+
+        // 재활용 시 자식 오브젝트도 다시 활성화 (필요하다면 주석 해제)
+        // SetChildrenActive(true);
+>>>>>>> Stashed changes
     }
 
     /// <summary>
@@ -145,7 +153,11 @@ public class Targetable : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+<<<<<<< Updated upstream
         // 적 처치 시 보상
+=======
+        // 적 처치 시 보상 (Enemy faction에서만 실행됨)
+>>>>>>> Stashed changes
         if (GameManager.instance != null && faction == Faction.Enemy)
         {
             GameManager.instance.AddKill();
@@ -154,32 +166,70 @@ public class Targetable : MonoBehaviour
 
         onDie.Invoke();
 
-        // 1. 플레이어 사망 (게임 오버)
+        // =========================================================
+        // ★ [핵심 수정] 플레이어 사망 처리 로직
+        // =========================================================
         if (faction == Faction.Player)
         {
+<<<<<<< Updated upstream
             Debug.Log("📢 플레이어 사망! 게임 오버!");
 
             // Player 스크립트에게 UI 띄우라고 명령
+=======
+            Debug.Log("📢 플레이어 사망! 게임 오버 시퀀스 시작 (오브젝트 유지)");
+
+            // 1. 충돌체만 꺼서 적들이 시체 위를 지나다닐 수 있게 함
+            Collider2D col = GetComponent<Collider2D>();
+            if (col != null) col.enabled = false;
+
+            // 2. 물리 움직임 정지
+            if (rigid != null)
+            {
+                rigid.linearVelocity = Vector2.zero;
+                rigid.simulated = false; // 더 이상 밀리지 않게 설정
+            }
+
+            // 3. Player 스크립트에 "죽었어! 게임 오버 연출해!" 라고 알림
+>>>>>>> Stashed changes
             Player playerScript = GetComponent<Player>();
             if (playerScript != null)
             {
                 playerScript.TriggerGameOver();
             }
+<<<<<<< Updated upstream
             // 플레이어 오브젝트는 끄지 않음 (UI 보여야 함)
             return;
         }
+=======
+
+            // ★ 중요: 플레이어는 여기서 return 하여 SetActive(false)가 실행되지 않게 막습니다!
+            return;
+        }
+        // =========================================================
+
+        // --- 플레이어가 아닐 경우 아래 로직 실행 ---
+
+        // 자식 오브젝트 정리
+        SetChildrenActive(false);
+>>>>>>> Stashed changes
 
         // 2. 타워 사망
         if (mySpawnPoint != null)
         {
             Debug.Log("📢 타워 파괴됨!");
             mySpawnPoint.DeactivatePermanently();
+<<<<<<< Updated upstream
             if (rigid)
             {
                 rigid.linearVelocity = Vector2.zero;
                 rigid.bodyType = RigidbodyType2D.Static;
             }
             this.enabled = false;
+=======
+
+            if (poolManager != null) poolManager.Return(gameObject);
+            else gameObject.SetActive(false);
+>>>>>>> Stashed changes
         }
         // 3. 일반 적 사망
         else
@@ -191,11 +241,29 @@ public class Targetable : MonoBehaviour
             }
             else
             {
+<<<<<<< Updated upstream
                 gameObject.SetActive(false);
+=======
+                // Enemy 스크립트가 없는 일반 유닛은 풀로 반환
+                if (poolManager != null) poolManager.Return(gameObject);
+                else gameObject.SetActive(false);
+>>>>>>> Stashed changes
             }
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    private void SetChildrenActive(bool state)
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(state);
+        }
+    }
+
+
+>>>>>>> Stashed changes
     void DropItem()
     {
         if (poolManager == null || dropItemIndex < 0) return;
@@ -217,7 +285,6 @@ public class Targetable : MonoBehaviour
         yield return new WaitForSeconds(invincibilityDuration);
 
         isInvincible = false;
-        // 힐 중이나 지형 효과 중이면 색상 유지
         if (spriter != null && healFlashCoroutine == null)
         {
             spriter.color = isInTerrainEffect ? currentTerrainTint : originalColor;
