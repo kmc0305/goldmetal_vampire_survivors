@@ -473,29 +473,29 @@ public class Enemy : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        // 1. 탐지 범위
+        // 1. 탐지 범위 (노란색 원)
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        // 2. 공격 범위
+        // 2. 공격 범위 및 타겟 표시 (빨간색)
         Gizmos.color = Color.red;
+
         if (attackStyle == AttackStyle.Circle)
         {
+            // 원형 범위 공격
             Gizmos.DrawWireSphere(transform.position, areaAttackRadius);
         }
         else if (attackStyle == AttackStyle.Fan)
         {
-            // ★ [수정됨] 현재 타겟이 있으면 그쪽으로 부채꼴을 그림
+            // 부채꼴 공격
             Vector3 facing = Vector3.right;
 
             if (currentTarget != null)
             {
-                // 타겟이 있으면 타겟 방향이 중심
                 facing = (currentTarget.transform.position - transform.position).normalized;
             }
             else
             {
-                // 타겟이 없으면 flipX 기준 (기본)
                 facing = (spriter != null && spriter.flipX) ? Vector3.left : Vector3.right;
             }
 
@@ -505,21 +505,33 @@ public class Enemy : MonoBehaviour
             Gizmos.DrawRay(transform.position, leftRay * areaAttackRadius);
             Gizmos.DrawRay(transform.position, rightRay * areaAttackRadius);
 
-            // 중심선 표시 (점선 느낌으로 짧게)
-            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.color = new Color(1, 0, 0, 0.3f);
             Gizmos.DrawRay(transform.position, facing * areaAttackRadius);
         }
         else if (attackStyle == AttackStyle.Single)
         {
-            Gizmos.DrawWireSphere(transform.position, 1.5f);
+            // ★ [수정됨] 단일 공격 범위 및 타겟 표시
+
+            // A. 근접 공격 사거리 표시 (기본 0.8f)
+            Gizmos.DrawWireSphere(transform.position, 0.8f);
+
+            // B. 현재 노리고 있는 타겟 연결선 표시
+            if (currentTarget != null)
+            {
+                // 타겟을 향해 굵은 주황색 선 그리기
+                Gizmos.color = new Color(1f, 0.5f, 0f); // 주황색
+                Gizmos.DrawLine(transform.position, currentTarget.transform.position);
+
+                // 타겟 위치에 네모 박스 표시 (확실하게 보이도록)
+                Gizmos.DrawWireCube(currentTarget.transform.position, Vector3.one * 0.8f);
+            }
         }
 
-        // 3. 타겟 연결선
+        // 3. (공통) 타겟 연결선 (녹색 - 디버깅용 보조)
         if (currentTarget != null)
         {
-            Gizmos.color = Color.green;
+            Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 반투명 녹색
             Gizmos.DrawLine(transform.position, currentTarget.transform.position);
-            Gizmos.DrawWireSphere(currentTarget.transform.position, 0.5f);
         }
     }
 }

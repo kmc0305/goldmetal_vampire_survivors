@@ -450349,7 +450349,7 @@ MonoBehaviour:
   worldCamera: {fileID: 0}
   selectableLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   addMultiKey: 304
   boxColor: {r: 0, g: 0.7, b: 1, a: 0.2}
   boxBorder: {r: 0, g: 0.7019608, b: 1, a: 0.9}
