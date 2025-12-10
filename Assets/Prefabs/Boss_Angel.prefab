@@ -302,7 +302,7 @@ MonoBehaviour:
   areaAttackEffectPrefab: {fileID: 1567309622737931416, guid: 4ee4c510ef36dea48866dc2a35c99132, type: 3}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   detectionRadius: 150
   aiUpdateFrequency: 0.5
   castlePriorityRadius: 10

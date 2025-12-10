@@ -5,7 +5,7 @@ public class SpawnPoint : MonoBehaviour
 {
     [Header("Boss Spawn Settings")]
     public GameObject bossPrefab;
-    public bool spawnBossOnlyOnce = true;
+    // public bool spawnBossOnlyOnce = true; // 삭제: 시간대별로 나오므로 이 플래그는 필요 없어짐
     public float bossScaleMultiplier = 2f;
 
     [Header("Spawn Settings")]
@@ -15,7 +15,6 @@ public class SpawnPoint : MonoBehaviour
     [Tooltip("적 생성 주기 (초 단위)")]
     public float spawnInterval = 3.0f;
 
-    // ★ [추가됨] 커스텀 스폰 위치 지정용 변수
     [Tooltip("여기에 빈 오브젝트를 넣으면 적들이 그 위치에서 생성됩니다. (비워두면 기본 위치 사용)")]
     public Transform customSpawnPoint;
 
@@ -35,11 +34,10 @@ public class SpawnPoint : MonoBehaviour
     public bool IsEnabled { get; private set; } = false;
     public bool EverActivated { get; private set; } = false;
 
-    private bool bossSpawned = false;
+    // private bool bossSpawned = false; // 삭제: 시간대별 소환으로 변경됨
     private int spawnCount = 0;
     private Coroutine spawnCoroutine;
 
-    // 공통 스폰 위치 오프셋 (커스텀 포인트 없을 때 사용)
     private readonly Vector3 spawnOffset = new Vector3(0.5f, -1.4f, 0f);
 
     private Targetable myTargetable;
@@ -103,6 +101,7 @@ public class SpawnPoint : MonoBehaviour
         spawnCoroutine = null;
     }
 
+    // 일반 적 소환
     void SpawnEnemy()
     {
         if (PermanentlyOff) return;
@@ -119,16 +118,8 @@ public class SpawnPoint : MonoBehaviour
 
         GameObject enemyObj = GameManager.instance.Pool.Get(currentPoolId);
 
-        // ★ [수정됨] 커스텀 포인트가 있으면 거기서, 없으면 원래대로
-        Vector3 finalPos;
-        if (customSpawnPoint != null)
-        {
-            finalPos = customSpawnPoint.position;
-        }
-        else
-        {
-            finalPos = transform.position + spawnOffset;
-        }
+        // 위치 결정 로직
+        Vector3 finalPos = GetSpawnPosition();
 
         enemyObj.transform.position = finalPos;
         enemyObj.transform.rotation = Quaternion.identity;
@@ -155,6 +146,36 @@ public class SpawnPoint : MonoBehaviour
         spawnCount++;
     }
 
+    // ★ [추가됨] Spawner에서 시간 되면 호출할 함수
+    public void ForceSpawnBoss()
+    {
+        if (bossPrefab == null) return;
+
+        // 위치 결정 (커스텀 포인트 혹은 오프셋)
+        Vector3 spawnPos = GetSpawnPosition();
+        spawnPos.z = 0f;
+
+        var boss = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
+        boss.transform.localScale *= bossScaleMultiplier;
+
+        if (!boss.activeSelf) boss.SetActive(true);
+
+        Debug.Log($"[{this.name}]에서 보스 소환됨!");
+    }
+
+    // 위치 계산 로직 분리
+    private Vector3 GetSpawnPosition()
+    {
+        if (customSpawnPoint != null)
+        {
+            return customSpawnPoint.position;
+        }
+        else
+        {
+            return transform.position + spawnOffset;
+        }
+    }
+
     public void DeactivatePermanently()
     {
         if (PermanentlyOff) return;
@@ -169,29 +190,7 @@ public class SpawnPoint : MonoBehaviour
         if (animator) animator.SetTrigger("DoDestroy");
         UpdateHPBar();
 
-        if (bossPrefab != null && (!spawnBossOnlyOnce || !bossSpawned))
-        {
-            bossSpawned = true;
-
-            // ★ [수정됨] 보스도 커스텀 포인트 위치 적용
-            Vector3 spawnPos;
-            if (customSpawnPoint != null)
-            {
-                spawnPos = customSpawnPoint.position;
-            }
-            else
-            {
-                spawnPos = transform.position + spawnOffset;
-            }
-
-            spawnPos.z = 0f;
-
-            var boss = Instantiate(bossPrefab, spawnPos, Quaternion.identity);
-
-            boss.transform.localScale *= bossScaleMultiplier;
-
-            if (!boss.activeSelf) boss.SetActive(true);
-        }
+        // ★ [삭제됨] 여기서 보스를 소환하던 로직 제거
     }
 
     public void ResetRuntimeFlags()
@@ -202,7 +201,7 @@ public class SpawnPoint : MonoBehaviour
         PermanentlyOff = false;
         EverActivated = false;
         IsEnabled = false;
-        bossSpawned = false;
+        // bossSpawned = false; // 삭제
         spawnCount = 0;
 
         SetTargetableState(false);
@@ -246,19 +245,16 @@ public class SpawnPoint : MonoBehaviour
         }
     }
 
-    // ★ [추가됨] 에디터에서 어디서 스폰되는지 눈으로 보기 쉽게 선 그려줌
     void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         if (customSpawnPoint != null)
         {
-            // 커스텀 포인트가 있으면 그 위치에 원을 그림
             Gizmos.DrawWireSphere(customSpawnPoint.position, 0.5f);
-            Gizmos.DrawLine(transform.position, customSpawnPoint.position); // 본체랑 연결선
+            Gizmos.DrawLine(transform.position, customSpawnPoint.position);
         }
         else
         {
-            // 없으면 기본 오프셋 위치에 원을 그림
             Gizmos.DrawWireSphere(transform.position + spawnOffset, 0.5f);
         }
     }

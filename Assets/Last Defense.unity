@@ -258987,6 +258987,16 @@ MonoBehaviour:
   - {fileID: 1738603049}
   - {fileID: 1279112658}
   activationInterval: 10
+  bossWaves:
+  - spawnTime: 300
+    count: 1
+    hasTriggered: 0
+  - spawnTime: 600
+    count: 2
+    hasTriggered: 0
+  - spawnTime: 900
+    count: 3
+    hasTriggered: 0
 --- !u!1 &433790807
 GameObject:
   m_ObjectHideFlags: 0
@@ -281442,7 +281452,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3895
+    m_Bits: 4023
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -366980,7 +366990,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 3904
+    m_Bits: 3392
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0cb4cbb1c33ef9d45827ecfb09f11310, type: 2}
   m_TargetDisplay: 0
@@ -425563,7 +425573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllySpawner
   allyPrefabIndex: 2
-  spawnInterval: 0.1
+  spawnInterval: 0.3
   spawnRadius: 3
 --- !u!114 &1158587737
 MonoBehaviour:
@@ -448789,7 +448799,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: 08f1b6633eb6e7d4192472d8b508584a, type: 3}
-  spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   poolId: 0
   spawnInterval: 1
@@ -449800,7 +449809,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: c547aa826cf2ec14c83be04f225ede82, type: 3}
-  spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   poolId: 1
   spawnInterval: 1.5
@@ -533111,7 +533119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   bossPrefab: {fileID: 4111436743865639527, guid: 351e581a979bc2445895f685df45e071, type: 3}
-  spawnBossOnlyOnce: 1
   bossScaleMultiplier: 2
   poolId: 8
   spawnInterval: 5

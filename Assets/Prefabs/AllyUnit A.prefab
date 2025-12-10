@@ -440,12 +440,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitMover2D
   moveSpeed: 3.5
-  stopDistance: 0.1
+  stopDistance: 0.2
   faceMoveDirection: 1
   towerObstacleMask:
     serializedVersion: 2
     m_Bits: 1024
   colliderRadius: 0.3
   avoidMargin: 0.2
-  ignoreRadius: 1
-  refreshInterval: 0.15
+  stuckTimeout: 0.5
+  stuckVelocityThreshold: 0.1
+  startIgnoreCheckTime: 0.5

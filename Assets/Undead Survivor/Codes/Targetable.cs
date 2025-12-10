@@ -88,7 +88,7 @@ public class Targetable : MonoBehaviour
 
         if (spriter != null) spriter.color = originalColor;
         if (rigid != null) rigid.linearVelocity = UnityEngine.Vector2.zero; // Unity 6에서는 linearVelocity로 자동 변환됨
-        
+
         // ★ [추가] 재활용 시 자식 오브젝트도 활성화 (AllyAI.cs에서 이 로직을 처리하는 경우 주석 처리 가능)
         // SetChildrenActive(true);
     }
@@ -174,19 +174,19 @@ public class Targetable : MonoBehaviour
             {
                 playerScript.TriggerGameOver();
             }
-            
+
             // 시각적 요소 정리 (플레이어 스프라이트만)
             if (spriter != null) spriter.enabled = false;
-            
+
             return;
         }
-        
+
         // 2. 타워 사망
         if (mySpawnPoint != null)
         {
             UnityEngine.Debug.Log("📢 타워 파괴됨!"); // Debug 명시적 사용
             mySpawnPoint.DeactivatePermanently();
-            
+
             // PoolManager를 통해 풀로 반환
             if (poolManager != null)
             {
@@ -195,7 +195,7 @@ public class Targetable : MonoBehaviour
             else
             {
                 // PoolManager가 없으면 일반 비활성화
-                gameObject.SetActive(false); 
+                gameObject.SetActive(false);
             }
         }
         // 3. 일반 적 및 기타 유닛 사망

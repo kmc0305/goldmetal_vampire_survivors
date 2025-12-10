@@ -381,6 +381,7 @@ MonoBehaviour:
   attackCooldown: 1
   speedMultiplier: 1
   attackImpactDelay: 0.2
+  areaEffectOffset: 0
   hitEffectPrefab: {fileID: 0}
   areaEffectFollows: 1
   attackStyle: 0
@@ -389,7 +390,7 @@ MonoBehaviour:
   areaAttackEffectPrefab: {fileID: 0}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   detectionRadius: 120
   aiUpdateFrequency: 0.5
   castlePriorityRadius: 15
