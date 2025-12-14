@@ -143,7 +143,7 @@ MonoBehaviour:
   areaType: 0
   targetLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 384
   speedMultiplier: 0.5
   hpChangePerSecond: 0
   areaTintColor: {r: 0.019001435, g: 0.5754717, b: 0.019001435, a: 1}
